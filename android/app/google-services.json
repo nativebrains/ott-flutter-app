@@ -12,7 +12,12 @@
           "package_name": "com.dawateislami.islamforever"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "736086779059-p1tac90e4t8icrv3eb1d5j1unl29nbug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDg-SDOyKkIjJ7a1CQ3HL7dsRnnS-DUt9U"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736086779059-p1tac90e4t8icrv3eb1d5j1unl29nbug.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "736086779059-3v9v8e8pbrutpg05ohctelpe2gn6elju.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dawateislami.islamforever"
+              }
+            }
+          ]
         }
       }
     }
