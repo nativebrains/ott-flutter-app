@@ -43,12 +43,12 @@ flutter_native_splash:
   ios: true
   web: false
 
-  image: "assets/images/ic_islamforever_transparent.png"
-  color: "#FFFFFF"
+  image: "assets/images/ic_islamforever_logo_inverse.png"
+  color: "#2a2a2a"
 
   android_12:
-    image: "assets/images/ic_islamforever_transparent_android12.png"
-    color: "#FFFFFF"
+    image: "assets/images/ic_islamforever_android12_inverse.png"
+    color: "#2a2a2a"
 
 flutter:
   uses-material-design: true
