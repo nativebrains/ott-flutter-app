@@ -1,4 +1,4 @@
-package com.dawateislami.ottmedia
+package com.dawateislami.islamforever
 
 import io.flutter.embedding.android.FlutterActivity
 

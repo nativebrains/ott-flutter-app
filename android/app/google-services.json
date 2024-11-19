@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "736086779059",
+    "project_id": "dawat-e-islami-ott-media",
+    "storage_bucket": "dawat-e-islami-ott-media.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736086779059:android:2d90f9fd5b88000c503cc6",
+        "android_client_info": {
+          "package_name": "com.dawateislami.islamforever"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg-SDOyKkIjJ7a1CQ3HL7dsRnnS-DUt9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,7 @@
+buildscript {
+    ext.kotlin_version = '1.9.0' // Use the latest version from the Kotlin website
+}
+
 allprojects {
     repositories {
         google()
