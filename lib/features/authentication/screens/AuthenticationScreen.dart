@@ -270,11 +270,10 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 14), // Adjust padding
+                          horizontal: 10, vertical: 12), // Adjust padding
                       backgroundColor: Colors.red, // Button background color
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(12), // Corner radius
+                        borderRadius: BorderRadius.circular(8), // Corner radius
                       ),
                     ),
                     child: const Row(

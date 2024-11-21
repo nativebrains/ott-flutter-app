@@ -27,7 +27,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
     this.margin = const EdgeInsets.all(0.0),
     this.elevation = 2.0,
-    this.borderRadius = 12.0,
+    this.borderRadius = 8.0,
     this.borderColor = Colors.pink,
     this.borderWidth = 0.0,
     this.leadingIcon, // Initialize the leadingIcon property
