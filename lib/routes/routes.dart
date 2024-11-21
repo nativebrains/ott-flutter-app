@@ -44,28 +44,17 @@ class RouterGenerator {
   static Route<String> _errorRoute() {
     return MaterialPageRoute(builder: (context) {
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: ColorCode.scaffoldBackgroundColor,
         body: Padding(
           padding: EdgeInsets.all(30.sp),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Card(
-                  elevation: 5, // Adjust elevation as needed
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        10), // Ensure image corners are also rounded
-                    child: Image.asset(
-                      AssetImages.dawateIslamiLogo,
-                      width: context.screenWidth,
-                      height: 200.sp,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                Image.asset(
+                  AssetImages.dawateIslamiWhiteLogo,
+                  width: context.screenWidth,
+                  height: 200.sp,
                 ),
                 SizedBox(height: 30.sp),
                 Text(
@@ -73,6 +62,7 @@ class RouterGenerator {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 30.sp),
@@ -86,7 +76,7 @@ class RouterGenerator {
                   },
                   textColor: Colors.white,
                   backgroundColor: ColorCode.mainColor,
-                  fontSize: 13.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                   padding: EdgeInsets.all(20.0),
                   elevation: 3.sp,

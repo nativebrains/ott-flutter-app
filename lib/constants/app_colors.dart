@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ColorCode {
   static Color mainColor = const Color(0xFFfe1a63);
-  static Color scaffoldBackgroundColor = const Color(0xFF343434);
+  static Color scaffoldBackgroundColor = const Color(0xFF1b1e27);
   static Color shadowColor = const Color(0x3364646F);
   static Color greyBlackColor = const Color(0xFF272D37);
   static Color redColor = const Color(0XFFFA0A0A);

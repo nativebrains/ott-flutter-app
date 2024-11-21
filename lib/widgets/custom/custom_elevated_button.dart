@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gradient_elevated_button/gradient_elevated_button.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final String label;
@@ -37,10 +38,17 @@ class CustomElevatedButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: margin,
-      child: ElevatedButton(
+      child: GradientElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
+        style: GradientElevatedButton.styleFrom(
+          gradient: const LinearGradient(
+            colors: [
+              Colors.orange,
+              Colors.pink,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
           surfaceTintColor: backgroundColor,
           padding: padding,
           elevation: elevation,
