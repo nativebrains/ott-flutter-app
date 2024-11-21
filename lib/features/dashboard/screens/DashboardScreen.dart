@@ -68,30 +68,29 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          DateTime now = DateTime.now();
-          if (lastBackPressed == null ||
-              now.difference(lastBackPressed!) > Duration(seconds: 2)) {
-            lastBackPressed = now;
-            Fluttertoast.showToast(
-              msg: 'Please click BACK again to exit',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2,
-              backgroundColor: ColorCode.shadowColor,
-              textColor: Colors.white,
-              fontSize: 15.sp,
-            );
-
-            return false; // Do not exit app
-          }
-          exit(0); // Exit app
-        },
-        child: Scaffold(
-          backgroundColor: ColorCode.scaffoldBackgroundColor,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60.0),
-            child: AppBar(
+      onWillPop: () async {
+        DateTime now = DateTime.now();
+        if (lastBackPressed == null ||
+            now.difference(lastBackPressed!) > Duration(seconds: 2)) {
+          lastBackPressed = now;
+          Fluttertoast.showToast(
+            msg: 'Please click BACK again to exit',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: ColorCode.shadowColor,
+            textColor: Colors.white,
+            fontSize: 15.sp,
+          );
+          return false; // Do not exit the app
+        }
+        exit(0); // Exit the app
+      },
+      child: Scaffold(
+        backgroundColor: ColorCode.scaffoldBackgroundColor,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
               automaticallyImplyLeading: _isSearching,
               leading: _isSearching
                   ? IconButton(
@@ -133,7 +132,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               actions: _isSearching
                   ? [
                       IconButton(
-                        iconSize: 34.sp,
+                        iconSize: 32.sp,
                         icon: Icon(Icons.close_rounded, color: Colors.white),
                         onPressed: _clearSearch,
                       ),
@@ -141,10 +140,12 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                   : [
                       if (_selectedIndex == 2)
                         IconButton(
-                          iconSize: 34.sp,
+                          iconSize: 32.sp,
                           icon: Image(
                             image: AssetImage('assets/images/ic_filter.png'),
                             color: Colors.white,
+                            width: 32.sp,
+                            height: 32.sp,
                           ),
                           onPressed: () {
                             setState(() {
@@ -153,7 +154,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                           },
                         ),
                       IconButton(
-                        iconSize: 38.sp,
+                        iconSize: 32.sp,
                         icon: Icon(Icons.search, color: Colors.white),
                         onPressed: () {
                           setState(() {
@@ -162,11 +163,17 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                         },
                       ),
                     ],
+              floating: true,
+              snap: true,
             ),
-          ),
-          body: _screens[_selectedIndex],
-          bottomNavigationBar: getBottomMenu(_selectedIndex),
-        ));
+            SliverFillRemaining(
+              child: _screens[_selectedIndex],
+            ),
+          ],
+        ),
+        bottomNavigationBar: getBottomMenu(_selectedIndex),
+      ),
+    );
   }
 
   String getAppBarTitle(int index) {
