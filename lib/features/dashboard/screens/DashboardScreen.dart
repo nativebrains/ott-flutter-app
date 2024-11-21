@@ -25,14 +25,9 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset(
-                AssetImages.dawateIslamiWhiteLogo,
-                width: context.screenWidth,
-                height: 200.sp,
-              ),
               SizedBox(height: 30.sp),
               Text(
-                'Oops! Something went wrong.',
+                'Dashboard',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -40,21 +35,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 ),
               ),
               SizedBox(height: 30.sp),
-              CustomElevatedButton(
-                label: "Go Back Home",
-                onPressed: () {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    RouteConstantName.dashboardScreen,
-                  );
-                },
-                textColor: Colors.white,
-                backgroundColor: ColorCode.mainColor,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                padding: EdgeInsets.all(20.0),
-                elevation: 3.sp,
-              ),
             ],
           ),
         ),

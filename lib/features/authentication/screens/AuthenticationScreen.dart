@@ -58,14 +58,22 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           fontSize: 28.sp,
                         ),
                       ),
-                      GradientText(
-                        'Skip',
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w900),
-                        colors: [
-                          Colors.orange,
-                          Colors.pink,
-                        ],
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            RouteConstantName.dashboardScreen,
+                          );
+                        },
+                        child: GradientText(
+                          'Skip',
+                          style: TextStyle(
+                              fontSize: 16.sp, fontWeight: FontWeight.w900),
+                          colors: [
+                            Colors.orange,
+                            Colors.pink,
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -168,14 +176,14 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                             });
                           },
                           child: Container(
-                            width: 20,
-                            height: 20,
+                            width: 22,
+                            height: 22,
                             decoration: BoxDecoration(
                               color: _selectedPrivacyAndTerms
                                   ? Colors.pink
-                                  : Colors.white,
+                                  : Colors.transparent,
                               border: Border.all(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(
@@ -307,14 +315,22 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           fontSize: 16.sp,
                         ),
                       ),
-                      GradientText(
-                        'Sign Up',
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
-                        colors: [
-                          Colors.orange,
-                          Colors.pink,
-                        ],
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            RouteConstantName.registerScreen,
+                          );
+                        },
+                        child: GradientText(
+                          'Sign Up',
+                          style: TextStyle(
+                              fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          colors: [
+                            Colors.orange,
+                            Colors.pink,
+                          ],
+                        ),
                       ),
                     ],
                   ),

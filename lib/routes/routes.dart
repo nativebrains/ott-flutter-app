@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/features/authentication/screens/AuthenticationScreen.dart';
 import 'package:islamforever/features/authentication/screens/ForgotPasswordScreen.dart';
+import 'package:islamforever/features/authentication/screens/RegisterScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 
@@ -40,6 +41,13 @@ class RouterGenerator {
           builder: (context) => const Forgotpasswordscreen(),
           settings: const RouteSettings(
             name: RouteConstantName.forgotPasswordScreen,
+          ),
+        );
+      case RouteConstantName.registerScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Registerscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.registerScreen,
           ),
         );
 

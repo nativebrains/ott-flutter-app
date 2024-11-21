@@ -23,13 +23,13 @@ class CustomRadioButtonToggle extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 20,
-            height: 20,
+            width: 22,
+            height: 22,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: value ? Colors.pink : Colors.white,
               border: Border.all(
-                color: Colors.grey,
+                color: Colors.white,
                 width: 2,
               ),
             ),
