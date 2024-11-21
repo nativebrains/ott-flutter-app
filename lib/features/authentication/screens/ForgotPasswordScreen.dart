@@ -117,7 +117,7 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                     height: 30.sp,
                   ),
                   CustomElevatedButton(
-                    label: 'S E N D',
+                    label: 'SEND',
                     onPressed: () {},
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,

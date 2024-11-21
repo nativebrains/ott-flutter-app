@@ -70,6 +70,7 @@ class CustomElevatedButton extends StatelessWidget {
                 fontSize: fontSize,
                 fontWeight: fontWeight,
                 color: textColor,
+                letterSpacing: 3, // spacing between words
               ),
             ),
           ],
