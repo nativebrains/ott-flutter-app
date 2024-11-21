@@ -108,4 +108,6 @@ class ColorCode {
   static const Color planSelect = Color(0xFF263139);
   static const Color sliderBg = Color(0xFF14151B);
   static const Color rippleColor = Color(0xB3FFFFFF);
+
+  static const Color inputBgColor = Color(0xFF363d51);
 }

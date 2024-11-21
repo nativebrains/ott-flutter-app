@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/features/authentication/screens/AuthenticationScreen.dart';
+import 'package:islamforever/features/authentication/screens/ForgotPasswordScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 
@@ -27,12 +28,18 @@ class RouterGenerator {
             name: RouteConstantName.dashboardScreen,
           ),
         );
-
       case RouteConstantName.authenticationScreen:
         return MaterialPageRoute(
           builder: (context) => const Authenticationscreen(),
           settings: const RouteSettings(
             name: RouteConstantName.authenticationScreen,
+          ),
+        );
+      case RouteConstantName.forgotPasswordScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Forgotpasswordscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.forgotPasswordScreen,
           ),
         );
 

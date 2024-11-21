@@ -21,14 +21,14 @@ class CustomElevatedButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.textColor = Colors.white,
-    this.backgroundColor = Colors.red,
+    this.backgroundColor = Colors.pink,
     this.fontSize = 16.0,
     this.fontWeight = FontWeight.normal,
     this.padding = const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
     this.margin = const EdgeInsets.all(0.0),
     this.elevation = 2.0,
     this.borderRadius = 12.0,
-    this.borderColor = Colors.red,
+    this.borderColor = Colors.pink,
     this.borderWidth = 0.0,
     this.leadingIcon, // Initialize the leadingIcon property
   });

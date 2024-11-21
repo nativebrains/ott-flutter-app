@@ -29,7 +29,7 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.contentPadding =
         const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-    this.fillColor = Colors.white,
+    this.fillColor = const Color(0xFF363d51),
     this.filled = true,
     this.prefixIcon,
     this.onChanged,
@@ -80,12 +80,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
       obscureText: _obscureText,
       onChanged: widget.onChanged,
       textInputAction: widget.textInputAction,
-      cursorColor: Colors.red,
+      cursorColor: Colors.pink,
       focusNode: _focusNode,
       minLines: widget.minLines,
       textAlign: widget.textAlign ?? TextAlign.left, // Align text to the right
       maxLines: widget.maxLines,
-      style: widget.textStyle,
+      style: widget.textStyle ??
+          const TextStyle(
+            color: Colors.white, // Set default text color to white
+          ),
       enabled: widget.enabled, // Use the enabled property
       decoration: InputDecoration(
         hintText: widget.hintText,
@@ -102,7 +105,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 builder: (BuildContext context) {
                   return IconTheme(
                     data: IconThemeData(
-                        color: _focusNode.hasFocus ? Colors.red : Colors.grey),
+                        color: _focusNode.hasFocus ? Colors.pink : Colors.grey),
                     child: widget.prefixIcon!,
                   );
                 },
@@ -112,7 +115,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ? IconButton(
                 icon: Icon(
                   _obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: _focusNode.hasFocus ? Colors.red : Colors.grey,
+                  color: _focusNode.hasFocus ? Colors.pink : Colors.grey,
                 ),
                 onPressed: () {
                   setState(() {

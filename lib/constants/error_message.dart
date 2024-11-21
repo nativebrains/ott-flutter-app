@@ -69,7 +69,7 @@ SnackBar customErrorSnackBar({required String msg, Duration? duration}) {
           ),
           child: const Icon(
             Icons.error,
-            color: Colors.red,
+            color: Colors.pink,
             size: 30,
           ),
         ),
@@ -88,7 +88,7 @@ SnackBar customErrorSnackBar({required String msg, Duration? duration}) {
         ),
       ],
     ),
-    backgroundColor: Colors.red,
+    backgroundColor: Colors.pink,
   );
 }
 
