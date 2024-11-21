@@ -29,6 +29,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
+  String mixScreenTitle = "Mix";
 
   // List of screens for the bottom navigation
   final List<Widget> _screens = [
@@ -133,7 +134,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                   ? [
                       IconButton(
                         iconSize: 34.sp,
-                        icon: Icon(Icons.cancel_outlined, color: Colors.white),
+                        icon: Icon(Icons.close_rounded, color: Colors.white),
                         onPressed: _clearSearch,
                       ),
                     ]
@@ -175,7 +176,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       case 1:
         return 'Search';
       case 2:
-        return 'Mix';
+        return mixScreenTitle;
       case 3:
         return 'Account';
       case 4:
@@ -189,7 +190,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     return Container(
       height: 65,
       decoration: const BoxDecoration(
-        color: ColorCode.primaryDarkColor,
+        color: ColorCode.bottomNavBg,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -242,8 +243,10 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
           InkWell(
             onTap: () {
-              setState(() {
-                _selectedIndex = 2;
+              showNotificationsBottomSheet(context, () {
+                setState(() {
+                  _selectedIndex = 2;
+                });
               });
             },
             child: Container(
@@ -313,6 +316,116 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void showNotificationsBottomSheet(BuildContext context, VoidCallback onTap) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: ColorCode.bottomNavBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Container(
+                  height: 4.0, // Height of the line
+                  width: context.screenWidth / 4,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey.shade600,
+                        Colors.grey.shade600,
+                      ], // Start and end colors of the gradient
+                      begin: Alignment.centerLeft, // Start of the gradient
+                      end: Alignment.centerRight, // End of the gradient
+                    ),
+
+                    borderRadius: BorderRadius.circular(12), // Corner radius
+                  ),
+                ),
+              ),
+              SizedBox(height: 12.sp),
+              getCustomTile("assets/images/ic_movie.png", "Movies", () {
+                mixScreenTitle = "Movies";
+                onTap();
+                Navigator.of(context).pop();
+              }),
+              getCustomTile("assets/images/ic_tv_show.png", "TV Shows", () {
+                mixScreenTitle = "TV Shows";
+                onTap();
+                Navigator.of(context).pop();
+              }),
+              getCustomTile("assets/images/ic_sport.png", "Sports", () {
+                mixScreenTitle = "Sports";
+                onTap();
+                Navigator.of(context).pop();
+              }),
+              getCustomTile("assets/images/ic_live_tv.png", "Live TV", () {
+                mixScreenTitle = "Live TV";
+                onTap();
+                Navigator.of(context).pop();
+              }),
+              SizedBox(height: 6.sp),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.orange,
+                        Colors.pink,
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(6.sp),
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 28,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 6.sp),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getCustomTile(String imageUrl, String title, VoidCallback ontap) {
+    return ListTile(
+      leading: Image.asset(
+        imageUrl,
+        width: 28,
+        height: 28,
+      ),
+      title: CustomText(
+        text: title,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios_rounded,
+        color: Colors.white,
+      ),
+      onTap: ontap // Dismiss the sheet on tap
+      ,
     );
   }
 }
