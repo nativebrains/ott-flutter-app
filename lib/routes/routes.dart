@@ -8,6 +8,7 @@ import 'package:islamforever/features/dashboard/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/dashboard/screens/MixScreen.dart';
+import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SettingsScreen.dart';
 import 'package:islamforever/features/dashboard/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
@@ -92,6 +93,14 @@ class RouterGenerator {
           builder: (context) => const Accountscreen(),
           settings: const RouteSettings(
             name: RouteConstantName.accountScreen,
+          ),
+        );
+
+      case RouteConstantName.searchScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Searchscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.searchScreen,
           ),
         );
 

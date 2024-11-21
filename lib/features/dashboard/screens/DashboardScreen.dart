@@ -24,6 +24,9 @@ class Dashboardscreen extends StatefulWidget {
 }
 
 class _DashboardscreenState extends State<Dashboardscreen> {
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
 
@@ -39,6 +42,25 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  // Handle search completion
+  void _onSearchSubmitted(String query) {
+    if (query.isNotEmpty) {
+      Navigator.pushNamed(
+        context,
+        RouteConstantName.searchScreen,
+      );
+      _clearSearch();
+    }
+  }
+
+  // Clear search and reset to default AppBar
+  void _clearSearch() {
+    setState(() {
+      _isSearching = false;
+      _searchController.clear();
     });
   }
 
@@ -69,7 +91,13 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60.0),
             child: AppBar(
-              automaticallyImplyLeading: false,
+              automaticallyImplyLeading: _isSearching,
+              leading: _isSearching
+                  ? IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: _clearSearch,
+                    )
+                  : null,
               flexibleSpace: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -79,27 +107,82 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                   ),
                 ),
               ),
-              title: const Text(
-                'Home',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
+              title: _isSearching
+                  ? TextField(
+                      controller: _searchController,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Search...',
+                        hintStyle: TextStyle(color: Colors.white70),
+                        border: InputBorder.none,
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: _onSearchSubmitted,
+                    )
+                  : Text(
+                      getAppBarTitle(_selectedIndex),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
               centerTitle: false,
-              actions: [
-                IconButton(
-                  iconSize: 34.sp,
-                  icon: Icon(Icons.search, color: Colors.white),
-                  onPressed: () {},
-                ),
-              ],
+              actions: _isSearching
+                  ? [
+                      IconButton(
+                        iconSize: 34.sp,
+                        icon: Icon(Icons.cancel_outlined, color: Colors.white),
+                        onPressed: _clearSearch,
+                      ),
+                    ]
+                  : [
+                      if (_selectedIndex == 2)
+                        IconButton(
+                          iconSize: 34.sp,
+                          icon: Image(
+                            image: AssetImage('assets/images/ic_filter.png'),
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isSearching = true;
+                            });
+                          },
+                        ),
+                      IconButton(
+                        iconSize: 38.sp,
+                        icon: Icon(Icons.search, color: Colors.white),
+                        onPressed: () {
+                          setState(() {
+                            _isSearching = true;
+                          });
+                        },
+                      ),
+                    ],
             ),
           ),
           body: _screens[_selectedIndex],
           bottomNavigationBar: getBottomMenu(_selectedIndex),
         ));
+  }
+
+  String getAppBarTitle(int index) {
+    switch (index) {
+      case 0:
+        return 'Home';
+      case 1:
+        return 'Search';
+      case 2:
+        return 'Mix';
+      case 3:
+        return 'Account';
+      case 4:
+        return 'Settings';
+      default:
+        return 'Dashboard';
+    }
   }
 
   Widget getBottomMenu(int selectedIndex) {
