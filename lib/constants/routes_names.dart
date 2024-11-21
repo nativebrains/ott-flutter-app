@@ -4,4 +4,9 @@ class RouteConstantName {
   static const String authenticationScreen = "/authenticationScreen";
   static const String forgotPasswordScreen = "/forgotPasswordScreen";
   static const String registerScreen = "/registerScreen";
+  static const String homeScreen = "/homeScreen";
+  static const String watchListScreen = "/watchListScreen";
+  static const String mixScreen = "/mixScreen";
+  static const String accountScreen = "/accountScreen";
+  static const String settingsScreen = "/settingsScreen";
 }

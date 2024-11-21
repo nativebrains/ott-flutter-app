@@ -64,7 +64,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       initialValue: "", // Set the initial value
                       keyboardType: TextInputType.text,
                       prefixIcon: Icon(
-                        Icons.person,
+                        Icons.account_circle_outlined,
                         color: Colors.white,
                       ),
                       onChanged: (value) {

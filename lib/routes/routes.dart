@@ -4,7 +4,12 @@ import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/features/authentication/screens/AuthenticationScreen.dart';
 import 'package:islamforever/features/authentication/screens/ForgotPasswordScreen.dart';
 import 'package:islamforever/features/authentication/screens/RegisterScreen.dart';
+import 'package:islamforever/features/dashboard/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
+import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
+import 'package:islamforever/features/dashboard/screens/MixScreen.dart';
+import 'package:islamforever/features/dashboard/screens/SettingsScreen.dart';
+import 'package:islamforever/features/dashboard/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 
 import '../constants/assets_images.dart';
@@ -48,6 +53,45 @@ class RouterGenerator {
           builder: (context) => const Registerscreen(),
           settings: const RouteSettings(
             name: RouteConstantName.registerScreen,
+          ),
+        );
+
+      case RouteConstantName.homeScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Homescreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.homeScreen,
+          ),
+        );
+      case RouteConstantName.watchListScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Watchlistscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.watchListScreen,
+          ),
+        );
+
+      case RouteConstantName.mixScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Mixscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.mixScreen,
+          ),
+        );
+
+      case RouteConstantName.settingsScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Settingsscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.settingsScreen,
+          ),
+        );
+
+      case RouteConstantName.accountScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Accountscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.accountScreen,
           ),
         );
 
