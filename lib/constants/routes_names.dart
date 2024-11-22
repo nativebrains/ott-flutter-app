@@ -10,4 +10,6 @@ class RouteConstantName {
   static const String accountScreen = "/accountScreen";
   static const String settingsScreen = "/settingsScreen";
   static const String searchScreen = "/searchScreen";
+  static const String aboutScreen = "/aboutScreen";
+  static const String webviewScreen = "/webviewScreen";
 }

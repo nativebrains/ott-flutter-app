@@ -9,6 +9,7 @@ import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
+import 'package:islamforever/features/settings/screens/AboutScreen.dart';
 import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
 import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
@@ -16,6 +17,7 @@ import 'package:islamforever/utils/extensions_utils.dart';
 import '../constants/assets_images.dart';
 import '../constants/routes_names.dart';
 import '../features/splash/screens/SplashScreen.dart';
+import '../features/webview/screens/WebviewScreen.dart';
 import '../widgets/custom/custom_elevated_button.dart';
 
 class RouterGenerator {
@@ -101,6 +103,25 @@ class RouterGenerator {
           builder: (context) => const Searchscreen(),
           settings: const RouteSettings(
             name: RouteConstantName.searchScreen,
+          ),
+        );
+
+      case RouteConstantName.aboutScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Aboutscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.aboutScreen,
+          ),
+        );
+
+      case RouteConstantName.webviewScreen:
+        var args = settings.arguments as WebviewScreen;
+        return MaterialPageRoute(
+          builder: (context) => WebviewScreen(
+            webviewType: args.webviewType,
+          ),
+          settings: const RouteSettings(
+            name: RouteConstantName.webviewScreen,
           ),
         );
 
