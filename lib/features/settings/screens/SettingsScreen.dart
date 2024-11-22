@@ -27,6 +27,10 @@ class _SettingsscreenState extends State<Settingsscreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Divider(
+                height: 1.sp,
+                color: Colors.grey.withOpacity(0.3),
+              ),
               getItem("Enable Push Notification",
                   hasSwitch: true,
                   switchValue: _switchValue, switchCallback: (newValue) {
