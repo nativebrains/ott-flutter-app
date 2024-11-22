@@ -38,6 +38,7 @@ class CustomText extends StatelessWidget {
         decoration: decoration,
         decorationColor: decorationColor, // Apply the underline color here
         fontStyle: fontStyle,
+        letterSpacing: 1, // spacing between words
       ),
       textAlign: textAlign,
       maxLines: maxLines,
