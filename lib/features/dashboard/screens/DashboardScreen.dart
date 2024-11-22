@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:islamforever/features/dashboard/screens/AccountScreen.dart';
+import 'package:islamforever/features/account/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
-import 'package:islamforever/features/dashboard/screens/MixScreen.dart';
-import 'package:islamforever/features/dashboard/screens/SettingsScreen.dart';
-import 'package:islamforever/features/dashboard/screens/WatchListScreen.dart';
+import 'package:islamforever/features/mix/screens/MixScreen.dart';
+import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
+import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 
 import '../../../constants/app_colors.dart';

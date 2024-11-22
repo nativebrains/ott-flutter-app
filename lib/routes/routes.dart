@@ -4,13 +4,13 @@ import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/features/authentication/screens/AuthenticationScreen.dart';
 import 'package:islamforever/features/authentication/screens/ForgotPasswordScreen.dart';
 import 'package:islamforever/features/authentication/screens/RegisterScreen.dart';
-import 'package:islamforever/features/dashboard/screens/AccountScreen.dart';
+import 'package:islamforever/features/account/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
-import 'package:islamforever/features/dashboard/screens/MixScreen.dart';
+import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
-import 'package:islamforever/features/dashboard/screens/SettingsScreen.dart';
-import 'package:islamforever/features/dashboard/screens/WatchListScreen.dart';
+import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
+import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 
 import '../constants/assets_images.dart';
