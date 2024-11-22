@@ -148,7 +148,7 @@ class _AboutscreenState extends State<Aboutscreen> {
     return Container(
       padding: EdgeInsets.all(20.sp),
       decoration: BoxDecoration(
-        color: ColorCode.inputBgColor,
+        color: ColorCode.cardInfoBg,
         borderRadius: BorderRadius.circular(10),
       ),
       child: child,
