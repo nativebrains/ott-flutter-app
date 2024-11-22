@@ -33,7 +33,21 @@ class _WebviewScreenState extends State<WebviewScreen> {
               _isLoading = true;
             });
           },
-          onPageFinished: (String url) {
+          onPageFinished: (String url) async {
+            // Inject custom CSS to change text color to white
+            await controller.runJavaScript('''
+  var style = document.createElement('style');
+  style.innerHTML = `
+    body, body * {
+      color: white !important;
+      background-color: black !important;
+    }
+    a {
+      color: #00aaff !important; /* Optional: Customize link color */
+    }
+  `;
+  document.head.appendChild(style);
+''');
             setState(() {
               _isLoading = false;
             });
@@ -47,7 +61,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorCode.scaffoldBackgroundColor,
+      backgroundColor: ColorCode.blackColor,
       body: Stack(
         children: [
           CustomScrollView(

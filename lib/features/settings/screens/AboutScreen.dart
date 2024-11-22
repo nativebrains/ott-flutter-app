@@ -18,7 +18,7 @@ class _AboutscreenState extends State<Aboutscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorCode.scaffoldBackgroundColor,
+      backgroundColor: ColorCode.blackColor,
       body: CustomScrollView(
         slivers: [
           // SliverAppBar with snapping and floating behavior
