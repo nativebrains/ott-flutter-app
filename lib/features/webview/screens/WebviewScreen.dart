@@ -6,7 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../utils/extras.dart';
 import '../../../widgets/custom/custom_text.dart';
 
-enum WebviewType { PRIVACY }
+enum WebviewType { PRIVACY, TERMS }
 
 class WebviewScreen extends StatefulWidget {
   final WebviewType webviewType;
@@ -85,7 +85,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   ),
                 ),
                 title: Text(
-                  "Privacy Policy",
+                  getTitle(),
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -128,6 +128,8 @@ class _WebviewScreenState extends State<WebviewScreen> {
     switch (widget.webviewType) {
       case WebviewType.PRIVACY:
         return "Privacy Policy";
+      case WebviewType.TERMS:
+        return "Terms";
       default:
         return "";
     }
@@ -137,6 +139,8 @@ class _WebviewScreenState extends State<WebviewScreen> {
     switch (widget.webviewType) {
       case WebviewType.PRIVACY:
         return "https://paybag-react.paybag.co/privacy-policy?app=1";
+      case WebviewType.TERMS:
+        return "https://paybag-react.paybag.co/terms-conditions?app=1";
       default:
         return "";
     }

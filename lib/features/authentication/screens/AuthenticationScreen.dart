@@ -15,6 +15,7 @@ import '../../../widgets/custom/custom_radio_button_toggle.dart';
 import '../../../widgets/custom/custom_rich_text.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../../widgets/custom/custom_text_field.dart';
+import '../../webview/screens/WebviewScreen.dart';
 
 class Authenticationscreen extends StatefulWidget {
   const Authenticationscreen({super.key});
@@ -216,7 +217,10 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                                 actionTextColor: Colors.pink,
                                 isActionUnderlined: true,
                                 onActionTap: () {
-                                  // Handle action tap
+                                  Navigator.pushNamed(
+                                      context, RouteConstantName.webviewScreen,
+                                      arguments: const WebviewScreen(
+                                          webviewType: WebviewType.TERMS));
                                 },
                               ),
                               CustomRichText(
@@ -227,7 +231,10 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                                 actionTextColor: Colors.pink,
                                 isActionUnderlined: true,
                                 onActionTap: () {
-                                  // Handle action tap
+                                  Navigator.pushNamed(
+                                      context, RouteConstantName.webviewScreen,
+                                      arguments: const WebviewScreen(
+                                          webviewType: WebviewType.PRIVACY));
                                 },
                               ),
                             ],
