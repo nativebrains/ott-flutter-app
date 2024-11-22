@@ -34,6 +34,9 @@ dependencies:
   gradient_elevated_button: ^1.0.0
   modal_bottom_sheet: ^3.0.0
   webview_flutter: ^4.4.1
+  url_launcher: ^6.3.1
+  package_info_plus: ^8.0.0
+  share_plus: ^10.0.0
 
 dev_dependencies:
   flutter_test:
