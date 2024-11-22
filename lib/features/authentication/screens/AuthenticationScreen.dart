@@ -241,7 +241,12 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                   ),
                   CustomElevatedButton(
                     label: 'LOGIN',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        RouteConstantName.dashboardScreen,
+                      );
+                    },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,

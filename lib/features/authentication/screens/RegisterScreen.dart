@@ -7,6 +7,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
+import '../../../constants/routes_names.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_rich_text.dart';
 import '../../../widgets/custom/custom_text_field.dart';
@@ -231,7 +232,12 @@ class _RegisterscreenState extends State<Registerscreen> {
                   ),
                   CustomElevatedButton(
                     label: 'REGISTER',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        RouteConstantName.dashboardScreen,
+                      );
+                    },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
