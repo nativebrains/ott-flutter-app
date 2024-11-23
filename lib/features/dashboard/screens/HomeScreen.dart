@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomBanner.dart';
+import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
 
 import '../widgets/CustomVerticalCard.dart';
 
@@ -51,7 +52,15 @@ class _HomescreenState extends State<Homescreen> {
             ),
             Customverticalcard(
               imgList: imgVerticalList,
-            )
+              isPremium: true,
+            ),
+            SizedBox(
+              height: 16.sp,
+            ),
+            Customhorizontalcard(
+              imgList: imgHorizontalList,
+              isPremium: false,
+            ),
           ],
         ),
       ),

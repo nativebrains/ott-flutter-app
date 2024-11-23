@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:islamforever/constants/assets_images.dart';
 
-class Customverticalcard extends StatefulWidget {
+import '../../../constants/assets_images.dart';
+
+class Customhorizontalcard extends StatefulWidget {
   final List<String> imgList;
   final bool isPremium;
-  const Customverticalcard(
+  const Customhorizontalcard(
       {super.key, required this.imgList, required this.isPremium});
 
   @override
-  State<Customverticalcard> createState() => _CustomverticalcardState();
+  State<Customhorizontalcard> createState() => _CustomhorizontalcardState();
 }
 
-class _CustomverticalcardState extends State<Customverticalcard> {
+class _CustomhorizontalcardState extends State<Customhorizontalcard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,13 +34,14 @@ class _CustomverticalcardState extends State<Customverticalcard> {
                       Image.network(
                         entry.value,
                         fit: BoxFit.cover,
-                        width: 115.sp,
-                        height: 165.sp,
+                        width: 175.sp,
+                        height: 95.sp,
                       ),
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: widget.isPremium // Replace with your boolean variable
+                        child: widget
+                                .isPremium // Replace with your boolean variable
                             ? Container(
                                 margin: EdgeInsets.all(6.sp),
                                 decoration: const BoxDecoration(
