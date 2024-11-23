@@ -16,7 +16,7 @@ class _CustombannerState extends State<Custombanner> {
       child: CarouselSlider(
         options: CarouselOptions(
           autoPlay: true,
-          aspectRatio: 2.2,
+          aspectRatio: 2.1,
           enlargeCenterPage: true,
           viewportFraction: 0.8,
         ),
