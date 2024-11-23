@@ -9,6 +9,7 @@ import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/constants/routes_names.dart';
 import 'package:islamforever/core/error_widget/error_widget.dart';
 import 'package:islamforever/features/common/providers/CommonProvider.dart';
+import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/firebase_options.dart';
 import 'package:islamforever/routes/routes.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<CommonProvider>(
           create: (ctx) => CommonProvider(),
+        ),
+        ChangeNotifierProvider<DashboardProvider>(
+          create: (ctx) => DashboardProvider(),
         ),
       ],
       child: ScreenUtilInit(

@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:islamforever/features/account/screens/AccountScreen.dart';
+import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
 import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
 import '../../../constants/routes_names.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../common/enums/MediaContentType.dart';
 
 class Dashboardscreen extends StatefulWidget {
   const Dashboardscreen({super.key});
@@ -24,12 +27,12 @@ class Dashboardscreen extends StatefulWidget {
 }
 
 class _DashboardscreenState extends State<Dashboardscreen> {
+  late DashboardProvider dashboardProvider;
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
-  String mixScreenTitle = "Mix";
 
   // List of screens for the bottom navigation
   final List<Widget> _screens = [
@@ -39,6 +42,13 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     Accountscreen(),
     Settingsscreen()
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -181,7 +191,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       case 1:
         return 'Search';
       case 2:
-        return mixScreenTitle;
+        return DashboardProvider.selectedMixScreenContentTypeName;
       case 3:
         return 'Account';
       case 4:
@@ -361,22 +371,26 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               ),
               SizedBox(height: 12.sp),
               getCustomTile("assets/images/ic_movie.png", "Movies", () {
-                mixScreenTitle = "Movies";
+                dashboardProvider
+                    .setSelectedMixScreenContentType(MediaContentType.movies);
                 onTap();
                 Navigator.of(context).pop();
               }),
               getCustomTile("assets/images/ic_tv_show.png", "TV Shows", () {
-                mixScreenTitle = "TV Shows";
+                dashboardProvider
+                    .setSelectedMixScreenContentType(MediaContentType.tvShows);
                 onTap();
                 Navigator.of(context).pop();
               }),
               getCustomTile("assets/images/ic_sport.png", "Sports", () {
-                mixScreenTitle = "Sports";
+                dashboardProvider
+                    .setSelectedMixScreenContentType(MediaContentType.sports);
                 onTap();
                 Navigator.of(context).pop();
               }),
               getCustomTile("assets/images/ic_live_tv.png", "Live TV", () {
-                mixScreenTitle = "Live TV";
+                dashboardProvider
+                    .setSelectedMixScreenContentType(MediaContentType.liveTv);
                 onTap();
                 Navigator.of(context).pop();
               }),
