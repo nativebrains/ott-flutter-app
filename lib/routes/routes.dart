@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:islamforever/features/account/screens/AccountDashboardScreen.dart';
 import 'package:islamforever/features/account/screens/ProfileScreen.dart';
 import 'package:islamforever/features/authentication/screens/AuthenticationScreen.dart';
 import 'package:islamforever/features/authentication/screens/ForgotPasswordScreen.dart';
@@ -130,6 +131,14 @@ class RouterGenerator {
           builder: (context) => const Profilescreen(),
           settings: const RouteSettings(
             name: RouteConstantName.profileScreen,
+          ),
+        );
+
+      case RouteConstantName.accountDashboardScreen:
+        return MaterialPageRoute(
+          builder: (context) => const AccountDashboardScreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.accountDashboardScreen,
           ),
         );
 

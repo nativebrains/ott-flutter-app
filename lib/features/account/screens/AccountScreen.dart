@@ -225,8 +225,10 @@ class _AccountscreenState extends State<Accountscreen> {
                 textAlign: TextAlign.start,
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.normal,
-              ),
-              () {}),
+              ), () {
+            Navigator.pushNamed(
+                context, RouteConstantName.accountDashboardScreen);
+          }),
           customContainer(
               CustomText(
                 text: "Edit Profile",
