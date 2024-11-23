@@ -4,21 +4,22 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants/assets_images.dart';
 
-class Customhorizontalcard extends StatefulWidget {
+class Customhorizontalcardlist extends StatefulWidget {
   final List<String> imgList;
   final bool isPremium;
   final bool showTitle;
-  const Customhorizontalcard(
+  const Customhorizontalcardlist(
       {super.key,
       required this.imgList,
       required this.isPremium,
       required this.showTitle});
 
   @override
-  State<Customhorizontalcard> createState() => _CustomhorizontalcardState();
+  State<Customhorizontalcardlist> createState() =>
+      _CustomhorizontalcardlistState();
 }
 
-class _CustomhorizontalcardState extends State<Customhorizontalcard> {
+class _CustomhorizontalcardlistState extends State<Customhorizontalcardlist> {
   @override
   Widget build(BuildContext context) {
     return Container(

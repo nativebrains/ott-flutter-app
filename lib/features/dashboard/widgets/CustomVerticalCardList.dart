@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/assets_images.dart';
 
-class Customverticalcard extends StatefulWidget {
+class Customverticalcardlist extends StatefulWidget {
   final List<String> imgList;
   final bool isPremium;
-  const Customverticalcard(
+  const Customverticalcardlist(
       {super.key, required this.imgList, required this.isPremium});
 
   @override
-  State<Customverticalcard> createState() => _CustomverticalcardState();
+  State<Customverticalcardlist> createState() => _CustomverticalcardlistState();
 }
 
-class _CustomverticalcardState extends State<Customverticalcard> {
+class _CustomverticalcardlistState extends State<Customverticalcardlist> {
   @override
   Widget build(BuildContext context) {
     return Container(

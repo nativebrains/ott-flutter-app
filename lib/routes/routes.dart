@@ -9,6 +9,7 @@ import 'package:islamforever/features/authentication/screens/RegisterScreen.dart
 import 'package:islamforever/features/account/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
+import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
 import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
 import 'package:islamforever/features/purchase/screens/PaymentMethodScreen.dart';
@@ -166,6 +167,17 @@ class RouterGenerator {
           builder: (context) => const Paymentscreen(),
           settings: const RouteSettings(
             name: RouteConstantName.paymentScreen,
+          ),
+        );
+      case RouteConstantName.seeAllScreen:
+        final args = settings.arguments as SeeAllScreenArguments;
+        return MaterialPageRoute(
+          builder: (context) => Seeallscreen(
+            title: args.title,
+            isVertical: args.isVertical,
+          ),
+          settings: const RouteSettings(
+            name: RouteConstantName.seeAllScreen,
           ),
         );
       default:

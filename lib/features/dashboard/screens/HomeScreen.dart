@@ -2,12 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomBanner.dart';
-import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
+import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCardList.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/app_colors.dart';
-import '../widgets/CustomVerticalCard.dart';
+import '../../../constants/routes_names.dart';
+import '../widgets/CustomVerticalCardList.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -93,7 +95,16 @@ class _HomescreenState extends State<Homescreen> {
             ),
             if (hasSeeAll)
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteConstantName.seeAllScreen,
+                    arguments: SeeAllScreenArguments(
+                      title: title,
+                      isVertical: true,
+                    ),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: GradientText(
@@ -112,7 +123,7 @@ class _HomescreenState extends State<Homescreen> {
         SizedBox(
           height: 6.sp,
         ),
-        Customverticalcard(
+        Customverticalcardlist(
           imgList: imgVerticalList,
           isPremium: isPremium,
         ),
@@ -144,7 +155,16 @@ class _HomescreenState extends State<Homescreen> {
             ),
             if (hasSeeAll)
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteConstantName.seeAllScreen,
+                    arguments: SeeAllScreenArguments(
+                      title: title,
+                      isVertical: false,
+                    ),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: GradientText(
@@ -163,7 +183,7 @@ class _HomescreenState extends State<Homescreen> {
         SizedBox(
           height: 6.sp,
         ),
-        Customhorizontalcard(
+        Customhorizontalcardlist(
           imgList: imgHorizontalList,
           isPremium: isPremium,
           showTitle: showItemTitle,
