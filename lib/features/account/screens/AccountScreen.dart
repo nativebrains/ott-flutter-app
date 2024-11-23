@@ -165,7 +165,12 @@ class _AccountscreenState extends State<Accountscreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: CustomElevatedButton(
               label: 'Upgrade Plan',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  RouteConstantName.subscriptionPlanScreen,
+                );
+              },
               textColor: ColorCode.whiteColor,
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,

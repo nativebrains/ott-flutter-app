@@ -11,6 +11,9 @@ import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
+import 'package:islamforever/features/purchase/screens/PaymentMethodScreen.dart';
+import 'package:islamforever/features/purchase/screens/PaymentScreen.dart';
+import 'package:islamforever/features/purchase/screens/SubscriptionPlanScreen.dart';
 import 'package:islamforever/features/settings/screens/AboutScreen.dart';
 import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
 import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
@@ -142,6 +145,29 @@ class RouterGenerator {
           ),
         );
 
+      case RouteConstantName.subscriptionPlanScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Subscriptionplanscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.subscriptionPlanScreen,
+          ),
+        );
+
+      case RouteConstantName.paymentMethodScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Paymentmethodscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.paymentMethodScreen,
+          ),
+        );
+
+      case RouteConstantName.paymentScreen:
+        return MaterialPageRoute(
+          builder: (context) => const Paymentscreen(),
+          settings: const RouteSettings(
+            name: RouteConstantName.paymentScreen,
+          ),
+        );
       default:
         return _errorRoute();
     }

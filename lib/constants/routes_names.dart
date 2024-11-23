@@ -14,4 +14,7 @@ class RouteConstantName {
   static const String webviewScreen = "/webviewScreen";
   static const String profileScreen = "/profileScreen";
   static const String accountDashboardScreen = "/accountDashboardScreen";
+  static const String subscriptionPlanScreen = "/subscriptionPlanScreen";
+  static const String paymentMethodScreen = "/paymentMethodScreen";
+  static const String paymentScreen = "/paymentScreen";
 }
