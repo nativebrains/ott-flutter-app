@@ -60,6 +60,7 @@ class _HomescreenState extends State<Homescreen> {
             Customhorizontalcard(
               imgList: imgHorizontalList,
               isPremium: false,
+              showTitle: false,
             ),
           ],
         ),

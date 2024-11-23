@@ -34,12 +34,13 @@ class _CustomverticalcardState extends State<Customverticalcard> {
                         entry.value,
                         fit: BoxFit.cover,
                         width: 115.sp,
-                        height: 165.sp,
+                        height: 180.sp,
                       ),
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: widget.isPremium // Replace with your boolean variable
+                        child: widget
+                                .isPremium // Replace with your boolean variable
                             ? Container(
                                 margin: EdgeInsets.all(6.sp),
                                 decoration: const BoxDecoration(
