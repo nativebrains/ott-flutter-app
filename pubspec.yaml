@@ -38,6 +38,7 @@ dependencies:
   package_info_plus: ^8.0.0
   share_plus: ^10.0.0
   text_scroll: ^0.2.0
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

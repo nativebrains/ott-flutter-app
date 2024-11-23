@@ -1,4 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/dashboard/widgets/CustomBanner.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -12,10 +15,17 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Text(
-          'Home Screen',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 16.sp,
+            ),
+            Custombanner(),
+            SizedBox(
+              height: 16.sp,
+            ),
+          ],
         ),
       ),
     );
