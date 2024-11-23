@@ -34,7 +34,7 @@ class _CustomverticalcardState extends State<Customverticalcard> {
                         entry.value,
                         fit: BoxFit.cover,
                         width: 115.sp,
-                        height: 180.sp,
+                        height: 165.sp,
                       ),
                       Positioned(
                         top: 0,

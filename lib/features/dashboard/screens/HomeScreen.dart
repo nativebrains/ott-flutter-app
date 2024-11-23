@@ -47,9 +47,24 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(height: 16.sp),
             Custombanner(imgList: imgHorizontalList),
             SizedBox(height: 16.sp),
+            getHorizontalList("Recently watched"),
+            SizedBox(height: 16.sp),
             getVerticalList("Upcoming Movies"),
             SizedBox(height: 16.sp),
-            getHorizontalList("Upcoming shows")
+            getHorizontalList("Upcoming shows", isPremium: true),
+            SizedBox(height: 16.sp),
+            getVerticalList("Latest Movies", isPremium: true, hasSeeAll: true),
+            SizedBox(height: 16.sp),
+            getHorizontalList("Latest shows", hasSeeAll: true),
+            SizedBox(height: 16.sp),
+            getHorizontalList("Best in Sports", isPremium: true),
+            SizedBox(height: 16.sp),
+            getHorizontalList("Live TV", hasSeeAll: true),
+            SizedBox(height: 16.sp),
+            getVerticalList("Popular Movies", hasSeeAll: true),
+            SizedBox(height: 16.sp),
+            getHorizontalList("Popular shows", hasSeeAll: true),
+            SizedBox(height: 20.sp),
           ],
         ),
       ),
@@ -58,6 +73,8 @@ class _HomescreenState extends State<Homescreen> {
 
   Widget getVerticalList(String title,
       {bool hasSeeAll = false, bool isPremium = false}) {
+    // Shuffle the list
+    imgVerticalList.shuffle();
     return Column(
       children: [
         Row(
@@ -77,14 +94,17 @@ class _HomescreenState extends State<Homescreen> {
             if (hasSeeAll)
               InkWell(
                 onTap: () {},
-                child: GradientText(
-                  'See All',
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: GradientText(
+                    'See All',
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
+                    colors: [
+                      Colors.orange,
+                      Colors.pink,
+                    ],
+                  ),
                 ),
               ),
           ],
@@ -96,9 +116,6 @@ class _HomescreenState extends State<Homescreen> {
           imgList: imgVerticalList,
           isPremium: isPremium,
         ),
-        SizedBox(
-          height: 6.sp,
-        ),
       ],
     );
   }
@@ -107,6 +124,8 @@ class _HomescreenState extends State<Homescreen> {
       {bool hasSeeAll = false,
       bool isPremium = false,
       bool showItemTitle = false}) {
+    // Shuffle the list
+    imgVerticalList.shuffle();
     return Column(
       children: [
         Row(
@@ -126,14 +145,17 @@ class _HomescreenState extends State<Homescreen> {
             if (hasSeeAll)
               InkWell(
                 onTap: () {},
-                child: GradientText(
-                  'See All',
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: GradientText(
+                    'See All',
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
+                    colors: [
+                      Colors.orange,
+                      Colors.pink,
+                    ],
+                  ),
                 ),
               ),
           ],
@@ -145,9 +167,6 @@ class _HomescreenState extends State<Homescreen> {
           imgList: imgHorizontalList,
           isPremium: isPremium,
           showTitle: showItemTitle,
-        ),
-        SizedBox(
-          height: 6.sp,
         ),
       ],
     );

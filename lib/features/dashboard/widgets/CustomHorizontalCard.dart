@@ -44,7 +44,7 @@ class _CustomhorizontalcardState extends State<Customhorizontalcard> {
                             entry.value,
                             fit: BoxFit.cover,
                             width: 175.sp,
-                            height: 105.sp,
+                            height: 95.sp,
                           ),
                           Positioned(
                             top: 0,
