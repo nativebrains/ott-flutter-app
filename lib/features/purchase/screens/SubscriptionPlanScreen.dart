@@ -137,7 +137,7 @@ class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
                           elevation: 3.sp,
                         ),
                       ),
-                      SizedBox(height: 50.sp)
+                      SizedBox(height: 30.sp)
                     ],
                   )),
 
