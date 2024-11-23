@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
+import 'package:islamforever/features/dashboard/widgets/CustomVerticalCard.dart';
 
 import '../../../constants/app_colors.dart';
+import '../../../constants/constants.dart';
 
 class SeeAllScreenArguments {
   final String title;
@@ -21,11 +26,38 @@ class Seeallscreen extends StatefulWidget {
 }
 
 class _SeeallscreenState extends State<Seeallscreen> {
+  List<Widget> _items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < 10; i++) {
+      _items.add(
+        Row(
+          children: List.generate(
+            widget.isVertical ? 3 : 2,
+            (index) => Expanded(
+              child: Container(
+                  margin: EdgeInsets.all(6),
+                  child: widget.isVertical
+                      ? Customverticalcard(
+                          isPremium: false,
+                          url: Constants.imgVerticalList[Random()
+                              .nextInt(Constants.imgVerticalList.length)])
+                      : Customhorizontalcard(
+                          isPremium: false,
+                          showTitle: true,
+                          url: Constants.imgHorizontalList[Random()
+                              .nextInt(Constants.imgHorizontalList.length)])),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    int itemsPerRow =
-        widget.isVertical ? 3 : 2; // Determine items per row based on boolean
-
     return Scaffold(
       backgroundColor: ColorCode.blackColor,
       body: CustomScrollView(
@@ -63,29 +95,9 @@ class _SeeallscreenState extends State<Seeallscreen> {
           ),
           // SliverList for your content
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 20.sp),
+            padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 20.sp),
             sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Row(
-                    children: List.generate(
-                      itemsPerRow,
-                      (index) => Expanded(
-                        child: Container(
-                          margin: EdgeInsets.all(10.sp),
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10.sp),
-                          ),
-                          child: Center(
-                            child: Text('Item $index'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              delegate: SliverChildListDelegate(_items),
             ),
           ),
         ],
