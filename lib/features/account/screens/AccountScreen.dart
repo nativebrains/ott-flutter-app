@@ -232,8 +232,9 @@ class _AccountscreenState extends State<Accountscreen> {
                 textAlign: TextAlign.start,
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.normal,
-              ),
-              () {}),
+              ), () {
+            Navigator.pushNamed(context, RouteConstantName.profileScreen);
+          }),
           customContainer(
               CustomText(
                 text: "Delete Account",

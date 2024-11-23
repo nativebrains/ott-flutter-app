@@ -16,10 +16,12 @@ class CustomElevatedButton extends StatelessWidget {
   final Color borderColor;
   final double borderWidth;
   final Widget? leadingIcon; // New property for leading icon
+  final double? width; // New property to control width
 
   CustomElevatedButton({
     required this.label,
     required this.onPressed,
+    this.width, // Initialize the width property
     this.textColor = Colors.white,
     this.backgroundColor = Colors.pink,
     this.fontSize = 16.0,
@@ -36,7 +38,7 @@ class CustomElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: width ?? double.infinity,
       margin: margin,
       child: GradientElevatedButton(
         onPressed: onPressed,
