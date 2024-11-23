@@ -17,6 +17,7 @@ class CustomElevatedButton extends StatelessWidget {
   final double borderWidth;
   final Widget? leadingIcon; // New property for leading icon
   final double? width; // New property to control width
+  final bool hideGradient;
 
   CustomElevatedButton({
     required this.label,
@@ -33,6 +34,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.borderColor = Colors.pink,
     this.borderWidth = 0.0,
     this.leadingIcon, // Initialize the leadingIcon property
+    this.hideGradient = false,
   });
 
   @override
@@ -43,11 +45,10 @@ class CustomElevatedButton extends StatelessWidget {
       child: GradientElevatedButton(
         onPressed: onPressed,
         style: GradientElevatedButton.styleFrom(
-          gradient: const LinearGradient(
-            colors: [
-              Colors.orange,
-              Colors.pink,
-            ],
+          gradient: LinearGradient(
+            colors: hideGradient
+                ? [backgroundColor, backgroundColor]
+                : [Colors.orange, Colors.pink],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
