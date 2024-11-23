@@ -2,21 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class Custombanner extends StatefulWidget {
-  const Custombanner({super.key});
+  final List<String> imgList;
+  const Custombanner({super.key, required this.imgList});
 
   @override
   State<Custombanner> createState() => _CustombannerState();
 }
 
 class _CustombannerState extends State<Custombanner> {
-  final List<String> imgList = [
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2YH597lrGKw7ZeirxtHWRT4U6JyfGV0a-Vg&s',
-    'https://cinema.mu/wp-content/uploads/2019/07/banner-films.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC6EzCemijWUzMhioIQ8B-S-vMTagfJmyF0g&s',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREa6KX__FA_L5uuNWEuhs0KPZk0lJxexuHLw&s',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7KQecaVoxTT2wf7t7q4IqHaOcKpbRIvjayw&s',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +20,7 @@ class _CustombannerState extends State<Custombanner> {
           enlargeCenterPage: true,
           viewportFraction: 0.8,
         ),
-        items: imgList
+        items: widget.imgList
             .map(
               (item) => Container(
                 child: Container(
