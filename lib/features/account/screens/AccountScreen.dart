@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
+import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
+import '../../../widgets/custom/custom_dialog_notify.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
 
@@ -242,8 +244,9 @@ class _AccountscreenState extends State<Accountscreen> {
                 textAlign: TextAlign.start,
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.normal,
-              ),
-              () {}),
+              ), () {
+            showDeleteAccountDialog(context);
+          }),
           SizedBox(
             height: 16.sp,
           ),
@@ -284,6 +287,88 @@ class _AccountscreenState extends State<Accountscreen> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: child,
+      ),
+    );
+  }
+
+  void showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        backgroundColor: Colors.white,
+        contentPadding: EdgeInsets.all(16.0),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.red,
+                  size: 40.0,
+                ),
+                SizedBox(width: 16.0),
+                Expanded(
+                  child: CustomText(
+                    text: "Delete Account",
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.0),
+            CustomText(
+              text:
+                  "All your data including your subscription will be erased and cannot be recovered. No refund will be made. Are you sure you want to delete your account",
+              textAlign: TextAlign.justify,
+              fontSize: 14.0,
+              color: Colors.black54,
+            ),
+            SizedBox(height: 24.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Dismiss the dialog
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.grey[200],
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  ),
+                  child: CustomText(
+                    text: "Cancel",
+                    fontSize: 14.0,
+                    color: Colors.black,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Add your delete account logic here
+                    Navigator.of(context).pop(); // Dismiss the dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  ),
+                  child: CustomText(
+                    text: "Delete",
+                    fontSize: 14.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
