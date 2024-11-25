@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/core/loader_widget/loader_widget.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
+import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomVerticalCard.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -40,19 +41,20 @@ class _DetailsscreenState extends State<Detailsscreen> {
             children: [
               getTopSection(),
               SizedBox(height: 8.sp),
-              getDescriptionDection(),
+              getDescriptionSection(),
               SizedBox(height: 8.sp),
               Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
               SizedBox(height: 16.sp),
               getSeasons(),
-              // SizedBox(height: 24.sp),
-              // getEpisodes(),
+              SizedBox(height: 24.sp),
+              getEpisodes(),
               SizedBox(height: 24.sp),
               getActors(),
               SizedBox(height: 24.sp),
               getDirectors(),
               SizedBox(height: 24.sp),
               getRelatedMovies(),
+              SizedBox(height: 30.sp),
             ],
           ),
         ),
@@ -217,7 +219,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
-  Widget getDescriptionDection() {
+  Widget getDescriptionSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -338,6 +340,18 @@ class _DetailsscreenState extends State<Detailsscreen> {
             SizedBox(width: 28.sp),
           ],
         ),
+        SizedBox(
+          height: 20.sp,
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(width: 20.sp),
+              ...List.generate(5, (index) => _buildServerItem(index)),
+            ],
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
           child: CustomText(
@@ -349,6 +363,22 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildServerItem(int index) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      margin: EdgeInsets.only(right: 12.sp),
+      decoration: BoxDecoration(
+        color: Colors.pink,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: CustomText(
+        text: 'Server $index',
+        fontSize: 14.sp,
+        color: Colors.white,
+      ),
     );
   }
 
@@ -576,6 +606,58 @@ class _DetailsscreenState extends State<Detailsscreen> {
                         child: CustomText(text: "Season $index")),
                   ),
                 ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget getEpisodes() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(width: 24.sp),
+            Container(
+              width: 2,
+              height: 20,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.orange,
+                    Colors.pink,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+            SizedBox(width: 12.sp),
+            CustomText(
+              text: 'Episodes',
+              fontSize: 16.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
+        ),
+        SizedBox(height: 12.sp),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(width: 24.sp),
+              ...List.generate(
+                10,
+                (index) => Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Customhorizontalcard(
+                        isPremium: true,
+                        showTitle: true,
+                        url:
+                            "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg")),
               ),
             ],
           ),
