@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/assets_images.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../widgets/custom/custom_text.dart';
@@ -15,6 +16,21 @@ class Aboutscreen extends StatefulWidget {
 }
 
 class _AboutscreenState extends State<Aboutscreen> {
+  String _appVersion = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _getAppVersion();
+  }
+
+  _getAppVersion() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _appVersion = info.version;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +98,7 @@ class _AboutscreenState extends State<Aboutscreen> {
                   SizedBox(height: 20.sp),
                   infoContainer(
                     title: 'Version',
-                    subtitle: '1.0.0',
+                    subtitle: _appVersion,
                     icon: Icons.info_outline,
                   ),
                   SizedBox(height: 20.sp),
