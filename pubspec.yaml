@@ -39,6 +39,8 @@ dependencies:
   share_plus: ^10.0.0
   text_scroll: ^0.2.0
   carousel_slider: ^5.0.0
+  avatar_glow: ^3.0.1
+  font_awesome_flutter: ^10.8.0
 
 dev_dependencies:
   flutter_test:
