@@ -360,6 +360,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             color: Colors.grey.shade700,
             fontSize: 15.sp,
             fontWeight: FontWeight.normal,
+            maxLines: 500,
           ),
         ),
       ],
