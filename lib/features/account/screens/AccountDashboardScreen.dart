@@ -343,7 +343,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                     padding: EdgeInsets.all(12.0),
                     borderRadius: 50,
                     elevation: 3.sp,
-                    width: 150,
+                    width: 160.sp,
                   ),
                 ),
                 SizedBox(
