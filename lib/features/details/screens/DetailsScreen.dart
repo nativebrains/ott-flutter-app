@@ -27,6 +27,8 @@ class Detailsscreen extends StatefulWidget {
 }
 
 class _DetailsscreenState extends State<Detailsscreen> {
+  int _selectedSeasonIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +44,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
               SizedBox(height: 8.sp),
               Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
               SizedBox(height: 16.sp),
+              getSeasons(),
+              // SizedBox(height: 24.sp),
+              // getEpisodes(),
+              SizedBox(height: 24.sp),
               getActors(),
               SizedBox(height: 24.sp),
               getDirectors(),
@@ -499,6 +505,75 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     url:
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT978tsS4711GcHRnrEiIp48seju5Q18IBvgw&s",
                     isPremium: false,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget getSeasons() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(width: 24.sp),
+            Container(
+              width: 2,
+              height: 20,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.orange,
+                    Colors.pink,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+            SizedBox(width: 12.sp),
+            CustomText(
+              text: 'Seasons',
+              fontSize: 16.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
+        ),
+        SizedBox(height: 12.sp),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(width: 24.sp),
+              ...List.generate(
+                10,
+                (index) => Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedSeasonIndex = index;
+                      });
+                    },
+                    child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          gradient: LinearGradient(
+                            colors: _selectedSeasonIndex == index
+                                ? [Colors.orange, Colors.pink]
+                                : [ColorCode.cardInfoBg, ColorCode.cardInfoBg],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                        child: CustomText(text: "Season $index")),
                   ),
                 ),
               ),
