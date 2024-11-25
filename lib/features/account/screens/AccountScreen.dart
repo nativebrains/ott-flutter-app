@@ -20,7 +20,7 @@ class _AccountscreenState extends State<Accountscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorCode.bgColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min, // Add this line

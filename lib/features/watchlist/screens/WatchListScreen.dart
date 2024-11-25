@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../constants/constants.dart';
 import '../../dashboard/widgets/CustomHorizontalCard.dart';
 
@@ -42,7 +43,7 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorCode.bgColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

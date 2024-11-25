@@ -13,7 +13,7 @@ class _SearchscreenState extends State<Searchscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorCode.blackColor,
+      backgroundColor: ColorCode.bgColor,
       body: CustomScrollView(
         slivers: [
           // SliverAppBar with snapping and floating behavior

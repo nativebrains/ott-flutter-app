@@ -73,7 +73,7 @@ class _MixscreenState extends State<Mixscreen> {
   Widget build(BuildContext context) {
     final dashboardProvider = Provider.of<DashboardProvider>(context);
     return Scaffold(
-      backgroundColor: ColorCode.blackColor,
+      backgroundColor: ColorCode.bgColor,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 20.sp),

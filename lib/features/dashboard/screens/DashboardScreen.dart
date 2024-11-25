@@ -520,7 +520,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                     color: Colors.grey.withOpacity(0.3),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     child: Row(
                       children: [
                         // Left menu for categories

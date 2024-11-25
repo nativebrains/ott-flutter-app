@@ -33,7 +33,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorCode.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

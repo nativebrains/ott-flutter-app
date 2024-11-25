@@ -25,7 +25,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
   void initState() {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.black)
+      ..setBackgroundColor(ColorCode.bgColor)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
@@ -61,7 +61,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorCode.blackColor,
+      backgroundColor: ColorCode.bgColor,
       body: Stack(
         children: [
           CustomScrollView(

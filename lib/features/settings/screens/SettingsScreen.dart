@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../constants/routes_names.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../webview/screens/WebviewScreen.dart';
@@ -22,7 +23,7 @@ class _SettingsscreenState extends State<Settingsscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorCode.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

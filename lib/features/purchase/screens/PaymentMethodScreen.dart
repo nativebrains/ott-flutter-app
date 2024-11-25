@@ -22,7 +22,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ColorCode.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
