@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:islamforever/core/models/API.dart';
 
 import '../../constants/ApiEndpoints.dart';
 import '../../constants/routes_names.dart';
 import '../../main.dart';
+import '../interceptors/ApiLoggerInterceptor.dart';
+import '../interceptors/DataCleaningInterceptor.dart';
 import '../models/ApiResponseModel.dart';
 import 'shared_preference.dart';
 
 class ApiService {
   final Dio _dio = Dio();
+  final API _api = API();
 
   ApiService() {
     _dio.options.baseUrl = dotenv.env['SERVER_API_URL']?.toString() ?? '';
@@ -20,7 +26,7 @@ class ApiService {
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
     _dio.interceptors
-      // ..add(DataCleaningInterceptor())
+      ..add(DataCleaningInterceptor())
       ..add(InterceptorsWrapper(
         onRequest: (options, handler) {
           // Determine the Content-Type based on the request data
@@ -28,8 +34,20 @@ class ApiService {
             // If the data is multipart
             options.headers['Content-Type'] = 'multipart/form-data';
           } else if (options.data is Map) {
-            // If the data is a map (JSON)
-            options.headers['Content-Type'] = 'application/json';
+            // If the data is a map (JSON or form data)
+            if (options.method == 'POST' ||
+                options.method == 'PUT' ||
+                options.method == 'PATCH') {
+              // If the request method is POST or PUT, send the data as form URL encoded
+              options.headers['Content-Type'] =
+                  'application/x-www-form-urlencoded';
+              options.data =
+                  Uri.parse('?' + Uri(queryParameters: options.data).query)
+                      .queryParameters;
+            } else {
+              // Otherwise, send the data as JSON
+              options.headers['Content-Type'] = 'application/json';
+            }
           }
           // Set common headers
           options.headers['Accept'] = 'application/json';
@@ -37,20 +55,8 @@ class ApiService {
 
           handler.next(options);
         },
-        onResponse: (response, handler) async {
-          // it works as when we get 403 we logout the user
-          if (response.statusCode == 403) {
-            await _logoutUser();
-            // navigatorKey.currentState?.pushNamedAndRemoveUntil(
-            //   RouteConstantName.authenticationScreen,
-            //   (route) => false,
-            // );
-          } else {
-            handler.next(response);
-          }
-        },
-      ));
-    // ..add(ApiLoggerInterceptor());
+      ))
+      ..add(ApiLoggerInterceptor());
   }
 
   Future<ApiResponseModel> get(String path,
@@ -69,9 +75,27 @@ class ApiService {
 
   Future<ApiResponseModel> post(String path, [dynamic data]) async {
     try {
-      final response = await _dio.post(path, data: data ?? {});
-      return ApiResponseModel.fromJson(
-          response.data, response.statusCode); // Parse to ApiResponse
+      Map<String, dynamic> jsonData;
+
+      if (data is Map<String, dynamic>) {
+        jsonData = data;
+      } else if (data is String) {
+        jsonData = jsonDecode(data);
+      } else {
+        throw Exception('Invalid data type. Expected Map or JSON String.');
+      }
+
+      jsonData['sign'] = _api.sign;
+      jsonData['salt'] = _api.salt;
+
+      String base64Data = API.toBase64(jsonEncode(jsonData));
+
+      final response = await _dio.post(
+        path,
+        data: {'data': base64Data},
+      );
+
+      return response.data;
     } catch (error) {
       throw Exception('Failed to post data: $error');
     }
@@ -79,9 +103,18 @@ class ApiService {
 
   Future<ApiResponseModel> patch(String path, [dynamic data]) async {
     try {
-      final response = await _dio.patch(path, data: data ?? {});
-      return ApiResponseModel.fromJson(
-          response.data, response.statusCode); // Parse to ApiResponse
+      Map<String, dynamic> jsonData = data.toJson();
+      jsonData['sign'] = _api.sign;
+      jsonData['salt'] = _api.salt;
+
+      String base64Data = API.toBase64(jsonEncode(jsonData));
+
+      final response = await _dio.patch(
+        path,
+        data: {'data': base64Data},
+      );
+
+      return response.data;
     } catch (error) {
       throw Exception('Failed to patch data: $error');
     }
@@ -89,9 +122,18 @@ class ApiService {
 
   Future<ApiResponseModel> put(String path, dynamic data) async {
     try {
-      final response = await _dio.put(path, data: data);
-      return ApiResponseModel.fromJson(
-          response.data, response.statusCode); // Parse to ApiResponse
+      Map<String, dynamic> jsonData = data.toJson();
+      jsonData['sign'] = _api.sign;
+      jsonData['salt'] = _api.salt;
+
+      String base64Data = API.toBase64(jsonEncode(jsonData));
+
+      final response = await _dio.put(
+        path,
+        data: {'data': base64Data},
+      );
+
+      return response.data;
     } catch (error) {
       throw Exception('Failed to perform PUT request: $error');
     }

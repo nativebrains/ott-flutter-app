@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/constants/routes_names.dart';
 import 'package:islamforever/core/error_widget/error_widget.dart';
+import 'package:islamforever/features/authentication/providers/AuthenticationProvider.dart';
 import 'package:islamforever/features/common/providers/CommonProvider.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/firebase_options.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<DashboardProvider>(
           create: (ctx) => DashboardProvider(),
+        ),
+        ChangeNotifierProvider<AuthenticationProvider>(
+          create: (ctx) => AuthenticationProvider(),
         ),
       ],
       child: ScreenUtilInit(

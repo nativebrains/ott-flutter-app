@@ -4,8 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/core/loader_widget/loader_widget.dart';
+import 'package:islamforever/features/authentication/providers/AuthenticationProvider.dart';
 import 'package:islamforever/routes/routes.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/assets_images.dart';
@@ -25,8 +27,16 @@ class Authenticationscreen extends StatefulWidget {
 }
 
 class _AuthenticationscreenState extends State<Authenticationscreen> {
+  late AuthenticationProvider authenticationProvider;
   bool _selectedRemeberMe = false;
   bool _selectedPrivacyAndTerms = false;
+
+  @override
+  void initState() {
+    super.initState();
+    authenticationProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -248,11 +258,13 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                   ),
                   CustomElevatedButton(
                     label: 'LOGIN',
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        RouteConstantName.dashboardScreen,
-                      );
+                    onPressed: () async {
+                      print("start please");
+                      await authenticationProvider.login();
+                      // Navigator.pushReplacementNamed(
+                      //   context,
+                      //   RouteConstantName.dashboardScreen,
+                      // );
                     },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
