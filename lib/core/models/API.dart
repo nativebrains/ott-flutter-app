@@ -4,12 +4,12 @@ import 'package:crypto/crypto.dart';
 
 class API {
   late String sign;
-  late String salt;
+  late int salt;
 
   API() {
     String apiKey = 'viaviweb';
-    salt = getRandomSalt().toString();
-    sign = generatemd5(apiKey + salt);
+    salt = getRandomSalt();
+    sign = generatemd5(apiKey + salt.toString());
   }
 
   /// Generate a random salt value between 0 and 899

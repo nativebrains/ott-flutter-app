@@ -21,7 +21,7 @@ class ApiLoggerInterceptor extends InterceptorsWrapper {
         // Log the FormData fields
         print('FormData Fields:');
         formData.fields.forEach((field) {
-          print('${field.key}: ${field.value}');
+          print('${field.key}: ${API.fromBase64(field.value)}');
         });
 
         // Log the FormData files (just file names to keep it simple)
@@ -34,8 +34,8 @@ class ApiLoggerInterceptor extends InterceptorsWrapper {
       } else {
         print(
             'Request Encoded Data: ${options.data}'); // This should work for JSON or other data types
-        // print(
-        //     'Request Decoded Data: ${API.fromBase64(options.data)}'); // This should work for JSON or other data types
+        print(
+            'Request Decoded Data: ${API.fromBase64(options.data)}'); // This should work for JSON or other data types
       }
       print("======================================================");
       print(".");

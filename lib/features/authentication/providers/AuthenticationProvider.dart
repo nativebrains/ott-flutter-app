@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -18,13 +20,11 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.HOME_URL,
-        {"user_id": 1},
+        jsonEncode({'user_id': 1}),
       );
 
       if (response.status == 200) {
-        print("Working APi Start");
         print(response.data.toString());
-        print("Working APi End");
       }
     } on DioError catch (e) {
       if (e.type == DioErrorType.receiveTimeout) {

@@ -32,27 +32,14 @@ class ApiService {
           // Determine the Content-Type based on the request data
           if (options.data is FormData) {
             // If the data is multipart
-            options.headers['Content-Type'] = 'multipart/form-data';
+            options.headers['Content-Type'] =
+                'application/x-www-form-urlencoded';
           } else if (options.data is Map) {
-            // If the data is a map (JSON or form data)
-            if (options.method == 'POST' ||
-                options.method == 'PUT' ||
-                options.method == 'PATCH') {
-              // If the request method is POST or PUT, send the data as form URL encoded
-              options.headers['Content-Type'] =
-                  'application/x-www-form-urlencoded';
-              options.data =
-                  Uri.parse('?' + Uri(queryParameters: options.data).query)
-                      .queryParameters;
-            } else {
-              // Otherwise, send the data as JSON
-              options.headers['Content-Type'] = 'application/json';
-            }
+            // If the data is a map (JSON)
+            options.headers['Content-Type'] = 'application/json';
           }
           // Set common headers
           options.headers['Accept'] = 'application/json';
-          options.headers['Authorization'] = 'Bearer ';
-
           handler.next(options);
         },
       ))
@@ -73,10 +60,10 @@ class ApiService {
     }
   }
 
-  Future<ApiResponseModel> post(String path, [dynamic data]) async {
+  Future<ApiResponseModel> post(String path, dynamic data) async {
     try {
       Map<String, dynamic> jsonData;
-
+      // Handle different types of data
       if (data is Map<String, dynamic>) {
         jsonData = data;
       } else if (data is String) {
@@ -85,18 +72,24 @@ class ApiService {
         throw Exception('Invalid data type. Expected Map or JSON String.');
       }
 
+      // Add sign and salt to jsonData
       jsonData['sign'] = _api.sign;
       jsonData['salt'] = _api.salt;
 
+      // Base64 encode the jsonData
       String base64Data = API.toBase64(jsonEncode(jsonData));
 
+      // Send the POST request
       final response = await _dio.post(
         path,
-        data: {'data': base64Data},
+        data: FormData.fromMap({
+          'data': base64Data,
+        }),
       );
 
-      return response.data;
+      return ApiResponseModel.fromJson(response.data, response.statusCode);
     } catch (error) {
+      print("Error: $error");
       throw Exception('Failed to post data: $error');
     }
   }
