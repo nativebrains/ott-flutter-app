@@ -254,7 +254,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                                   Navigator.pushNamed(
                                       context, RouteConstantName.webviewScreen,
                                       arguments: const WebviewScreen(
-                                          webviewType: WebviewType.PRIVACY));
+                                          webviewType: WebviewType.TERMS));
                                 },
                               ),
                             ],

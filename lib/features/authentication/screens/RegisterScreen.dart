@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:islamforever/extensions/custom_extensions.dart';
+import 'package:islamforever/features/webview/screens/WebviewScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 import 'package:islamforever/widgets/custom/custom_text.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
+import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
+import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_rich_text.dart';
 import '../../../widgets/custom/custom_text_field.dart';
+import '../providers/AuthenticationProvider.dart';
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -20,7 +26,21 @@ class Registerscreen extends StatefulWidget {
 }
 
 class _RegisterscreenState extends State<Registerscreen> {
+  late AuthenticationProvider authenticationProvider;
   bool _selectedPrivacyAndTerms = false;
+
+  String? name;
+  String? email;
+  String? password;
+  String? confirmPassword;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    authenticationProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +82,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                     child: CustomTextField(
                       hintText: 'Name',
                       hintTextColor: Colors.white,
-                      initialValue: "", // Set the initial value
+                      initialValue: name, // Set the initial value
                       keyboardType: TextInputType.text,
                       prefixIcon: Icon(
                         Icons.account_circle_outlined,
@@ -70,6 +90,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       ),
                       onChanged: (value) {
                         print(value); // Handle the text change
+                        name = value;
                       },
                     ),
                   ),
@@ -87,7 +108,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                     child: CustomTextField(
                       hintText: 'Email',
                       hintTextColor: Colors.white,
-                      initialValue: "", // Set the initial value
+                      initialValue: email, // Set the initial value
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: Icon(
                         Icons.email_outlined,
@@ -95,6 +116,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       ),
                       onChanged: (value) {
                         print(value); // Handle the text change
+                        email = value;
                       },
                     ),
                   ),
@@ -112,8 +134,9 @@ class _RegisterscreenState extends State<Registerscreen> {
                     child: CustomTextField(
                       hintText: 'Password',
                       hintTextColor: Colors.white,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       obscureText: true,
+                      initialValue: password,
                       minLines: 1,
                       maxLines: 1,
                       prefixIcon: Icon(
@@ -122,6 +145,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       ),
                       onChanged: (value) {
                         print(value); // Handle the text change
+                        password = value;
                       },
                     ),
                   ),
@@ -139,8 +163,9 @@ class _RegisterscreenState extends State<Registerscreen> {
                     child: CustomTextField(
                       hintText: 'Confirm Password',
                       hintTextColor: Colors.white,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       obscureText: true,
+                      initialValue: confirmPassword,
                       minLines: 1,
                       maxLines: 1,
                       prefixIcon: Icon(
@@ -149,6 +174,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       ),
                       onChanged: (value) {
                         print(value); // Handle the text change
+                        confirmPassword = value;
                       },
                     ),
                   ),
@@ -207,7 +233,10 @@ class _RegisterscreenState extends State<Registerscreen> {
                                 actionTextColor: Colors.pink,
                                 isActionUnderlined: true,
                                 onActionTap: () {
-                                  // Handle action tap
+                                  Navigator.pushNamed(
+                                      context, RouteConstantName.webviewScreen,
+                                      arguments: const WebviewScreen(
+                                          webviewType: WebviewType.TERMS));
                                 },
                               ),
                               CustomRichText(
@@ -218,7 +247,10 @@ class _RegisterscreenState extends State<Registerscreen> {
                                 actionTextColor: Colors.pink,
                                 isActionUnderlined: true,
                                 onActionTap: () {
-                                  // Handle action tap
+                                  Navigator.pushNamed(
+                                      context, RouteConstantName.webviewScreen,
+                                      arguments: const WebviewScreen(
+                                          webviewType: WebviewType.TERMS));
                                 },
                               ),
                             ],
@@ -232,11 +264,13 @@ class _RegisterscreenState extends State<Registerscreen> {
                   ),
                   CustomElevatedButton(
                     label: 'REGISTER',
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        RouteConstantName.dashboardScreen,
-                      );
+                    onPressed: () async {
+                      if (_selectedPrivacyAndTerms) {
+                        await checkAndValidateForRegister();
+                      } else {
+                        showCustomToast(
+                            context, "Please accept Terms and Privacry Policy");
+                      }
                     },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
@@ -303,8 +337,56 @@ class _RegisterscreenState extends State<Registerscreen> {
               ),
             ),
           ),
+          if (_isLoading) const LoaderWidget(),
         ],
       ),
     );
+  }
+
+  Future<void> checkAndValidateForRegister() async {
+    if (name == null) {
+      showCustomToast(context, "Name is Missing");
+      return;
+    }
+    if (email == null) {
+      showCustomToast(context, "Email is Missing");
+      return;
+    }
+    if (!email!.isValidEmail()) {
+      showCustomToast(context, "Email not Valid");
+      return;
+    }
+    if (password == null) {
+      showCustomToast(context, "Password is Missing");
+      return;
+    }
+    if (confirmPassword == null) {
+      showCustomToast(context, "Confirm Password is Missing");
+      return;
+    }
+    if (password != confirmPassword) {
+      showCustomToast(context, "Confirm Password Not Matched");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    FocusScope.of(context).unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    bool success =
+        await authenticationProvider.register(name!, email!, password!);
+
+    showCustomToast(context, AuthenticationProvider.getStatusMessage.toString(),
+        backgroudnColor: success ? Colors.green : Colors.red);
+
+    setState(() {
+      _isLoading = false;
+    });
+    if (success) {
+      Navigator.of(context).pop();
+    }
   }
 }

@@ -92,4 +92,34 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners(); // Notify UI of the state change
     return isSuccess;
   }
+
+  Future<bool> register(String name, String email, String password) async {
+    bool isSuccess = false;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.REGISTER_URL,
+        jsonEncode({
+          'email': email,
+          'password': password,
+          'name': name,
+        }),
+      );
+
+      if (response.status == 200) {
+        final jsonData = response.data;
+        if (int.parse(jsonData[0]['success']) == 1) {
+          isSuccess = true;
+          _statusMessage = jsonData[0]['msg'];
+        } else {
+          isSuccess = false;
+          _statusMessage = jsonData[0]['msg'];
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+
+    notifyListeners(); // Notify UI of the state change
+    return isSuccess;
+  }
 }
