@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/assets_images.dart';
+import '../../../constants/constants.dart';
 import '../../../constants/routes_names.dart';
+import '../../../core/services/shared_preference.dart';
 import '../../../widgets/custom/custom_text.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,10 +30,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigateToJourney() async {
     await Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(
-        context,
-        RouteConstantName.authenticationScreen,
-      );
+      bool? isLoggedIn = SharedPrefs.getBool(Constants.IS_LOGGED_ID);
+      bool? rememberMe = SharedPrefs.getBool(Constants.REMEMBER_ME);
+
+      if ((isLoggedIn ?? false) && (rememberMe ?? false)) {
+        // Move to dashboard
+        Navigator.pushReplacementNamed(
+          context,
+          RouteConstantName.dashboardScreen,
+        );
+      } else {
+        // Move to login screen
+        Navigator.pushReplacementNamed(
+          context,
+          RouteConstantName.authenticationScreen,
+        );
+      }
     });
   }
 
