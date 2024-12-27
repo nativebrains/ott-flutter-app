@@ -220,6 +220,10 @@ class Constants {
   static bool isTvMenu = true;
   static bool isSportMenu = true;
 
+  static const String REMEMBER_ME = "REMEMBER_ME";
+  static const String IS_LOGGED_ID = "IS_LOGGED_ID";
+  static const String LOGIN_TYPE = "LOGIN_TYPE";
+
   //danishnisar786@gmail.com
   //123456789
 }

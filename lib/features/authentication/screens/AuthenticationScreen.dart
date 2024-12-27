@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/core/loader_widget/loader_widget.dart';
+import 'package:islamforever/extensions/custom_extensions.dart';
 import 'package:islamforever/features/authentication/providers/AuthenticationProvider.dart';
 import 'package:islamforever/routes/routes.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
@@ -11,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/assets_images.dart';
+import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_radio_button_toggle.dart';
@@ -30,6 +33,10 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
   late AuthenticationProvider authenticationProvider;
   bool _selectedRemeberMe = false;
   bool _selectedPrivacyAndTerms = false;
+
+  String? email;
+  String? password;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -102,15 +109,16 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                     child: CustomTextField(
                       hintText: 'Email',
                       hintTextColor: Colors.white,
-                      initialValue: "", // Set the initial value
+                      initialValue: email, // Set the initial value
                       keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        print(value); // Handle the text change
+                        email = value;
+                      },
                       prefixIcon: Icon(
                         Icons.email_outlined,
                         color: Colors.white,
                       ),
-                      onChanged: (value) {
-                        print(value); // Handle the text change
-                      },
                     ),
                   ),
                   SizedBox(
@@ -129,6 +137,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                       hintTextColor: Colors.white,
                       keyboardType: TextInputType.emailAddress,
                       obscureText: true,
+                      initialValue: password,
                       minLines: 1,
                       maxLines: 1,
                       prefixIcon: Icon(
@@ -137,6 +146,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                       ),
                       onChanged: (value) {
                         print(value); // Handle the text change
+                        password = value;
                       },
                     ),
                   ),
@@ -259,12 +269,12 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                   CustomElevatedButton(
                     label: 'LOGIN',
                     onPressed: () async {
-                      print("start please");
-                      await authenticationProvider.login();
-                      // Navigator.pushReplacementNamed(
-                      //   context,
-                      //   RouteConstantName.dashboardScreen,
-                      // );
+                      if (_selectedPrivacyAndTerms) {
+                        await checkAndValidateForLogin();
+                      } else {
+                        showCustomToast(
+                            context, "Please accept Terms and Privacry Policy");
+                      }
                     },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
@@ -386,8 +396,43 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
               ),
             ),
           ),
+          if (_isLoading) const LoaderWidget(),
         ],
       ),
     );
+  }
+
+  Future<void> checkAndValidateForLogin() async {
+    if (email == null) {
+      showCustomToast(context, "Email Missing");
+      return;
+    }
+    if (!email!.isValidEmail()) {
+      showCustomToast(context, "Email not Valid");
+      return;
+    }
+    if (password == null) {
+      showCustomToast(context, "Password Missing");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+    bool success = await authenticationProvider.login(
+        _selectedRemeberMe, email!, password!);
+
+    showCustomToast(context, AuthenticationProvider.getStatusMessage.toString(),
+        backgroudnColor: success ? Colors.green : Colors.red);
+
+    setState(() {
+      _isLoading = false;
+    });
+    if (success) {
+      Navigator.pushReplacementNamed(
+        context,
+        RouteConstantName.dashboardScreen,
+      );
+    }
   }
 }

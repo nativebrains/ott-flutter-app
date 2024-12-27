@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants/constants.dart';
+import '../../features/account/models/LoginUserModel.dart';
+
 class SharedPrefs {
   static const int _cacheDurationInHours = 24;
   static const int _cacheDuration =
@@ -75,5 +78,19 @@ class SharedPrefs {
 
   static Future<void> clearCache(String key) async {
     await _prefs.remove(key);
+  }
+
+  static storeLoginUserData(LoginUserModel userProfileModel) async {
+    await _prefs.setString(
+        Constants.userDataKey, json.encode(userProfileModel.toJson()));
+  }
+
+  static LoginUserModel? getLoginUserData() {
+    final jsonString = _prefs.getString(Constants.userDataKey);
+    if (jsonString == null) {
+      return null; // No stored profile
+    }
+    final jsonMap = json.decode(jsonString); // Convert the JSON string to a Map
+    return LoginUserModel.fromJson(jsonMap);
   }
 }

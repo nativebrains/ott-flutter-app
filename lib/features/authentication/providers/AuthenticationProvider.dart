@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:islamforever/constants/constants.dart';
+import 'package:islamforever/features/account/models/LoginUserModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
 import '../../../core/services/ApiService.dart';
+import '../../../core/services/shared_preference.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   static ApiService apiService = ApiService();
@@ -16,30 +21,46 @@ class AuthenticationProvider extends ChangeNotifier {
     return _statusMessage;
   }
 
-  Future<dynamic> login() async {
+  Future<bool> login(bool rememberMe, String email, String password) async {
+    bool isSuccess = false;
     try {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      String brand = androidInfo.brand;
+      String model = androidInfo.model;
+
       final response = await apiService.post(
-        ApiEndpoints.HOME_URL,
-        jsonEncode({'user_id': 1}),
+        ApiEndpoints.LOGIN_URL,
+        jsonEncode({
+          'email': email,
+          'password': password,
+          'brand': brand,
+          'model': model,
+          'platform': Platform.isAndroid ? "Android OS" : "Apple OS"
+        }),
       );
 
       if (response.status == 200) {
-        print(response.data.toString());
-      }
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.receiveTimeout) {
-        print("Receive timeout");
-      } else if (e.type == DioErrorType.sendTimeout) {
-        print("Send timeout");
-      } else if (e.type == DioErrorType.cancel) {
-        print("Request cancelled");
-      } else {
-        print("Error: ${e.message}");
+        final jsonData = response.data;
+        if (int.parse(jsonData[0]['success']) == 1) {
+          isSuccess = true;
+          LoginUserModel user = LoginUserModel.fromJson(jsonData[0]);
+          _statusMessage = user.message;
+          // Storing User Profile
+          await SharedPrefs.storeLoginUserData(user);
+          await SharedPrefs.setBool(Constants.IS_LOGGED_ID, true);
+          await SharedPrefs.setString(Constants.LOGIN_TYPE, "normal");
+          await SharedPrefs.setBool(Constants.REMEMBER_ME, rememberMe);
+        } else {
+          isSuccess = false;
+          _statusMessage = jsonData[0]['msg'];
+        }
       }
     } catch (e) {
       print("Error: $e");
     }
 
     notifyListeners(); // Notify UI of the state change
+    return isSuccess;
   }
 }
