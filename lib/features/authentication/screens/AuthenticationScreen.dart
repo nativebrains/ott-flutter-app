@@ -285,55 +285,56 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                   SizedBox(
                     height: 30.sp,
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      text: "Or Continue with",
-                      fontSize: 16.sp,
-                      textAlign: TextAlign.center,
-                      color: ColorCode.whiteColor,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30.sp,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Add your onPressed functionality here
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 12), // Adjust padding
-                      backgroundColor: Colors.red, // Button background color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), // Corner radius
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // Align items to the start
-                      children: [
-                        Text(
-                          ' G', // Initial or icon text
-                          style: TextStyle(
-                            fontSize: 28, // Icon size
-                            color: Colors.white, // Icon color
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // Space between icon and text
-                        Text(
-                          'Google', // Button text
-                          style: TextStyle(
-                            fontSize: 20, // Text size
-                            color: Colors.white, // Text color
-                          ),
-                        ),
-                        SizedBox(width: 24),
-                      ],
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.center,
+                  //   child: CustomText(
+                  //     text: "Or Continue with",
+                  //     fontSize: 16.sp,
+                  //     textAlign: TextAlign.center,
+                  //     color: ColorCode.whiteColor,
+                  //     fontWeight: FontWeight.normal,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 30.sp,
+                  // ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     // Add your onPressed functionality here
+                  //   },
+                  //   style: TextButton.styleFrom(
+                  //     padding: EdgeInsets.symmetric(
+                  //         horizontal: 10, vertical: 12), // Adjust padding
+                  //     backgroundColor: Colors.red, // Button background color
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(8), // Corner radius
+                  //     ),
+                  //   ),
+                  //   child: const Row(
+                  //     mainAxisAlignment: MainAxisAlignment
+                  //         .spaceBetween, // Align items to the start
+                  //     children: [
+                  //       Text(
+                  //         ' G', // Initial or icon text
+                  //         style: TextStyle(
+                  //           fontSize: 28, // Icon size
+                  //           color: Colors.white, // Icon color
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //       ),
+                  //       // Space between icon and text
+                  //       Text(
+                  //         'Google', // Button text
+                  //         style: TextStyle(
+                  //           fontSize: 20, // Text size
+                  //           color: Colors.white, // Text color
+                  //         ),
+                  //       ),
+                  //       SizedBox(width: 24),
+                  //     ],
+                  //   ),
+                  // ),
+
                   SizedBox(
                     height: 50.sp,
                   ),
