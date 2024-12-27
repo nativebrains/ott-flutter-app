@@ -419,6 +419,10 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
     setState(() {
       _isLoading = true;
     });
+
+    FocusScope.of(context).unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
+
     bool success = await authenticationProvider.login(
         _selectedRemeberMe, email!, password!);
 

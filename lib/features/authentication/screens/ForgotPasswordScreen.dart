@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:islamforever/extensions/custom_extensions.dart';
 import 'package:islamforever/widgets/custom/custom_text.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
+import '../../../constants/error_message.dart';
+import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text_field.dart';
+import '../providers/AuthenticationProvider.dart';
 
 class Forgotpasswordscreen extends StatefulWidget {
   const Forgotpasswordscreen({super.key});
@@ -16,6 +21,25 @@ class Forgotpasswordscreen extends StatefulWidget {
 }
 
 class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
+  late AuthenticationProvider authenticationProvider;
+
+  final TextEditingController _emailController = TextEditingController();
+
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    authenticationProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +126,8 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                     child: CustomTextField(
                       hintText: 'Enter your email',
                       hintTextColor: Colors.white,
-                      initialValue: "", // Set the initial value
+                      controller:
+                          _emailController, // Use the TextEditingController
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: Icon(
                         Icons.email_outlined,
@@ -118,7 +143,9 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                   ),
                   CustomElevatedButton(
                     label: 'SEND',
-                    onPressed: () {},
+                    onPressed: () {
+                      checkAndValidate();
+                    },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -128,9 +155,40 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                 ],
               ),
             ),
-          )
+          ),
+          if (_isLoading) const LoaderWidget(),
         ],
       ),
     );
+  }
+
+  void checkAndValidate() async {
+    if (_emailController.text.isEmpty) {
+      showCustomToast(context, "Email Missing");
+      return;
+    }
+    if (!_emailController.text.isValidEmail()) {
+      showCustomToast(context, "Email not Valid");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    bool success =
+        await authenticationProvider.forgotPassword(_emailController.text);
+
+    showCustomToast(
+      context,
+      AuthenticationProvider.getStatusMessage.toString(),
+    );
+
+    setState(() {
+      _isLoading = false;
+      _emailController.clear(); // Clear the TextEditingController
+    });
   }
 }

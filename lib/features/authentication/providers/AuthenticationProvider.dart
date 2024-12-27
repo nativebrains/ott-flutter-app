@@ -63,4 +63,33 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners(); // Notify UI of the state change
     return isSuccess;
   }
+
+  Future<bool> forgotPassword(String email) async {
+    _statusMessage = "";
+    bool isSuccess = false;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.FORGOT_PASSWORD_URL,
+        jsonEncode({
+          'email': email,
+        }),
+      );
+
+      if (response.status == 200) {
+        final jsonData = response.data;
+        if (int.parse(jsonData[0]['success']) == 1) {
+          isSuccess = true;
+          _statusMessage = jsonData[0]['msg'];
+        } else {
+          isSuccess = false;
+          _statusMessage = jsonData[0]['msg'];
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+
+    notifyListeners(); // Notify UI of the state change
+    return isSuccess;
+  }
 }
