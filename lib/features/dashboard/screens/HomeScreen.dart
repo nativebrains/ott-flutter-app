@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/constants/constants.dart';
+import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomBanner.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCardList.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/app_colors.dart';
@@ -14,8 +16,9 @@ import '../models/HomeDataModel.dart';
 import '../widgets/CustomVerticalCardList.dart';
 
 class Homescreen extends StatefulWidget {
-  final HomeDataModel? homeDataModel;
-  const Homescreen({super.key, required this.homeDataModel});
+  const Homescreen({
+    super.key,
+  });
 
   @override
   State<Homescreen> createState() => _HomescreenState();
@@ -24,37 +27,40 @@ class Homescreen extends StatefulWidget {
 class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorCode.bgColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 16.sp),
-            Custombanner(
-                itemSliderList: widget.homeDataModel?.itemSlider ?? []),
-            SizedBox(height: 16.sp),
-            getHorizontalList("Recently watched"),
-            SizedBox(height: 16.sp),
-            getVerticalList("Upcoming Movies"),
-            SizedBox(height: 16.sp),
-            getHorizontalList("Upcoming shows", isPremium: true),
-            SizedBox(height: 16.sp),
-            getVerticalList("Latest Movies", isPremium: true, hasSeeAll: true),
-            SizedBox(height: 16.sp),
-            getHorizontalList("Latest shows", hasSeeAll: true),
-            SizedBox(height: 16.sp),
-            getHorizontalList("Best in Sports", isPremium: true),
-            SizedBox(height: 16.sp),
-            getHorizontalList("Live TV", hasSeeAll: true),
-            SizedBox(height: 16.sp),
-            getVerticalList("Popular Movies", hasSeeAll: true),
-            SizedBox(height: 16.sp),
-            getHorizontalList("Popular shows", hasSeeAll: true),
-            SizedBox(height: 20.sp),
-          ],
+    return Consumer<DashboardProvider>(builder: (context, provider, child) {
+      return Scaffold(
+        backgroundColor: ColorCode.bgColor,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 16.sp),
+              Custombanner(
+                  itemSliderList: provider.dashboardData?.itemSlider ?? []),
+              SizedBox(height: 16.sp),
+              getHorizontalList("Recently watched"),
+              SizedBox(height: 16.sp),
+              getVerticalList("Upcoming Movies"),
+              SizedBox(height: 16.sp),
+              getHorizontalList("Upcoming shows", isPremium: true),
+              SizedBox(height: 16.sp),
+              getVerticalList("Latest Movies",
+                  isPremium: true, hasSeeAll: true),
+              SizedBox(height: 16.sp),
+              getHorizontalList("Latest shows", hasSeeAll: true),
+              SizedBox(height: 16.sp),
+              getHorizontalList("Best in Sports", isPremium: true),
+              SizedBox(height: 16.sp),
+              getHorizontalList("Live TV", hasSeeAll: true),
+              SizedBox(height: 16.sp),
+              getVerticalList("Popular Movies", hasSeeAll: true),
+              SizedBox(height: 16.sp),
+              getHorizontalList("Popular shows", hasSeeAll: true),
+              SizedBox(height: 20.sp),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget getVerticalList(String title,

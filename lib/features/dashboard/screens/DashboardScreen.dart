@@ -38,6 +38,15 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   var _isLoading = false;
   HomeDataModel? _homeDataModel = null;
 
+  // List of screens for the bottom navigation
+  final List<Widget> _screens = const [
+    Homescreen(),
+    Watchlistscreen(),
+    Mixscreen(),
+    Accountscreen(),
+    Settingsscreen()
+  ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -86,15 +95,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   @override
   Widget build(BuildContext context) {
-    // List of screens for the bottom navigation
-    final List<Widget> _screens = [
-      Homescreen(homeDataModel: _homeDataModel),
-      Watchlistscreen(),
-      Mixscreen(),
-      Accountscreen(),
-      Settingsscreen()
-    ];
-
     return WillPopScope(
       onWillPop: () async {
         DateTime now = DateTime.now();

@@ -12,6 +12,7 @@ class DashboardProvider extends ChangeNotifier {
   static ApiService apiService = ApiService();
   static String? _statusMessage;
   static MediaContentType? _selectedMixScreenContentType;
+  HomeDataModel? dashboardData;
 
   static get selectedMixScreenContentType {
     return _selectedMixScreenContentType;
@@ -27,15 +28,15 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   Future<HomeDataModel?> fetchDashboardData({bool refresh = false}) async {
-    HomeDataModel? dashboardData;
-
     if (!refresh) {
       final String? cachedDataString =
           await SharedPrefs.getCachedData(ApiEndpoints.HOME_URL);
       if (cachedDataString != null) {
         // Return cached data if available
         final Map<String, dynamic> data = json.decode(cachedDataString);
-        return HomeDataModel.fromJson(data);
+        dashboardData = HomeDataModel.fromJson(data);
+        notifyListeners();
+        return dashboardData;
       }
     }
 
