@@ -33,6 +33,7 @@ class _HomescreenState extends State<Homescreen> {
         backgroundColor: ColorCode.bgColor,
         body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 16.sp),
               Custombanner(
@@ -56,25 +57,7 @@ class _HomescreenState extends State<Homescreen> {
                     }
                   }) ??
                   [],
-              // getHorizontalList(provider.dashboardData?.itemHome[0]),
-              // SizedBox(height: 16.sp),
-              // getVerticalList("Upcoming Movies"),
-              // SizedBox(height: 16.sp),
-              // getHorizontalList(provider.dashboardData?.itemHome[1],
-              //     isPremium: true),
-              // SizedBox(height: 16.sp),
-              // getVerticalList("Latest Movies",
-              //     isPremium: true, hasSeeAll: true),
-              // SizedBox(height: 16.sp),
-              // getHorizontalList("Latest shows", hasSeeAll: true),
-              // SizedBox(height: 16.sp),
-              // getHorizontalList("Best in Sports", isPremium: true),
-              // SizedBox(height: 16.sp),
-              // getHorizontalList("Live TV", hasSeeAll: true),
-              // SizedBox(height: 16.sp),
-              // getVerticalList("Popular Movies", hasSeeAll: true),
-              // SizedBox(height: 16.sp),
-              // getHorizontalList("Popular shows", hasSeeAll: true),
+
               // SizedBox(height: 20.sp),
             ],
           ),
@@ -83,11 +66,9 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  Widget getVerticalList(
-    ItemHomeModel itemHomeModel, {
-    bool hasSeeAll = false,
-  }) {
+  Widget getVerticalList(ItemHomeModel itemHomeModel) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,6 +125,7 @@ class _HomescreenState extends State<Homescreen> {
       {bool hasSeeAll = false, bool showItemTitle = false}) {
     // Shuffle the list
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

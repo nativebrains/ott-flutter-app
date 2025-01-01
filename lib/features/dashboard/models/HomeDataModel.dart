@@ -69,6 +69,29 @@ class HomeDataModel {
       itemHomeList.add(objItem);
     }
 
+    // Home Sections
+    if (json['home_sections'] != null && json['home_sections'].length > 0) {
+      itemHomeList.addAll(json['home_sections']
+          .map((section) => ItemHomeModel(
+                homeId: section['home_id'].toString(),
+                homeTitle: section['home_title'],
+                homeType: section['home_type'],
+                itemHomeContentModel: section['home_content']
+                    .map((content) => ItemHomeContentModel(
+                          videoId: content['video_id'],
+                          videoTitle: content['video_title'],
+                          videoImage: content['video_image'],
+                          videoType: content['video_type'],
+                          homeType: content['video_type'],
+                          isPremium: content['video_access'] == 'Paid',
+                        ))
+                    .toList()
+                    .cast<ItemHomeContentModel>(),
+              ))
+          .toList()
+          .cast<ItemHomeModel>());
+    }
+
     return itemHomeList;
   }
 
