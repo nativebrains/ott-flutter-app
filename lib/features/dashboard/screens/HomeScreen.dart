@@ -92,6 +92,8 @@ class _HomescreenState extends State<Homescreen> {
                     arguments: SeeAllScreenArguments(
                       title: itemHomeModel.homeTitle ?? "",
                       isVertical: true,
+                      id: itemHomeModel.homeId,
+                      type: itemHomeModel.homeType,
                     ),
                   );
                 },
@@ -149,6 +151,8 @@ class _HomescreenState extends State<Homescreen> {
                     arguments: SeeAllScreenArguments(
                       title: itemHomeModel.homeTitle ?? "",
                       isVertical: false,
+                      id: itemHomeModel.homeId,
+                      type: itemHomeModel.homeType,
                     ),
                   );
                 },

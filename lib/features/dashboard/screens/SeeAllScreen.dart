@@ -11,8 +11,15 @@ import '../../../constants/constants.dart';
 class SeeAllScreenArguments {
   final String title;
   final bool isVertical;
+  final String? id;
+  final String? type;
 
-  SeeAllScreenArguments({required this.title, required this.isVertical});
+  SeeAllScreenArguments({
+    required this.title,
+    required this.isVertical,
+    required this.id,
+    required this.type,
+  });
 }
 
 class Seeallscreen extends StatefulWidget {
