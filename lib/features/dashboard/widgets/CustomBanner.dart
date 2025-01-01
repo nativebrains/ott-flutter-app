@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:islamforever/constants/routes_names.dart';
 import 'package:islamforever/features/dashboard/models/ItemSliderModel.dart';
 
+import '../../../widgets/extra/rounded_network_image.dart';
 import '../../common/enums/MediaContentType.dart';
 import '../../details/screens/DetailsScreen.dart';
 
@@ -39,10 +40,11 @@ class _CustombannerState extends State<Custombanner> {
               },
               child: Container(
                 margin: EdgeInsets.all(5.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Image.network(item.sliderImage ?? "trr",
-                      fit: BoxFit.cover, width: 1000.0),
+                child: RoundedNetworkImage(
+                  imageUrl: item.sliderImage ?? "",
+                  fit: BoxFit.cover,
+                  width: 1000,
+                  height: 1000,
                 ),
               ),
             ),

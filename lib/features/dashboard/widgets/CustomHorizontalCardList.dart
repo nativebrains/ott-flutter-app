@@ -8,11 +8,11 @@ import '../../../constants/assets_images.dart';
 
 class Customhorizontalcardlist extends StatefulWidget {
   final List<ItemHomeContentModel> itemHomeContentModelList;
-  final bool showTitle;
-  const Customhorizontalcardlist(
-      {super.key,
-      required this.itemHomeContentModelList,
-      required this.showTitle});
+  final bool showTitle = false;
+  const Customhorizontalcardlist({
+    super.key,
+    required this.itemHomeContentModelList,
+  });
 
   @override
   State<Customhorizontalcardlist> createState() =>

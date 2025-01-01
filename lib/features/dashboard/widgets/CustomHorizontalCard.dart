@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/widgets/extra/rounded_network_image.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants/assets_images.dart';
@@ -37,8 +38,8 @@ class Customhorizontalcard extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             child: Stack(
               children: [
-                Image.network(
-                  url,
+                RoundedNetworkImage(
+                  imageUrl: url,
                   fit: BoxFit.cover,
                   width: 175.sp,
                   height: 95.sp,

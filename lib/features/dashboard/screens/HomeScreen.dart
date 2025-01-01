@@ -57,8 +57,7 @@ class _HomescreenState extends State<Homescreen> {
                     }
                   }) ??
                   [],
-
-              // SizedBox(height: 20.sp),
+              SizedBox(height: 20.sp),
             ],
           ),
         ),
@@ -173,7 +172,6 @@ class _HomescreenState extends State<Homescreen> {
         ),
         Customhorizontalcardlist(
           itemHomeContentModelList: itemHomeModel.itemHomeContentModel ?? [],
-          showTitle: showItemTitle,
         ),
       ],
     );

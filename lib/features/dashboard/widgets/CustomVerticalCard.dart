@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constants/assets_images.dart';
 import '../../../constants/routes_names.dart';
+import '../../../widgets/extra/rounded_network_image.dart';
 import '../../common/enums/MediaContentType.dart';
 import '../../details/screens/DetailsScreen.dart';
 
@@ -29,8 +30,8 @@ class Customverticalcard extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Stack(
           children: [
-            Image.network(
-              url,
+            RoundedNetworkImage(
+              imageUrl: url,
               fit: BoxFit.cover,
               width: 115.sp,
               height: 165.sp,

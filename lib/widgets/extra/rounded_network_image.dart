@@ -19,7 +19,7 @@ class RoundedNetworkImage extends StatelessWidget {
 
   RoundedNetworkImage(
       {required this.imageUrl,
-      this.borderRadius = 20.0,
+      this.borderRadius = 6.0,
       this.fit = BoxFit.cover,
       this.width,
       this.height,
@@ -65,11 +65,10 @@ class RoundedNetworkImage extends StatelessWidget {
                           color: Colors.grey[300],
                         ),
                       )
-                    : RoundedNetworkImage(
-                        imageUrl: AssetImages.dawateIslamiLogo,
+                    : Image.asset(
+                        AssetImages.dawateIslamiLogo,
                         width: 80.sp,
                         height: 80.sp,
-                        borderRadius: 50.sp,
                       );
               },
               loadingBuilder: (BuildContext context, Widget child,
