@@ -19,13 +19,13 @@ class ItemSliderModel {
 
   factory ItemSliderModel.fromJson(Map<String, dynamic> json) {
     return ItemSliderModel(
-      sliderTitle: json['slider_title'],
-      sliderType: json['slider_type'],
-      sliderPostId: json['slider_post_id'],
-      sliderImage: json['slider_image'],
-      videoAccess: json['video_access'],
-      langCatName: json['lang_cat_name'],
-      isPremium: json['isPremium'] ?? false,
+      sliderTitle: json['slider_title'] ?? '',
+      sliderType: json['slider_type'] ?? '',
+      sliderPostId: json['slider_post_id'] ?? '',
+      sliderImage: json['slider_image'] ?? '',
+      videoAccess: json['video_access'] ?? '',
+      langCatName: json['lang_cat_name'] ?? '',
+      isPremium: json['video_access'] == 'Paid',
     );
   }
 
