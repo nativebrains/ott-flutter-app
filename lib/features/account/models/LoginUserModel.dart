@@ -1,12 +1,12 @@
 class LoginUserModel {
-  String userSessionName;
-  bool deviceLimitReached;
-  int userId;
-  String name;
-  String email;
-  String phone;
-  String userImage;
-  String message;
+  String? userSessionName;
+  bool? deviceLimitReached;
+  int? userId;
+  String? name;
+  String? email;
+  String? phone;
+  String? userImage;
+  String? message;
 
   LoginUserModel({
     required this.userSessionName,

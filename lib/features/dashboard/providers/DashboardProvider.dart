@@ -53,7 +53,7 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.HOME_URL,
-        jsonEncode({'user_id': isLoggedIn ? 1 : 0}),
+        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
       );
 
       if (response.status == 200) {
