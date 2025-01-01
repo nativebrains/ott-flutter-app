@@ -19,6 +19,7 @@ import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../common/enums/MediaContentType.dart';
+import '../models/HomeDataModel.dart';
 
 class Dashboardscreen extends StatefulWidget {
   const Dashboardscreen({super.key});
@@ -35,15 +36,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
   var _isLoading = false;
-
-  // List of screens for the bottom navigation
-  final List<Widget> _screens = const [
-    Homescreen(),
-    Watchlistscreen(),
-    Mixscreen(),
-    Accountscreen(),
-    Settingsscreen()
-  ];
+  HomeDataModel? _homeDataModel = null;
 
   @override
   void initState() {
@@ -58,7 +51,8 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       _isLoading = true; // Indicate loading
     });
 
-    await dashboardProvider.fetchDashboardData(refresh: refresh);
+    _homeDataModel =
+        await dashboardProvider.fetchDashboardData(refresh: refresh);
 
     setState(() {
       _isLoading = false; // Indicate loading
@@ -92,6 +86,15 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   @override
   Widget build(BuildContext context) {
+    // List of screens for the bottom navigation
+    final List<Widget> _screens = [
+      Homescreen(homeDataModel: _homeDataModel),
+      Watchlistscreen(),
+      Mixscreen(),
+      Accountscreen(),
+      Settingsscreen()
+    ];
+
     return WillPopScope(
       onWillPop: () async {
         DateTime now = DateTime.now();

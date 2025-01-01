@@ -10,10 +10,12 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/routes_names.dart';
+import '../models/HomeDataModel.dart';
 import '../widgets/CustomVerticalCardList.dart';
 
 class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
+  final HomeDataModel? homeDataModel;
+  const Homescreen({super.key, required this.homeDataModel});
 
   @override
   State<Homescreen> createState() => _HomescreenState();
@@ -28,7 +30,8 @@ class _HomescreenState extends State<Homescreen> {
         child: Column(
           children: [
             SizedBox(height: 16.sp),
-            Custombanner(imgList: Constants.imgHorizontalList),
+            Custombanner(
+                itemSliderList: widget.homeDataModel?.itemSlider ?? []),
             SizedBox(height: 16.sp),
             getHorizontalList("Recently watched"),
             SizedBox(height: 16.sp),

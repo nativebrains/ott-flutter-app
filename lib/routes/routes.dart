@@ -7,6 +7,7 @@ import 'package:islamforever/features/authentication/screens/AuthenticationScree
 import 'package:islamforever/features/authentication/screens/ForgotPasswordScreen.dart';
 import 'package:islamforever/features/authentication/screens/RegisterScreen.dart';
 import 'package:islamforever/features/account/screens/AccountScreen.dart';
+import 'package:islamforever/features/dashboard/models/HomeDataModel.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
@@ -67,8 +68,9 @@ class RouterGenerator {
         );
 
       case RouteConstantName.homeScreen:
+        var args = settings.arguments as HomeDataModel;
         return MaterialPageRoute(
-          builder: (context) => const Homescreen(),
+          builder: (context) => Homescreen(homeDataModel: args),
           settings: const RouteSettings(
             name: RouteConstantName.homeScreen,
           ),

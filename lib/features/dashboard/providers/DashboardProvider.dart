@@ -6,6 +6,7 @@ import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import '../../../constants/ApiEndpoints.dart';
 import '../../../core/services/ApiService.dart';
 import '../../../core/services/shared_preference.dart';
+import '../models/HomeDataModel.dart';
 
 class DashboardProvider extends ChangeNotifier {
   static ApiService apiService = ApiService();
@@ -25,8 +26,8 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> fetchDashboardData({bool refresh = false}) async {
-    dynamic dashboardData;
+  Future<HomeDataModel?> fetchDashboardData({bool refresh = false}) async {
+    HomeDataModel? dashboardData;
 
     if (!refresh) {
       final String? cachedDataString =
@@ -34,7 +35,7 @@ class DashboardProvider extends ChangeNotifier {
       if (cachedDataString != null) {
         // Return cached data if available
         final Map<String, dynamic> data = json.decode(cachedDataString);
-        return data;
+        return HomeDataModel.fromJson(data);
       }
     }
 
@@ -45,7 +46,7 @@ class DashboardProvider extends ChangeNotifier {
       );
 
       if (response.status == 200) {
-        dashboardData = response.data;
+        dashboardData = HomeDataModel.fromJson(response.data);
         // Cache the fresh data
         await SharedPrefs.cacheData(
             json.encode(response.data), ApiEndpoints.HOME_URL);
