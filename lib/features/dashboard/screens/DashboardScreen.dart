@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
 import '../../../constants/routes_names.dart';
+import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../common/enums/MediaContentType.dart';
@@ -33,9 +34,10 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
+  var _isLoading = false;
 
   // List of screens for the bottom navigation
-  final List<Widget> _screens = [
+  final List<Widget> _screens = const [
     Homescreen(),
     Watchlistscreen(),
     Mixscreen(),
@@ -48,6 +50,19 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     // TODO: implement initState
     super.initState();
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    _fetchData();
+  }
+
+  Future<void> _fetchData({bool refresh = false}) async {
+    setState(() {
+      _isLoading = true; // Indicate loading
+    });
+
+    await dashboardProvider.fetchDashboardData(refresh: refresh);
+
+    setState(() {
+      _isLoading = false; // Indicate loading
+    });
   }
 
   void _onItemTapped(int index) {
@@ -177,11 +192,42 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               ),
             ];
           },
-          body: _screens[_selectedIndex],
+          body: Stack(
+            children: [
+              RefreshIndicator(
+                color: ColorCode.whiteColor,
+                backgroundColor: Colors.orange,
+                onRefresh: _refreshData,
+                child: _screens[_selectedIndex],
+              ),
+              if (_isLoading) // Show LoaderWidget if _isLoading is true
+                LoaderWidget(),
+            ],
+          ),
         ),
         bottomNavigationBar: getBottomMenu(_selectedIndex),
       ),
     );
+  }
+
+  Future<void> _refreshData() async {
+    switch (_selectedIndex) {
+      case 0:
+        await _fetchData(refresh: true);
+        break;
+      case 1:
+        //await fetchWatchlistData(refresh: true);
+        break;
+      case 2:
+        // await fetchMixData(refresh: true);
+        break;
+      case 3:
+        // await fetchAccountData(refresh: true);
+        break;
+      case 4:
+        // await fetchSettingsData(refresh: true);
+        break;
+    }
   }
 
   String getAppBarTitle(int index) {
@@ -203,10 +249,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   Widget getBottomMenu(int selectedIndex) {
     return Container(
-      height: 65,
+      height: 75,
       decoration: const BoxDecoration(
         color: ColorCode.bottomNavBg,
       ),
+      padding: EdgeInsets.symmetric(horizontal: 6.sp),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
