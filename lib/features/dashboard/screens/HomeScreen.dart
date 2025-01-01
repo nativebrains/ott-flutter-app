@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/constants/constants.dart';
+import 'package:islamforever/features/dashboard/models/ItemHomeModel.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomBanner.dart';
@@ -37,25 +38,25 @@ class _HomescreenState extends State<Homescreen> {
               Custombanner(
                   itemSliderList: provider.dashboardData?.itemSlider ?? []),
               SizedBox(height: 16.sp),
-              getHorizontalList("Recently watched"),
+              getHorizontalList(provider.dashboardData?.itemHome[0]),
               SizedBox(height: 16.sp),
-              getVerticalList("Upcoming Movies"),
-              SizedBox(height: 16.sp),
-              getHorizontalList("Upcoming shows", isPremium: true),
-              SizedBox(height: 16.sp),
-              getVerticalList("Latest Movies",
-                  isPremium: true, hasSeeAll: true),
-              SizedBox(height: 16.sp),
-              getHorizontalList("Latest shows", hasSeeAll: true),
-              SizedBox(height: 16.sp),
-              getHorizontalList("Best in Sports", isPremium: true),
-              SizedBox(height: 16.sp),
-              getHorizontalList("Live TV", hasSeeAll: true),
-              SizedBox(height: 16.sp),
-              getVerticalList("Popular Movies", hasSeeAll: true),
-              SizedBox(height: 16.sp),
-              getHorizontalList("Popular shows", hasSeeAll: true),
-              SizedBox(height: 20.sp),
+              // getVerticalList("Upcoming Movies"),
+              // SizedBox(height: 16.sp),
+              // getHorizontalList("Upcoming shows", isPremium: true),
+              // SizedBox(height: 16.sp),
+              // getVerticalList("Latest Movies",
+              //     isPremium: true, hasSeeAll: true),
+              // SizedBox(height: 16.sp),
+              // getHorizontalList("Latest shows", hasSeeAll: true),
+              // SizedBox(height: 16.sp),
+              // getHorizontalList("Best in Sports", isPremium: true),
+              // SizedBox(height: 16.sp),
+              // getHorizontalList("Live TV", hasSeeAll: true),
+              // SizedBox(height: 16.sp),
+              // getVerticalList("Popular Movies", hasSeeAll: true),
+              // SizedBox(height: 16.sp),
+              // getHorizontalList("Popular shows", hasSeeAll: true),
+              // SizedBox(height: 20.sp),
             ],
           ),
         ),
@@ -121,12 +122,11 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
-  Widget getHorizontalList(String title,
+  Widget getHorizontalList(ItemHomeModel? itemHomeModel,
       {bool hasSeeAll = false,
       bool isPremium = false,
       bool showItemTitle = false}) {
     // Shuffle the list
-    Constants.imgVerticalList.shuffle();
     return Column(
       children: [
         Row(
@@ -135,7 +135,7 @@ class _HomescreenState extends State<Homescreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                title,
+                itemHomeModel?.homeTitle ?? "",
                 style: GoogleFonts.poppins(
                   color: ColorCode.whiteColor,
                   fontWeight: FontWeight.w600,
@@ -150,7 +150,7 @@ class _HomescreenState extends State<Homescreen> {
                     context,
                     RouteConstantName.seeAllScreen,
                     arguments: SeeAllScreenArguments(
-                      title: title,
+                      title: itemHomeModel?.homeTitle ?? "",
                       isVertical: false,
                     ),
                   );
@@ -174,7 +174,7 @@ class _HomescreenState extends State<Homescreen> {
           height: 6.sp,
         ),
         Customhorizontalcardlist(
-          imgList: Constants.imgHorizontalList,
+          itemHomeContentModelList: itemHomeModel?.itemHomeContentModel ?? [],
           isPremium: isPremium,
           showTitle: showItemTitle,
         ),

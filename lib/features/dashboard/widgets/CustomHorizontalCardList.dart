@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants/assets_images.dart';
 
 class Customhorizontalcardlist extends StatefulWidget {
-  final List<String> imgList;
+  final List<ItemHomeContentModel> itemHomeContentModelList;
   final bool isPremium;
   final bool showTitle;
   const Customhorizontalcardlist(
       {super.key,
-      required this.imgList,
+      required this.itemHomeContentModelList,
       required this.isPremium,
       required this.showTitle});
 
@@ -27,7 +28,8 @@ class _CustomhorizontalcardlistState extends State<Customhorizontalcardlist> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: widget.imgList.asMap().entries.map((entry) {
+          children:
+              widget.itemHomeContentModelList.asMap().entries.map((entry) {
             return Container(
                 width: 175.sp,
                 margin: entry.key == 0
@@ -38,7 +40,7 @@ class _CustomhorizontalcardlistState extends State<Customhorizontalcardlist> {
                 child: Customhorizontalcard(
                   isPremium: widget.isPremium,
                   showTitle: widget.showTitle,
-                  url: entry.value,
+                  url: entry.value.videoImage ?? "",
                 ));
           }).toList(),
         ),
