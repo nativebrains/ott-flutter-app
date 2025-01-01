@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:islamforever/features/account/models/LoginUserModel.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 
 import '../../../constants/ApiEndpoints.dart';
+import '../../../constants/constants.dart';
 import '../../../core/services/ApiService.dart';
 import '../../../core/services/shared_preference.dart';
 import '../models/HomeDataModel.dart';
@@ -13,6 +15,14 @@ class DashboardProvider extends ChangeNotifier {
   static String? _statusMessage;
   static MediaContentType? _selectedMixScreenContentType;
   HomeDataModel? dashboardData;
+
+  static get loginUserModel {
+    return SharedPrefs.getLoginUserData();
+  }
+
+  static get isLoggedIn {
+    return SharedPrefs.getBool(Constants.IS_LOGGED_ID);
+  }
 
   static get selectedMixScreenContentType {
     return _selectedMixScreenContentType;
@@ -43,7 +53,7 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.HOME_URL,
-        jsonEncode({'user_id': 1}),
+        jsonEncode({'user_id': isLoggedIn ? 1 : 0}),
       );
 
       if (response.status == 200) {

@@ -38,7 +38,7 @@ class _HomescreenState extends State<Homescreen> {
               Custombanner(
                   itemSliderList: provider.dashboardData?.itemSlider ?? []),
               SizedBox(height: 16.sp),
-              getHorizontalList(provider.dashboardData?.itemHome[0]),
+              // getHorizontalList(provider.dashboardData?.itemHome[0]),
               SizedBox(height: 16.sp),
               // getVerticalList("Upcoming Movies"),
               // SizedBox(height: 16.sp),

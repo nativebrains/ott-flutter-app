@@ -13,10 +13,12 @@ class HomeDataModel {
 
   factory HomeDataModel.fromJson(Map<String, dynamic> json) {
     return HomeDataModel(
+      // Slider Content
       itemSlider: json['slider'] != null
           ? List<ItemSliderModel>.from(
               json['slider'].map((x) => ItemSliderModel.fromJson(x)))
           : [],
+      // Other Dynamic Content
       itemHome: _parseItemHome(json),
     );
   }
@@ -24,6 +26,7 @@ class HomeDataModel {
   static List<ItemHomeModel> _parseItemHome(Map<String, dynamic> json) {
     List<ItemHomeModel> itemHomeList = [];
 
+    // Recently Watched Videos
     if (json['recently_watched'] != null &&
         json['recently_watched'].length > 0) {
       ItemHomeModel objItem = ItemHomeModel(
@@ -31,7 +34,21 @@ class HomeDataModel {
         homeTitle: "Recently Watched",
         homeType: "Recent",
         itemHomeContentModel: List<ItemHomeContentModel>.from(
-          json['recently_watched'].map((x) => ItemHomeContentModel.fromJson(x)),
+          json['recently_watched']
+              .map((x) => ItemHomeContentModel.fromRecentlyWatchedJson(x)),
+        ),
+      );
+      itemHomeList.add(objItem);
+    }
+
+    if (json['upcoming_movies'] != null && json['upcoming_movies'].length > 0) {
+      ItemHomeModel objItem = ItemHomeModel(
+        homeId: "-1",
+        homeTitle: "Upcoming Movies",
+        homeType: "Movie",
+        itemHomeContentModel: List<ItemHomeContentModel>.from(
+          json['upcoming_movies']
+              .map((x) => ItemHomeContentModel.fromUpcomingMoviesJson(x)),
         ),
       );
       itemHomeList.add(objItem);

@@ -13,18 +13,6 @@ class ItemHomeModel {
     this.itemHomeContentModel,
   });
 
-  factory ItemHomeModel.fromJson(Map<String, dynamic> json) {
-    return ItemHomeModel(
-      homeId: json['home_id'],
-      homeTitle: json['home_title'],
-      homeType: json['home_type'],
-      itemHomeContentModel: json['item_home_contents'] != null
-          ? List<ItemHomeContentModel>.from(json['item_home_contents']
-              .map((x) => ItemHomeContentModel.fromJson(x)))
-          : null,
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'home_id': homeId,

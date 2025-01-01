@@ -19,7 +19,8 @@ class ItemHomeContentModel {
     this.episodeId,
   });
 
-  factory ItemHomeContentModel.fromJson(Map<String, dynamic> json) {
+  factory ItemHomeContentModel.fromRecentlyWatchedJson(
+      Map<String, dynamic> json) {
     return ItemHomeContentModel(
       videoId: json.containsKey('video_id') ? json['video_id'] : null,
       videoType: json.containsKey('video_type') ? json['video_type'] : null,
@@ -32,6 +33,22 @@ class ItemHomeContentModel {
       videoTitle: json.containsKey('video_title') ? json['video_title'] : null,
       isPremium:
           json.containsKey('is_premium') ? (json['is_premium'] as bool) : false,
+    );
+  }
+
+  factory ItemHomeContentModel.fromUpcomingMoviesJson(
+      Map<String, dynamic> json) {
+    return ItemHomeContentModel(
+      videoId: json.containsKey('movie_id') ? json['movie_id'] : null,
+      videoTitle: json.containsKey('movie_title') ? json['movie_title'] : null,
+      videoType: json.containsKey('movie_type') ? json['movie_type'] : 'Movie',
+      seasonId: json.containsKey('season_id') ? json['season_id'] : null,
+      episodeId: json.containsKey('episode_id') ? json['episode_id'] : null,
+      videoImage:
+          json.containsKey('movie_poster') ? json['movie_poster'] : null,
+      homeType: json.containsKey('home_type') ? json['home_type'] : "Movie",
+      isPremium:
+          json.containsKey('movie_access') ? (json['movie_access'] as bool) : false,
     );
   }
 
