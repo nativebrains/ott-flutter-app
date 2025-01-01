@@ -47,8 +47,25 @@ class ItemHomeContentModel {
       videoImage:
           json.containsKey('movie_poster') ? json['movie_poster'] : null,
       homeType: json.containsKey('home_type') ? json['home_type'] : "Movie",
-      isPremium:
-          json.containsKey('movie_access') ? (json['movie_access'] as bool) : false,
+      isPremium: json.containsKey('movie_access')
+          ? (json['movie_access'] == "Paid")
+          : false,
+    );
+  }
+
+  factory ItemHomeContentModel.fromUpcomingSeriesJson(
+      Map<String, dynamic> json) {
+    return ItemHomeContentModel(
+      videoId: json.containsKey('show_id') ? json['show_id'] : null,
+      videoTitle: json.containsKey('show_title') ? json['show_title'] : null,
+      videoType: json.containsKey('show_type') ? json['show_type'] : 'Shows',
+      seasonId: json.containsKey('season_id') ? json['season_id'] : null,
+      episodeId: json.containsKey('episode_id') ? json['episode_id'] : null,
+      videoImage: json.containsKey('show_poster') ? json['show_poster'] : null,
+      homeType: json.containsKey('show_type') ? json['show_type'] : "Shows",
+      isPremium: json.containsKey('show_access')
+          ? (json['show_access'] == "Paid")
+          : false,
     );
   }
 

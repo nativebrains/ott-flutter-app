@@ -41,6 +41,7 @@ class HomeDataModel {
       itemHomeList.add(objItem);
     }
 
+    // Upcoming Movies
     if (json['upcoming_movies'] != null && json['upcoming_movies'].length > 0) {
       ItemHomeModel objItem = ItemHomeModel(
         homeId: "-1",
@@ -49,6 +50,20 @@ class HomeDataModel {
         itemHomeContentModel: List<ItemHomeContentModel>.from(
           json['upcoming_movies']
               .map((x) => ItemHomeContentModel.fromUpcomingMoviesJson(x)),
+        ),
+      );
+      itemHomeList.add(objItem);
+    }
+
+    // Upcoming Series
+    if (json['upcoming_series'] != null && json['upcoming_series'].length > 0) {
+      ItemHomeModel objItem = ItemHomeModel(
+        homeId: "-1",
+        homeTitle: "Upcoming Series",
+        homeType: "Shows",
+        itemHomeContentModel: List<ItemHomeContentModel>.from(
+          json['upcoming_series']
+              .map((x) => ItemHomeContentModel.fromUpcomingSeriesJson(x)),
         ),
       );
       itemHomeList.add(objItem);

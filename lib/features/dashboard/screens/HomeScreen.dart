@@ -38,11 +38,30 @@ class _HomescreenState extends State<Homescreen> {
               Custombanner(
                   itemSliderList: provider.dashboardData?.itemSlider ?? []),
               SizedBox(height: 16.sp),
+              ...provider.dashboardData?.itemHome.map((item) {
+                    if (item.homeType == 'Movie') {
+                      return Column(
+                        children: [
+                          getVerticalList(item),
+                          SizedBox(height: 16.sp),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          getHorizontalList(item),
+                          SizedBox(height: 16.sp),
+                        ],
+                      );
+                    }
+                  }) ??
+                  [],
               // getHorizontalList(provider.dashboardData?.itemHome[0]),
-              SizedBox(height: 16.sp),
+              // SizedBox(height: 16.sp),
               // getVerticalList("Upcoming Movies"),
               // SizedBox(height: 16.sp),
-              // getHorizontalList("Upcoming shows", isPremium: true),
+              // getHorizontalList(provider.dashboardData?.itemHome[1],
+              //     isPremium: true),
               // SizedBox(height: 16.sp),
               // getVerticalList("Latest Movies",
               //     isPremium: true, hasSeeAll: true),
@@ -64,10 +83,10 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  Widget getVerticalList(String title,
-      {bool hasSeeAll = false, bool isPremium = false}) {
-    // Shuffle the list
-    Constants.imgVerticalList.shuffle();
+  Widget getVerticalList(
+    ItemHomeModel itemHomeModel, {
+    bool hasSeeAll = false,
+  }) {
     return Column(
       children: [
         Row(
@@ -76,7 +95,7 @@ class _HomescreenState extends State<Homescreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                title,
+                itemHomeModel.homeTitle ?? "",
                 style: GoogleFonts.poppins(
                   color: ColorCode.whiteColor,
                   fontWeight: FontWeight.w600,
@@ -84,14 +103,14 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ),
             ),
-            if (hasSeeAll)
+            if (itemHomeModel.homeId != "-1")
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(
                     context,
                     RouteConstantName.seeAllScreen,
                     arguments: SeeAllScreenArguments(
-                      title: title,
+                      title: itemHomeModel.homeTitle ?? "",
                       isVertical: true,
                     ),
                   );
@@ -115,17 +134,14 @@ class _HomescreenState extends State<Homescreen> {
           height: 6.sp,
         ),
         Customverticalcardlist(
-          imgList: Constants.imgVerticalList,
-          isPremium: isPremium,
+          itemHomeContentModel: itemHomeModel.itemHomeContentModel ?? [],
         ),
       ],
     );
   }
 
-  Widget getHorizontalList(ItemHomeModel? itemHomeModel,
-      {bool hasSeeAll = false,
-      bool isPremium = false,
-      bool showItemTitle = false}) {
+  Widget getHorizontalList(ItemHomeModel itemHomeModel,
+      {bool hasSeeAll = false, bool showItemTitle = false}) {
     // Shuffle the list
     return Column(
       children: [
@@ -135,7 +151,7 @@ class _HomescreenState extends State<Homescreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                itemHomeModel?.homeTitle ?? "",
+                itemHomeModel.homeTitle ?? "",
                 style: GoogleFonts.poppins(
                   color: ColorCode.whiteColor,
                   fontWeight: FontWeight.w600,
@@ -143,14 +159,14 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ),
             ),
-            if (hasSeeAll)
+            if (itemHomeModel.homeId != "-1")
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(
                     context,
                     RouteConstantName.seeAllScreen,
                     arguments: SeeAllScreenArguments(
-                      title: itemHomeModel?.homeTitle ?? "",
+                      title: itemHomeModel.homeTitle ?? "",
                       isVertical: false,
                     ),
                   );
@@ -174,8 +190,7 @@ class _HomescreenState extends State<Homescreen> {
           height: 6.sp,
         ),
         Customhorizontalcardlist(
-          itemHomeContentModelList: itemHomeModel?.itemHomeContentModel ?? [],
-          isPremium: isPremium,
+          itemHomeContentModelList: itemHomeModel.itemHomeContentModel ?? [],
           showTitle: showItemTitle,
         ),
       ],
