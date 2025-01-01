@@ -16,9 +16,7 @@ class DashboardProvider extends ChangeNotifier {
   static MediaContentType? _selectedMixScreenContentType;
   HomeDataModel? dashboardData;
 
-  static get loginUserModel {
-    return SharedPrefs.getLoginUserData();
-  }
+  LoginUserModel? get loginUserModel => SharedPrefs.getLoginUserData();
 
   static get isLoggedIn {
     return SharedPrefs.getBool(Constants.IS_LOGGED_ID);
