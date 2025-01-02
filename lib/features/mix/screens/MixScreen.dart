@@ -36,21 +36,7 @@ class _MixscreenState extends State<Mixscreen> {
       var isMovieCase = DashboardProvider.selectedMixScreenContentType ==
           MediaContentType.movies;
 
-      List<dynamic> itemsList = []; // Initialize an empty list
-
-      if (DashboardProvider.selectedMixScreenContentType ==
-          MediaContentType.movies) {
-        itemsList = provider.itemsMixMoviesList;
-      } else if (DashboardProvider.selectedMixScreenContentType ==
-          MediaContentType.tvShows) {
-        itemsList = provider.itemsMixShowsList;
-      } else if (DashboardProvider.selectedMixScreenContentType ==
-          MediaContentType.sports) {
-        itemsList = provider.itemsMixSportList;
-      } else if (DashboardProvider.selectedMixScreenContentType ==
-          MediaContentType.liveTv) {
-        itemsList = provider.itemsMixLiveTvList;
-      }
+      List<dynamic> itemsList = _getItemsList(provider);
 
       return Scaffold(
         backgroundColor: ColorCode.bgColor,
@@ -66,51 +52,7 @@ class _MixscreenState extends State<Mixscreen> {
                     if (itemsList.isEmpty && !provider.isMixScreenLoading)
                       getEmpty()
                     else
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: isMovieCase ? 3 : 2,
-                        childAspectRatio: isMovieCase ? 0.65 : 1.4,
-                        children: [
-                          // Movies Section
-                          if (DashboardProvider.selectedMixScreenContentType ==
-                              MediaContentType.movies)
-                            ...(itemsList as List<ItemMovieModel>).map((item) {
-                              return Customverticalcard(
-                                  isPremium: item.isPremium ?? false,
-                                  url: item.movieImage ?? "");
-                            }),
-
-                          // Tv Shows Section
-                          if (DashboardProvider.selectedMixScreenContentType ==
-                              MediaContentType.tvShows)
-                            ...(itemsList as List<ItemShowModel>).map((item) {
-                              return Customhorizontalcard(
-                                  isPremium: item.isPremium,
-                                  showTitle: true,
-                                  url: item.showImage ?? "");
-                            }),
-                          // Sports Section
-                          if (DashboardProvider.selectedMixScreenContentType ==
-                              MediaContentType.sports)
-                            ...(itemsList as List<ItemSportModel>).map((item) {
-                              return Customhorizontalcard(
-                                  isPremium: item.isPremium,
-                                  showTitle: true,
-                                  url: item.sportImage ?? "");
-                            }),
-
-                          // Live Tv Section
-                          if (DashboardProvider.selectedMixScreenContentType ==
-                              MediaContentType.liveTv)
-                            ...(itemsList as List<ItemLiveTVModel>).map((item) {
-                              return Customhorizontalcard(
-                                  isPremium: item.isPremium,
-                                  showTitle: true,
-                                  url: item.tvImage ?? "");
-                            }),
-                        ],
-                      ),
+                      _buildGridView(itemsList, isMovieCase),
                   ],
                 ),
               ),
@@ -122,6 +64,62 @@ class _MixscreenState extends State<Mixscreen> {
         ),
       );
     });
+  }
+
+  List<dynamic> _getItemsList(DashboardProvider provider) {
+    switch (DashboardProvider.selectedMixScreenContentType) {
+      case MediaContentType.movies:
+        return provider.itemsMixMoviesList;
+      case MediaContentType.tvShows:
+        return provider.itemsMixShowsList;
+      case MediaContentType.sports:
+        return provider.itemsMixSportList;
+      case MediaContentType.liveTv:
+        return provider.itemsMixLiveTvList;
+      default:
+        return [];
+    }
+  }
+
+  Widget _buildGridView(List<dynamic> itemsList, bool isMovieCase) {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: isMovieCase ? 3 : 2,
+      childAspectRatio: isMovieCase ? 0.65 : 1.4,
+      children: _mapItemsToWidgets(itemsList),
+    );
+  }
+
+  List<Widget> _mapItemsToWidgets(List<dynamic> itemsList) {
+    return itemsList.map((item) {
+      if (item is ItemMovieModel) {
+        return Customverticalcard(
+          isPremium: item.isPremium ?? false,
+          url: item.movieImage ?? "",
+        );
+      } else if (item is ItemShowModel) {
+        return Customhorizontalcard(
+          isPremium: item.isPremium,
+          showTitle: true,
+          url: item.showImage ?? "",
+        );
+      } else if (item is ItemSportModel) {
+        return Customhorizontalcard(
+          isPremium: item.isPremium,
+          showTitle: true,
+          url: item.sportImage ?? "",
+        );
+      } else if (item is ItemLiveTVModel) {
+        return Customhorizontalcard(
+          isPremium: item.isPremium,
+          showTitle: true,
+          url: item.tvImage ?? "",
+        );
+      } else {
+        return Container();
+      }
+    }).toList();
   }
 
   Widget getEmpty() {
