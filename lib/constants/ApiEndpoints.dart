@@ -17,6 +17,7 @@ class ApiEndpoints {
   static const String LANGUAGE_URL = '${API_URL}languages';
   static const String GENRE_URL = '${API_URL}genres';
   static const String SHOW_BY_LANGUAGE_URL = '${API_URL}shows_by_language';
+  static const String MY_WATCHLIST_WATCHLIST_URL = '${API_URL}my_watchlist';
   static const String SHOW_BY_GENRE_URL = '${API_URL}shows_by_genre';
   static const String MOVIE_BY_LANGUAGE_URL = '${API_URL}movies_by_language';
   static const String MOVIE_BY_GENRE_URL = '${API_URL}movies_by_genre';

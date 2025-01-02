@@ -219,7 +219,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
         await _fetchData(refresh: true);
         break;
       case 1:
-        //await fetchWatchlistData(refresh: true);
+        await dashboardProvider.fetchMyWatchListData(refresh: true);
         break;
       case 2:
         // await fetchMixData(refresh: true);

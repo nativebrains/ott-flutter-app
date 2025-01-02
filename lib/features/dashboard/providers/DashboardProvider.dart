@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:islamforever/features/account/models/LoginUserModel.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
+import 'package:islamforever/features/watchlist/models/ItemWatchListModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
 import '../../../constants/constants.dart';
@@ -16,6 +17,7 @@ class DashboardProvider extends ChangeNotifier {
   static String? _statusMessage;
   static MediaContentType? _selectedMixScreenContentType;
   HomeDataModel? dashboardData;
+  List<ItemWatchListModel> itemsWatchListData = [];
 
   LoginUserModel? get loginUserModel => SharedPrefs.getLoginUserData();
 
@@ -69,12 +71,12 @@ class DashboardProvider extends ChangeNotifier {
     return dashboardData;
   }
 
-  Future<List<ItemHomeContentModel>> fetchSeeAllData(String Id) async {
+  Future<List<ItemHomeContentModel>> fetchSeeAllData(String id) async {
     List<ItemHomeContentModel> itemsList = [];
     try {
       final response = await apiService.post(
         ApiEndpoints.HOME_MORE_URL,
-        jsonEncode({'id': Id}),
+        jsonEncode({'id': id}),
       );
 
       if (response.status == 200) {
@@ -104,5 +106,43 @@ class DashboardProvider extends ChangeNotifier {
     }
     notifyListeners();
     return itemsList;
+  }
+
+  Future<List<ItemWatchListModel>> fetchMyWatchListData(
+      {bool refresh = false}) async {
+    if (!refresh) {
+      final String? cachedDataString = await SharedPrefs.getCachedData(
+          ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL);
+      if (cachedDataString != null) {
+        // Return cached data if available
+        final List<dynamic> data = jsonDecode(cachedDataString);
+        itemsWatchListData =
+            data.map((item) => ItemWatchListModel.fromJson(item)).toList();
+        notifyListeners();
+        return itemsWatchListData;
+      }
+    }
+
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL,
+        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+      );
+
+      if (response.status == 200) {
+        itemsWatchListData = (response.data as List)
+            .map((item) => ItemWatchListModel.fromJson(item))
+            .toList();
+
+        // Cache the fresh data
+        await SharedPrefs.cacheData(
+            jsonEncode(response.data), ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL);
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+    notifyListeners();
+    return itemsWatchListData;
   }
 }
