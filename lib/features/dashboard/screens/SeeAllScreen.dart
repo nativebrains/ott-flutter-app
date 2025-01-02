@@ -67,38 +67,35 @@ class _SeeallscreenState extends State<Seeallscreen> {
   void displayData(List<ItemHomeContentModel> itemsList) {
     var isMovieCase = widget.screenArguments.type == "Movie";
     List<Widget> updatedItems = [];
-    int currentIndex = 0;
 
-    while (currentIndex < itemsList.length) {
-      updatedItems.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: List.generate(
-            isMovieCase ? 3 : 2,
-            (index) {
-              if (currentIndex + index >= itemsList.length) {
-                return const SizedBox.shrink();
-              }
-              return Expanded(
-                child: Container(
-                  margin: const EdgeInsets.all(6),
-                  child: isMovieCase
-                      ? Customverticalcard(
-                          isPremium: itemsList[currentIndex + index].isPremium,
-                          url: itemsList[currentIndex + index].videoImage ?? "")
-                      : Customhorizontalcard(
-                          isPremium: itemsList[currentIndex + index].isPremium,
-                          showTitle: true,
-                          url:
-                              itemsList[currentIndex + index].videoImage ?? ""),
-                ),
-              );
-            },
-          ),
-        ),
-      );
-      currentIndex += isMovieCase ? 3 : 2;
-    }
+    updatedItems.add(
+      GridView.count(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: isMovieCase ? 3 : 2,
+        childAspectRatio: isMovieCase ? 0.65 : 1.4,
+        children: itemsList.map((item) {
+          if (isMovieCase) {
+            return Container(
+              margin: const EdgeInsets.only(left: 6, right: 6, bottom: 6),
+              child: Customverticalcard(
+                isPremium: item.isPremium,
+                url: item.videoImage ?? "",
+              ),
+            );
+          } else {
+            return Container(
+              margin: const EdgeInsets.only(left: 6, right: 6, bottom: 6),
+              child: Customhorizontalcard(
+                isPremium: item.isPremium,
+                showTitle: true,
+                url: item.videoImage ?? "",
+              ),
+            );
+          }
+        }).toList(),
+      ),
+    );
 
     setState(() {
       _items = updatedItems;
@@ -147,7 +144,7 @@ class _SeeallscreenState extends State<Seeallscreen> {
               // SliverList for your content
               SliverPadding(
                 padding:
-                    EdgeInsets.symmetric(horizontal: 12.sp, vertical: 20.sp),
+                    EdgeInsets.only(left: 12.sp, right: 12.sp, bottom: 12.sp),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => _items[index],
