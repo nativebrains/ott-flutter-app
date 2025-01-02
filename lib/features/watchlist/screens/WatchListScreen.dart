@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/features/watchlist/models/ItemWatchListModel.dart';
 import 'package:provider/provider.dart';
 
@@ -74,23 +75,46 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
                   EdgeInsets.only(left: 12.sp, right: 12.sp, bottom: 12.sp),
               child: Column(
                 children: [
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.4,
-                    children: provider.itemsWatchListData.map((item) {
-                      return Container(
-                        margin:
-                            const EdgeInsets.only(left: 6, right: 6, bottom: 6),
-                        child: Customhorizontalcard(
-                          isPremium: true,
-                          showTitle: true,
-                          url: item.postImage ?? "",
+                  provider.itemsWatchListData.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 250.sp),
+                              const Icon(
+                                Icons.search,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                "No Items Found!",
+                                style: GoogleFonts.poppins(
+                                  color: ColorCode.whiteColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.4,
+                          children: provider.itemsWatchListData.map((item) {
+                            return Container(
+                              margin: const EdgeInsets.only(
+                                  left: 6, right: 6, bottom: 6),
+                              child: Customhorizontalcard(
+                                isPremium: true,
+                                showTitle: true,
+                                url: item.postImage ?? "",
+                              ),
+                            );
+                          }).toList(),
                         ),
-                      );
-                    }).toList(),
-                  ),
                   SizedBox(height: 12.sp)
                 ],
               ),

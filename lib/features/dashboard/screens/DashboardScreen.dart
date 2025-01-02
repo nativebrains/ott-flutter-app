@@ -216,7 +216,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   Future<void> _refreshData() async {
     switch (_selectedIndex) {
       case 0:
-        await _fetchData(refresh: true);
+        await dashboardProvider.fetchDashboardData(refresh: true);
         break;
       case 1:
         await dashboardProvider.fetchMyWatchListData(refresh: true);
