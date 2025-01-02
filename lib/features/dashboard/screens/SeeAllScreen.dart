@@ -72,6 +72,7 @@ class _SeeallscreenState extends State<Seeallscreen> {
     while (currentIndex < itemsList.length) {
       updatedItems.add(
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(
             isMovieCase ? 3 : 2,
             (index) {

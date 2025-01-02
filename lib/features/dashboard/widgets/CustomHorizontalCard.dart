@@ -33,6 +33,7 @@ class Customhorizontalcard extends StatelessWidget {
         );
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(5.0)),
@@ -74,7 +75,8 @@ class Customhorizontalcard extends StatelessWidget {
             ),
           ),
           if (showTitle)
-            Padding(
+            Container(
+              width: 175.sp,
               padding: const EdgeInsets.only(top: 4.0),
               child: TextScroll(
                 'Movie Title will Display Here...',
