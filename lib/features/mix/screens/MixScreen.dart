@@ -75,6 +75,14 @@ class _MixscreenState extends State<Mixscreen> {
                             }),
 
                           // Live Tv Section
+                          if (DashboardProvider.selectedMixScreenContentType ==
+                              MediaContentType.liveTv)
+                            ...provider.itemsMixLiveTvList.map((item) {
+                              return Customhorizontalcard(
+                                  isPremium: item.isPremium,
+                                  showTitle: true,
+                                  url: item.tvImage ?? "");
+                            }),
                         ]),
                   ],
                 ),

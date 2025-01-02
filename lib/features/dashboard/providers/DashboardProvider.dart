@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:islamforever/features/account/models/LoginUserModel.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
+import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:islamforever/features/watchlist/models/ItemWatchListModel.dart';
@@ -37,6 +38,8 @@ class DashboardProvider extends ChangeNotifier {
   int mixShowsPageIndex = 1;
   List<ItemSportModel> itemsMixSportList = [];
   int mixSportPageIndex = 1;
+  List<ItemLiveTVModel> itemsMixLiveTvList = [];
+  int mixLiveTvPageIndex = 1;
 
   LoginUserModel? get loginUserModel => SharedPrefs.getLoginUserData();
 
@@ -199,6 +202,11 @@ class DashboardProvider extends ChangeNotifier {
         fetchMixSportsData();
         break;
       case MediaContentType.liveTv:
+        if (reset) {
+          itemsMixLiveTvList = [];
+          mixLiveTvPageIndex = 1;
+        }
+        fetchMixLiveTvData();
         break;
     }
   }
@@ -291,5 +299,35 @@ class DashboardProvider extends ChangeNotifier {
     _isMixScreenLoading = false;
     notifyListeners();
     return itemsMixSportList;
+  }
+
+  Future<List<ItemLiveTVModel>> fetchMixLiveTvData() async {
+    _isMixScreenLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.TV_FILTER_URL,
+        jsonEncode({'cat_id': '', 'filter': 'new'}),
+        page: mixLiveTvPageIndex,
+      );
+
+      if (response.status == 200) {
+        for (var item in response.data) {
+          ItemLiveTVModel objItem = ItemLiveTVModel(
+            tvId: item['tv_id'],
+            tvName: item['tv_title'],
+            tvImage: item['tv_logo'],
+            isPremium: item['tv_access'] == 'Paid',
+          );
+          itemsMixLiveTvList.add(objItem);
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchMixLiveTvData";
+    }
+    _isMixScreenLoading = false;
+    notifyListeners();
+    return itemsMixLiveTvList;
   }
 }
