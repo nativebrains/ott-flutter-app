@@ -30,25 +30,6 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
 
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     _fetchData();
-
-    // for (int i = 0; i < 10; i++) {
-    //   _items.add(
-    //     Row(
-    //       children: List.generate(
-    //         2,
-    //         (index) => Expanded(
-    //           child: Container(
-    //               margin: EdgeInsets.all(6),
-    //               child: Customhorizontalcard(
-    //                   isPremium: true,
-    //                   showTitle: true,
-    //                   url: Constants.imgHorizontalList[Random()
-    //                       .nextInt(Constants.imgHorizontalList.length)])),
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // }
   }
 
   Future<void> _fetchData({bool refresh = false}) async {

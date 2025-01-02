@@ -21,67 +21,53 @@ class Mixscreen extends StatefulWidget {
 class _MixscreenState extends State<Mixscreen> {
   late DashboardProvider _dashboardProvider;
 
-  List<Widget> _items = [];
+  List<int> _items = [1, 2, 3, 4, 5];
 
   @override
   void initState() {
     super.initState();
-    refreshItemsList();
     _dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    _dashboardProvider.addListener(refreshItemsList);
-  }
-
-  @override
-  void dispose() {
-    _dashboardProvider.removeListener(refreshItemsList);
-    super.dispose();
-  }
-
-  void refreshItemsList() {
-    _items.clear(); // Clear the list
-    for (int i = 0; i < 10; i++) {
-      _items.add(
-        Row(
-          children: List.generate(
-            DashboardProvider.selectedMixScreenContentType ==
-                    MediaContentType.movies
-                ? 3
-                : 2,
-            (index) => Expanded(
-              child: Container(
-                  margin: EdgeInsets.all(6),
-                  child: DashboardProvider.selectedMixScreenContentType ==
-                          MediaContentType.movies
-                      ? Customverticalcard(
-                          isPremium: false,
-                          url: Constants.imgVerticalList[Random()
-                              .nextInt(Constants.imgVerticalList.length)])
-                      : Customhorizontalcard(
-                          isPremium: false,
-                          showTitle: true,
-                          url: Constants.imgHorizontalList[Random()
-                              .nextInt(Constants.imgHorizontalList.length)])),
-            ),
-          ),
-        ),
-      );
-    }
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final dashboardProvider = Provider.of<DashboardProvider>(context);
-    return Scaffold(
-      backgroundColor: ColorCode.bgColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 20.sp),
-          child: Column(
-            children: [..._items],
+    return Consumer<DashboardProvider>(builder: (context, provider, child) {
+      var isMovieCase = DashboardProvider.selectedMixScreenContentType ==
+          MediaContentType.movies;
+      return Scaffold(
+        backgroundColor: ColorCode.bgColor,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.sp,
+            ),
+            child: Column(
+              children: [
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: isMovieCase ? 3 : 2,
+                  childAspectRatio: isMovieCase ? 0.65 : 1.4,
+                  children: _items.map((item) {
+                    if (isMovieCase) {
+                      return Customverticalcard(
+                          isPremium: false,
+                          url: Constants.imgVerticalList[Random()
+                              .nextInt(Constants.imgVerticalList.length)]);
+                    } else {
+                      return Customhorizontalcard(
+                          isPremium: false,
+                          showTitle: true,
+                          url: Constants.imgHorizontalList[Random()
+                              .nextInt(Constants.imgHorizontalList.length)]);
+                    }
+                  }).toList(),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
