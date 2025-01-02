@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/constants.dart';
+import '../../../core/loader_widget/loader_widget.dart';
 import '../../dashboard/widgets/CustomHorizontalCard.dart';
 import '../../dashboard/widgets/CustomVerticalCard.dart';
 
@@ -36,36 +37,38 @@ class _MixscreenState extends State<Mixscreen> {
           MediaContentType.movies;
       return Scaffold(
         backgroundColor: ColorCode.bgColor,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.sp,
-            ),
-            child: Column(
-              children: [
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: isMovieCase ? 3 : 2,
-                  childAspectRatio: isMovieCase ? 0.65 : 1.4,
-                  children: _items.map((item) {
-                    if (isMovieCase) {
-                      return Customverticalcard(
-                          isPremium: false,
-                          url: Constants.imgVerticalList[Random()
-                              .nextInt(Constants.imgVerticalList.length)]);
-                    } else {
-                      return Customhorizontalcard(
-                          isPremium: false,
-                          showTitle: true,
-                          url: Constants.imgHorizontalList[Random()
-                              .nextInt(Constants.imgHorizontalList.length)]);
-                    }
-                  }).toList(),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.sp,
                 ),
-              ],
+                child: Column(
+                  children: [
+                    GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: isMovieCase ? 3 : 2,
+                        childAspectRatio: isMovieCase ? 0.65 : 1.4,
+                        children: [
+                          // Movies Section
+                          if (DashboardProvider.selectedMixScreenContentType ==
+                              MediaContentType.movies)
+                            ...provider.itemsMixMoviesList.map((item) {
+                              return Customverticalcard(
+                                  isPremium: item.isPremium ?? false,
+                                  url: item.movieImage ?? "");
+                            }).toList(),
+                        ]),
+                  ],
+                ),
+              ),
             ),
-          ),
+            if (provider
+                .isMixScreenLoading) // Show LoaderWidget if _isLoading is true
+              const LoaderWidget(),
+          ],
         ),
       );
     });
