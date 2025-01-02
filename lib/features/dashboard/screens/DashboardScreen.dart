@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -50,11 +51,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     // TODO: implement initState
     super.initState();
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    _fetchData();
-  }
-
-  Future<void> _fetchData({bool refresh = false}) async {
-    await dashboardProvider.fetchDashboardHomeData(refresh: refresh);
+    dashboardProvider.fetchDashboardHomeData();
   }
 
   void _onItemTapped(int index) {
@@ -198,13 +195,14 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     );
   }
 
-  Future<void> _refreshData() async {
+  Future<void> _refreshData() {
+    Completer<void> completer = Completer<void>();
     switch (_selectedIndex) {
       case 0:
-        await dashboardProvider.fetchDashboardHomeData(refresh: true);
+        dashboardProvider.fetchDashboardHomeData(refresh: true);
         break;
       case 1:
-        await dashboardProvider.fetchMyWatchListData(refresh: true);
+        dashboardProvider.fetchMyWatchListData(refresh: true);
         break;
       case 2:
         dashboardProvider.fetchMixScreenData(reset: true);
@@ -216,6 +214,8 @@ class _DashboardscreenState extends State<Dashboardscreen> {
         // await fetchSettingsData(refresh: true);
         break;
     }
+    completer.complete();
+    return completer.future;
   }
 
   String getAppBarTitle(int index) {
