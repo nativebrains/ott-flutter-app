@@ -35,7 +35,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
-  var _isLoading = false;
 
   // List of screens for the bottom navigation
   final List<Widget> _screens = const [
@@ -55,15 +54,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   }
 
   Future<void> _fetchData({bool refresh = false}) async {
-    setState(() {
-      _isLoading = true; // Indicate loading
-    });
-
     await dashboardProvider.fetchDashboardData(refresh: refresh);
-
-    setState(() {
-      _isLoading = false; // Indicate loading
-    });
   }
 
   void _onItemTapped(int index) {
@@ -195,17 +186,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               ),
             ];
           },
-          body: Stack(
-            children: [
-              RefreshIndicator(
-                color: ColorCode.whiteColor,
-                backgroundColor: Colors.orange,
-                onRefresh: _refreshData,
-                child: _screens[_selectedIndex],
-              ),
-              if (_isLoading) // Show LoaderWidget if _isLoading is true
-                const LoaderWidget(),
-            ],
+          body: RefreshIndicator(
+            color: ColorCode.whiteColor,
+            backgroundColor: Colors.orange,
+            onRefresh: _refreshData,
+            child: _screens[_selectedIndex],
           ),
         ),
         bottomNavigationBar: getBottomMenu(_selectedIndex),

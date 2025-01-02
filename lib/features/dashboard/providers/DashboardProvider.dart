@@ -20,6 +20,9 @@ class DashboardProvider extends ChangeNotifier {
   HomeDataModel? dashboardData;
   List<ItemWatchListModel> itemsWatchListData = [];
 
+  bool _isHomeScreenLoading = false;
+  bool get isHomeScreenLoading => _isHomeScreenLoading;
+
   // Mix Screen Content
   bool _isMixScreenLoading = false;
   bool get isMixScreenLoading => _isMixScreenLoading;
@@ -59,6 +62,9 @@ class DashboardProvider extends ChangeNotifier {
       }
     }
 
+    _isHomeScreenLoading = true;
+    notifyListeners();
+
     try {
       final response = await apiService.post(
         ApiEndpoints.HOME_URL,
@@ -75,6 +81,8 @@ class DashboardProvider extends ChangeNotifier {
       print("Error: $e");
       _statusMessage = "Server Error in fetchDashboardData";
     }
+
+    _isHomeScreenLoading = false;
     notifyListeners();
     return dashboardData;
   }

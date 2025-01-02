@@ -13,6 +13,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/routes_names.dart';
+import '../../../core/loader_widget/loader_widget.dart';
 import '../models/HomeDataModel.dart';
 import '../widgets/CustomVerticalCardList.dart';
 
@@ -31,35 +32,42 @@ class _HomescreenState extends State<Homescreen> {
     return Consumer<DashboardProvider>(builder: (context, provider, child) {
       return Scaffold(
         backgroundColor: ColorCode.bgColor,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16.sp),
-              Custombanner(
-                  itemSliderList: provider.dashboardData?.itemSlider ?? []),
-              SizedBox(height: 16.sp),
-              ...provider.dashboardData?.itemHome.map((item) {
-                    if (item.homeType == 'Movie') {
-                      return Column(
-                        children: [
-                          getVerticalList(item),
-                          SizedBox(height: 16.sp),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          getHorizontalList(item),
-                          SizedBox(height: 16.sp),
-                        ],
-                      );
-                    }
-                  }) ??
-                  [],
-              SizedBox(height: 20.sp),
-            ],
-          ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.sp),
+                  Custombanner(
+                      itemSliderList: provider.dashboardData?.itemSlider ?? []),
+                  SizedBox(height: 16.sp),
+                  ...provider.dashboardData?.itemHome.map((item) {
+                        if (item.homeType == 'Movie') {
+                          return Column(
+                            children: [
+                              getVerticalList(item),
+                              SizedBox(height: 16.sp),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            children: [
+                              getHorizontalList(item),
+                              SizedBox(height: 16.sp),
+                            ],
+                          );
+                        }
+                      }) ??
+                      [],
+                  SizedBox(height: 20.sp),
+                ],
+              ),
+            ),
+            if (provider
+                .isHomeScreenLoading) // Show LoaderWidget if _isLoading is true
+              const LoaderWidget(),
+          ],
         ),
       );
     });
