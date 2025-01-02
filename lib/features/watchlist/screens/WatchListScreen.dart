@@ -62,30 +62,6 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
     });
   }
 
-  void displayData(List<ItemWatchListModel> watchList) {
-    print("Total " + watchList.length.toString());
-    List<Widget> updatedItems = [];
-
-    updatedItems.add(
-      GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
-        childAspectRatio: 1.4,
-        children: watchList.map((item) {
-          return Container(
-            margin: const EdgeInsets.only(left: 6, right: 6, bottom: 6),
-            child: Customhorizontalcard(
-              isPremium: true,
-              showTitle: true,
-              url: item.postImage ?? "",
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(builder: (context, provider, child) {
