@@ -174,8 +174,7 @@ class RouterGenerator {
         final args = settings.arguments as SeeAllScreenArguments;
         return MaterialPageRoute(
           builder: (context) => Seeallscreen(
-            title: args.title,
-            isVertical: args.isVertical,
+            screenArguments: args,
           ),
           settings: const RouteSettings(
             name: RouteConstantName.seeAllScreen,

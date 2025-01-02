@@ -91,9 +91,8 @@ class _HomescreenState extends State<Homescreen> {
                     RouteConstantName.seeAllScreen,
                     arguments: SeeAllScreenArguments(
                       title: itemHomeModel.homeTitle ?? "",
-                      isVertical: true,
-                      id: itemHomeModel.homeId,
-                      type: itemHomeModel.homeType,
+                      id: itemHomeModel.homeId ?? "",
+                      type: itemHomeModel.homeType ?? "",
                     ),
                   );
                 },
@@ -150,9 +149,8 @@ class _HomescreenState extends State<Homescreen> {
                     RouteConstantName.seeAllScreen,
                     arguments: SeeAllScreenArguments(
                       title: itemHomeModel.homeTitle ?? "",
-                      isVertical: false,
-                      id: itemHomeModel.homeId,
-                      type: itemHomeModel.homeType,
+                      id: itemHomeModel.homeId ?? "",
+                      type: itemHomeModel.homeType ?? "",
                     ),
                   );
                 },

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:islamforever/features/account/models/LoginUserModel.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
+import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
 import '../../../constants/constants.dart';
@@ -66,5 +67,42 @@ class DashboardProvider extends ChangeNotifier {
     }
     notifyListeners();
     return dashboardData;
+  }
+
+  Future<List<ItemHomeContentModel>> fetchSeeAllData(String Id) async {
+    List<ItemHomeContentModel> itemsList = [];
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.HOME_MORE_URL,
+        jsonEncode({'id': Id}),
+      );
+
+      if (response.status == 200) {
+        if (response.data["home_sections"] != null) {
+          List<dynamic> homeSecArray = response.data["home_sections"];
+          for (int i = 0; i < homeSecArray.length; i++) {
+            Map<String, dynamic> objJson = homeSecArray[i];
+            List<dynamic> homeContentArray = objJson["home_content"];
+            for (int j = 0; j < homeContentArray.length; j++) {
+              Map<String, dynamic> objJsonSec = homeContentArray[j];
+              ItemHomeContentModel itemHomeContent = ItemHomeContentModel(
+                videoId: objJsonSec["video_id"],
+                videoTitle: objJsonSec["video_title"].toString(),
+                videoImage: objJsonSec["video_image"].toString(),
+                videoType: objJsonSec["video_type"].toString(),
+                homeType: objJsonSec["video_type"].toString(),
+                isPremium: objJsonSec["video_access"] == "Paid",
+              );
+              itemsList.add(itemHomeContent);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+    notifyListeners();
+    return itemsList;
   }
 }

@@ -36,7 +36,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   int _selectedIndex = 0;
   DateTime? lastBackPressed;
   var _isLoading = false;
-  HomeDataModel? _homeDataModel = null;
 
   // List of screens for the bottom navigation
   final List<Widget> _screens = const [
@@ -60,8 +59,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       _isLoading = true; // Indicate loading
     });
 
-    _homeDataModel =
-        await dashboardProvider.fetchDashboardData(refresh: refresh);
+    await dashboardProvider.fetchDashboardData(refresh: refresh);
 
     setState(() {
       _isLoading = false; // Indicate loading
@@ -99,7 +97,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       onWillPop: () async {
         DateTime now = DateTime.now();
         if (lastBackPressed == null ||
-            now.difference(lastBackPressed!) > Duration(seconds: 2)) {
+            now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
           lastBackPressed = now;
           Fluttertoast.showToast(
             msg: 'Please click BACK again to exit',
@@ -123,7 +121,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 automaticallyImplyLeading: _isSearching,
                 leading: _isSearching
                     ? IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
                         onPressed: _clearSearch,
                       )
                     : null,
@@ -151,7 +149,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                       )
                     : Text(
                         getAppBarTitle(_selectedIndex),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -162,7 +160,8 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                     ? [
                         IconButton(
                           iconSize: 32.sp,
-                          icon: Icon(Icons.close_rounded, color: Colors.white),
+                          icon: const Icon(Icons.close_rounded,
+                              color: Colors.white),
                           onPressed: _clearSearch,
                         ),
                       ]
@@ -171,7 +170,8 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                           IconButton(
                             iconSize: 32.sp,
                             icon: Image(
-                              image: AssetImage('assets/images/ic_filter.png'),
+                              image: const AssetImage(
+                                  'assets/images/ic_filter.png'),
                               color: Colors.white,
                               width: 32.sp,
                               height: 32.sp,
@@ -182,7 +182,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                           ),
                         IconButton(
                           iconSize: 32.sp,
-                          icon: Icon(Icons.search, color: Colors.white),
+                          icon: const Icon(Icons.search, color: Colors.white),
                           onPressed: () {
                             setState(() {
                               _isSearching = true;
@@ -204,7 +204,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 child: _screens[_selectedIndex],
               ),
               if (_isLoading) // Show LoaderWidget if _isLoading is true
-                LoaderWidget(),
+                const LoaderWidget(),
             ],
           ),
         ),
@@ -270,7 +270,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image(
-                  image: AssetImage('assets/images/ic_home.png'),
+                  image: const AssetImage('assets/images/ic_home.png'),
                   width: 28,
                   height: 28,
                   color: _selectedIndex == 0 ? Colors.pink : Colors.grey,
@@ -293,7 +293,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image(
-                  image: AssetImage('assets/images/ic_watchlist.png'),
+                  image: const AssetImage('assets/images/ic_watchlist.png'),
                   width: 28,
                   height: 28,
                   color: _selectedIndex == 1 ? Colors.pink : Colors.grey,
@@ -461,7 +461,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(6.sp),
-                    child: Icon(
+                    child: const Icon(
                       Icons.close_rounded,
                       size: 28,
                       color: Colors.white,
@@ -676,7 +676,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                               });
                             },
                             style: OutlinedButton.styleFrom(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               side: const BorderSide(
                                   color: Colors.white), // White border
                               foregroundColor: Colors.white, // White text
@@ -702,7 +702,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                               onTap(); // Trigger the callback
                             },
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               backgroundColor:
                                   Colors.pink, // Filled button color
                               foregroundColor: Colors.white, // White text
