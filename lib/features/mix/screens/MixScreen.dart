@@ -65,6 +65,14 @@ class _MixscreenState extends State<Mixscreen> {
                                   url: item.showImage ?? "");
                             }),
                           // Sports Section
+                          if (DashboardProvider.selectedMixScreenContentType ==
+                              MediaContentType.sports)
+                            ...provider.itemsMixSportList.map((item) {
+                              return Customhorizontalcard(
+                                  isPremium: item.isPremium,
+                                  showTitle: true,
+                                  url: item.sportImage ?? "");
+                            }),
 
                           // Live Tv Section
                         ]),

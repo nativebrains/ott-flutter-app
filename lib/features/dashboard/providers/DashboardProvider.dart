@@ -5,6 +5,7 @@ import 'package:islamforever/features/account/models/LoginUserModel.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
+import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:islamforever/features/watchlist/models/ItemWatchListModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
@@ -34,6 +35,8 @@ class DashboardProvider extends ChangeNotifier {
   int mixMoviesPageIndex = 1;
   List<ItemShowModel> itemsMixShowsList = [];
   int mixShowsPageIndex = 1;
+  List<ItemSportModel> itemsMixSportList = [];
+  int mixSportPageIndex = 1;
 
   LoginUserModel? get loginUserModel => SharedPrefs.getLoginUserData();
 
@@ -189,6 +192,11 @@ class DashboardProvider extends ChangeNotifier {
         fetchMixTvShowsData();
         break;
       case MediaContentType.sports:
+        if (reset) {
+          itemsMixSportList = [];
+          mixSportPageIndex = 1;
+        }
+        fetchMixSportsData();
         break;
       case MediaContentType.liveTv:
         break;
@@ -253,5 +261,35 @@ class DashboardProvider extends ChangeNotifier {
     _isMixScreenLoading = false;
     notifyListeners();
     return itemsMixShowsList;
+  }
+
+  Future<List<ItemSportModel>> fetchMixSportsData() async {
+    _isMixScreenLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.SPORT_FILTER_URL,
+        jsonEncode({'cat_id': '', 'filter': 'new'}),
+        page: mixSportPageIndex,
+      );
+
+      if (response.status == 200) {
+        for (var item in response.data) {
+          ItemSportModel objItem = ItemSportModel(
+            sportId: item['sport_id'],
+            sportName: item['sport_title'],
+            sportImage: item['sport_image'],
+            isPremium: item['sport_access'] == 'Paid',
+          );
+          itemsMixSportList.add(objItem);
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchMixMoviesData";
+    }
+    _isMixScreenLoading = false;
+    notifyListeners();
+    return itemsMixSportList;
   }
 }
