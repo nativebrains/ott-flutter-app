@@ -100,7 +100,8 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
                 ],
               ),
             ),
-            if (_isLoading) // Show LoaderWidget if _isLoading is true
+            if (provider
+                .isWatchListScreenLoading) // Show LoaderWidget if _isLoading is true
               const LoaderWidget(),
           ],
         ),

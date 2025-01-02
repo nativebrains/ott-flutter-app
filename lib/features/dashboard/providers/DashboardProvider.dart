@@ -23,6 +23,9 @@ class DashboardProvider extends ChangeNotifier {
   bool _isHomeScreenLoading = false;
   bool get isHomeScreenLoading => _isHomeScreenLoading;
 
+  bool _isWatchListScreenLoading = false;
+  bool get isWatchListScreenLoading => _isWatchListScreenLoading;
+
   // Mix Screen Content
   bool _isMixScreenLoading = false;
   bool get isMixScreenLoading => _isMixScreenLoading;
@@ -49,7 +52,7 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<HomeDataModel?> fetchDashboardData({bool refresh = false}) async {
+  Future<HomeDataModel?> fetchDashboardHomeData({bool refresh = false}) async {
     if (!refresh) {
       final String? cachedDataString =
           await SharedPrefs.getCachedData(ApiEndpoints.HOME_URL);
@@ -138,6 +141,8 @@ class DashboardProvider extends ChangeNotifier {
         return itemsWatchListData;
       }
     }
+    _isWatchListScreenLoading = true;
+    notifyListeners();
 
     try {
       final response = await apiService.post(
@@ -158,6 +163,8 @@ class DashboardProvider extends ChangeNotifier {
       print("Error: $e");
       _statusMessage = "Server Error in fetchDashboardData";
     }
+
+    _isWatchListScreenLoading = false;
     notifyListeners();
     return itemsWatchListData;
   }

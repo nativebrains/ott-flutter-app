@@ -54,7 +54,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   }
 
   Future<void> _fetchData({bool refresh = false}) async {
-    await dashboardProvider.fetchDashboardData(refresh: refresh);
+    await dashboardProvider.fetchDashboardHomeData(refresh: refresh);
   }
 
   void _onItemTapped(int index) {
@@ -201,7 +201,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   Future<void> _refreshData() async {
     switch (_selectedIndex) {
       case 0:
-        await dashboardProvider.fetchDashboardData(refresh: true);
+        await dashboardProvider.fetchDashboardHomeData(refresh: true);
         break;
       case 1:
         await dashboardProvider.fetchMyWatchListData(refresh: true);
