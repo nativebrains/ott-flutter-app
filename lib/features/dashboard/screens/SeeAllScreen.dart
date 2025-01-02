@@ -70,20 +70,10 @@ class _SeeallscreenState extends State<Seeallscreen> {
     int currentIndex = 0;
 
     while (currentIndex < itemsList.length) {
-      int itemsPerRow = isMovieCase ? 3 : 2;
-
-      // Determine the number of items in the current row
-      int remainingItems = itemsList.length - currentIndex;
-      int currentRowItems =
-          remainingItems < itemsPerRow ? remainingItems : itemsPerRow;
-
       updatedItems.add(
         Row(
-          mainAxisAlignment: currentRowItems == 1
-              ? MainAxisAlignment.start // Align to start if only 1 item
-              : MainAxisAlignment.spaceBetween, // Distribute items otherwise
           children: List.generate(
-            itemsPerRow,
+            isMovieCase ? 3 : 2,
             (index) {
               if (currentIndex + index >= itemsList.length) {
                 return const SizedBox.shrink();
@@ -106,8 +96,7 @@ class _SeeallscreenState extends State<Seeallscreen> {
           ),
         ),
       );
-
-      currentIndex += itemsPerRow;
+      currentIndex += isMovieCase ? 3 : 2;
     }
 
     setState(() {
