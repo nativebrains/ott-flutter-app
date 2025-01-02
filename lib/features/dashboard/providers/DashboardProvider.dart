@@ -11,6 +11,7 @@ import '../../../constants/ApiEndpoints.dart';
 import '../../../constants/constants.dart';
 import '../../../core/services/ApiService.dart';
 import '../../../core/services/shared_preference.dart';
+import '../../mix/models/ItemShowModel.dart';
 import '../models/HomeDataModel.dart';
 
 class DashboardProvider extends ChangeNotifier {
@@ -31,6 +32,8 @@ class DashboardProvider extends ChangeNotifier {
   bool get isMixScreenLoading => _isMixScreenLoading;
   List<ItemMovieModel> itemsMixMoviesList = [];
   int mixMoviesPageIndex = 1;
+  List<ItemShowModel> itemsMixShowsList = [];
+  int mixShowsPageIndex = 1;
 
   LoginUserModel? get loginUserModel => SharedPrefs.getLoginUserData();
 
@@ -172,10 +175,18 @@ class DashboardProvider extends ChangeNotifier {
   void fetchMixScreenData({bool reset = false}) {
     switch (selectedMixScreenContentType) {
       case MediaContentType.movies:
-        if (reset) itemsMixMoviesList = [];
+        if (reset) {
+          itemsMixMoviesList = [];
+          mixMoviesPageIndex = 1;
+        }
         fetchMixMoviesData();
         break;
       case MediaContentType.tvShows:
+        if (reset) {
+          itemsMixShowsList = [];
+          mixShowsPageIndex = 1;
+        }
+        fetchMixTvShowsData();
         break;
       case MediaContentType.sports:
         break;
@@ -212,5 +223,35 @@ class DashboardProvider extends ChangeNotifier {
     _isMixScreenLoading = false;
     notifyListeners();
     return itemsMixMoviesList;
+  }
+
+  Future<List<ItemShowModel>> fetchMixTvShowsData() async {
+    _isMixScreenLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.SHOW_FILTER_URL,
+        jsonEncode({'lang_id': '', 'genre_id': '', 'filter': 'new'}),
+        page: mixShowsPageIndex,
+      );
+
+      if (response.status == 200) {
+        for (var item in response.data) {
+          ItemShowModel objItem = ItemShowModel(
+            showId: item['show_id'],
+            showName: item['show_title'],
+            showImage: item['show_poster'],
+            isPremium: item['show_access'] == 'Paid',
+          );
+          itemsMixShowsList.add(objItem);
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchMixMoviesData";
+    }
+    _isMixScreenLoading = false;
+    notifyListeners();
+    return itemsMixShowsList;
   }
 }

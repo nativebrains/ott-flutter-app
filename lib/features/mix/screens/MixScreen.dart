@@ -20,14 +20,9 @@ class Mixscreen extends StatefulWidget {
 }
 
 class _MixscreenState extends State<Mixscreen> {
-  late DashboardProvider _dashboardProvider;
-
-  List<int> _items = [1, 2, 3, 4, 5];
-
   @override
   void initState() {
     super.initState();
-    _dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
   }
 
   @override
@@ -59,7 +54,19 @@ class _MixscreenState extends State<Mixscreen> {
                               return Customverticalcard(
                                   isPremium: item.isPremium ?? false,
                                   url: item.movieImage ?? "");
-                            }).toList(),
+                            }),
+                          // Tv Shows Section
+                          if (DashboardProvider.selectedMixScreenContentType ==
+                              MediaContentType.tvShows)
+                            ...provider.itemsMixShowsList.map((item) {
+                              return Customhorizontalcard(
+                                  isPremium: item.isPremium,
+                                  showTitle: true,
+                                  url: item.showImage ?? "");
+                            }),
+                          // Sports Section
+
+                          // Live Tv Section
                         ]),
                   ],
                 ),
