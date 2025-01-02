@@ -26,7 +26,6 @@ class ApiService {
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
     _dio.interceptors
-      ..add(DataCleaningInterceptor())
       ..add(InterceptorsWrapper(
         onRequest: (options, handler) {
           // Determine the Content-Type based on the request data
@@ -60,7 +59,7 @@ class ApiService {
     }
   }
 
-  Future<ApiResponseModel> post(String path, dynamic data) async {
+  Future<ApiResponseModel> post(String path, dynamic data, {int? page}) async {
     try {
       Map<String, dynamic> jsonData;
       // Handle different types of data
@@ -82,9 +81,8 @@ class ApiService {
       // Send the POST request
       final response = await _dio.post(
         path,
-        data: FormData.fromMap({
-          'data': base64Data,
-        }),
+        data: FormData.fromMap(
+            {'data': base64Data, if (page != null) 'page': page}),
       );
 
       return ApiResponseModel.fromJson(response.data, response.statusCode);

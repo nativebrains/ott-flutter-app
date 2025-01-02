@@ -21,7 +21,11 @@ class ApiLoggerInterceptor extends InterceptorsWrapper {
         // Log the FormData fields
         print('FormData Fields:');
         formData.fields.forEach((field) {
-          print('${field.key}: ${API.fromBase64(field.value)}');
+          try {
+            print('${field.key}: ${API.fromBase64(field.value)}');
+          } catch (e) {
+            print('${field.key}: ${field.value}');
+          }
         });
 
         // Log the FormData files (just file names to keep it simple)

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:islamforever/features/account/models/LoginUserModel.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
+import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:islamforever/features/watchlist/models/ItemWatchListModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
@@ -36,6 +37,7 @@ class DashboardProvider extends ChangeNotifier {
   void setSelectedMixScreenContentType(MediaContentType contentType) {
     _selectedMixScreenContentType = contentType;
     notifyListeners();
+    fetchMixScreenData(contentType);
   }
 
   Future<HomeDataModel?> fetchDashboardData({bool refresh = false}) async {
@@ -144,5 +146,47 @@ class DashboardProvider extends ChangeNotifier {
     }
     notifyListeners();
     return itemsWatchListData;
+  }
+
+  void fetchMixScreenData(MediaContentType selectedMixScreenContentType) {
+    switch (selectedMixScreenContentType) {
+      case MediaContentType.movies:
+        fetchMixMoviesData();
+        break;
+      case MediaContentType.tvShows:
+        break;
+      case MediaContentType.sports:
+        break;
+      case MediaContentType.liveTv:
+        break;
+    }
+  }
+
+  Future<List<ItemMovieModel>> fetchMixMoviesData() async {
+    List<ItemMovieModel> itemsList = [];
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.MOVIE_FILTER_URL,
+        jsonEncode({'lang_id': '', 'genre_id': '', 'filter': 'new'}),
+        page: 1,
+      );
+
+      if (response.status == 200) {
+        for (var item in response.data) {
+          ItemMovieModel objItem = ItemMovieModel(
+            movieId: item['movie_id'],
+            movieName: item['movie_title'],
+            movieImage: item['movie_poster'],
+            isPremium: item['movie_access'] == 'Paid',
+          );
+          itemsList.add(objItem);
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchMixMoviesData";
+    }
+    notifyListeners();
+    return itemsList;
   }
 }
