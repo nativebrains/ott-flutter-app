@@ -23,6 +23,10 @@ class FilterUtil {
         .toList();
   }
 
+  static String? getFilterNameFromId(List<Filter> filters, String id) {
+    return filters.firstWhere((filter) => filter.filterId == id).filterName;
+  }
+
   static List<Filter> jsonToSelectList(String json) {
     List<Filter> list = jsonToList(json);
     return list.where((filter) => filter.isSelected).toList();

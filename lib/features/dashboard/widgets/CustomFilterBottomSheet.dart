@@ -31,19 +31,14 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   List<Filter> filterList = [];
   List<FilterType> filterOptionsList = [];
 
-  List<FilterType?> categories = []; //['Language', 'Genre', 'Order Type'];
+  List<FilterType?> categories = [];
   final Map<String, List<Filter>> options = {};
-  // 'Language': ['Hindi', 'English', 'French', 'Malayalam', 'Arabic'],
-  // 'Genre': ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
-  // 'Order Type': ['Pickup', 'Delivery', 'Dine-In'],
-  // 'Category': ['Empty1']
 
-// Current selected category
+  // Current selected category
   String selectedCategory = 'Order Type';
-// Selected radio button for "Order Type"
+  // Selected radio button for "Order Type"
   String selectedOrderType = 'NEWEST';
-
-// Selected checkboxes for other categories
+  // Selected checkboxes for other categories
   Map<String, Set<Filter>> selectedOptions = {
     'Language': {},
     'Genre': {},
@@ -59,7 +54,6 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
     filterOptionsList =
         FilterType.getFilterTypeListBySec(widget.filterTypeSec.filterType);
 
-    print(widget.filterData);
     initialiseData();
   }
 
@@ -87,6 +81,58 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
         options[key] = [filter];
       } else {
         options[key]!.add(filter);
+      }
+    }
+
+    // Restore filter data
+    restoreSelections();
+  }
+
+  void restoreSelections() {
+    if (widget.filterData.isNotEmpty) {
+      Map<String, dynamic> filterDataMap = widget.filterData;
+      List<FilterType> listType =
+          FilterType.getFilterTypeListBySec(widget.filterTypeSec.filterType);
+
+      for (FilterType filterType in listType) {
+        String parameterName = filterType.getFilterTypeParameterName() ?? '';
+        if (filterDataMap.containsKey(parameterName)) {
+          String ids = filterDataMap[parameterName];
+          List<String> idList = ids.split(',');
+
+          if (filterType.filterType == FilterType.TY_ORDER_TYPE) {
+            selectedOrderType = FilterUtil.getFilterNameFromId(
+                FilterDataModel.listOfOrderType(), idList.first)!;
+          } else {
+            String key;
+            switch (filterType.filterType) {
+              case FilterType.TY_LANGUAGE:
+                key = 'Language';
+                break;
+              case FilterType.TY_GENRE:
+                key = 'Genre';
+                break;
+              case FilterType.TY_CATEGORY_SP:
+              case FilterType.TY_CATEGORY_TV:
+                key = 'Category';
+                break;
+              default:
+                key = 'Order Type';
+            }
+            for (String id in idList) {
+              List<Filter> filters = options[key]!
+                  .where((filter) => filter.filterId == id)
+                  .toList();
+              if (filters.isNotEmpty) {
+                if (!selectedOptions.containsKey(key)) {
+                  selectedOptions[key] = filters.toSet();
+                } else {
+                  selectedOptions[key]!.addAll(filters);
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
