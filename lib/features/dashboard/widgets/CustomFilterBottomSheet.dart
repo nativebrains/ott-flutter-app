@@ -11,12 +11,12 @@ import '../../mix/models/FilterUtil.dart';
 import '../providers/DashboardProvider.dart';
 
 class Customfilterbottomsheet extends StatefulWidget {
-  final VoidCallback onTap;
+  final Function(Map<String, dynamic>) onFilterSelected;
   final MediaContentType filterTypeSec;
-  final String filterData;
+  final Map<String, dynamic> filterData;
   const Customfilterbottomsheet({
     super.key,
-    required this.onTap,
+    required this.onFilterSelected,
     required this.filterTypeSec,
     required this.filterData,
   });
@@ -59,6 +59,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
     filterOptionsList =
         FilterType.getFilterTypeListBySec(widget.filterTypeSec.filterType);
 
+    print(widget.filterData);
     initialiseData();
   }
 
@@ -268,9 +269,8 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                         onPressed: () {
                           Map<String, dynamic> selectedData = getSelectedData();
                           print(selectedData);
-                          // Perform the apply action
-                          Navigator.of(context).pop(); // Close the bottom sheet
-                          widget.onTap(); // Trigger the callback
+                          widget.onFilterSelected(selectedData);
+                          Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(16),

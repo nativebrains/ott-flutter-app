@@ -7,6 +7,16 @@ class FilterUtil {
     return jsonEncode(list.map((e) => e.toJson()).toList());
   }
 
+  static String listToJsons(List<dynamic> list) {
+    return jsonEncode(list.map((e) {
+      if (e is Filter) {
+        return e.toJson();
+      } else {
+        return e;
+      }
+    }).toList());
+  }
+
   static List<Filter> jsonToList(String json) {
     return (jsonDecode(json) as List<dynamic>)
         .map((e) => Filter.fromJson(e as Map<String, dynamic>))

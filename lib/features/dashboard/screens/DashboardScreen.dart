@@ -484,7 +484,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     );
   }
 
-  var filterData = "";
+  Map<String, dynamic> filterData = {};
 
   void showFilterBottomSheet(BuildContext context, VoidCallback onTap) {
     showModalBottomSheet(
@@ -496,7 +496,14 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       ),
       builder: (BuildContext context) {
         return Customfilterbottomsheet(
-          onTap: onTap,
+          onFilterSelected: (data) {
+            setState(() {
+              filterData = data;
+              print("saved");
+              print(filterData);
+            });
+            onTap();
+          },
           filterTypeSec: DashboardProvider.selectedMixScreenContentType,
           filterData: filterData,
         );
