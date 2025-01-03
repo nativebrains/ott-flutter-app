@@ -231,6 +231,8 @@ class DashboardProvider extends ChangeNotifier {
           );
           itemsMixMoviesList.add(objItem);
         }
+        _hasMoreMovies = response.load_more;
+        mixMoviesPageIndex++;
       }
     } catch (e) {
       print("Error: $e");
@@ -261,6 +263,8 @@ class DashboardProvider extends ChangeNotifier {
           );
           itemsMixShowsList.add(objItem);
         }
+        _hasMoreShows = response.load_more;
+        mixShowsPageIndex++;
       }
     } catch (e) {
       print("Error: $e");
@@ -291,6 +295,8 @@ class DashboardProvider extends ChangeNotifier {
           );
           itemsMixSportList.add(objItem);
         }
+        _hasMoreSports = response.load_more;
+        mixSportPageIndex++;
       }
     } catch (e) {
       print("Error: $e");
@@ -321,6 +327,8 @@ class DashboardProvider extends ChangeNotifier {
           );
           itemsMixLiveTvList.add(objItem);
         }
+        _hasMoreLiveTv = response.load_more;
+        mixLiveTvPageIndex++;
       }
     } catch (e) {
       print("Error: $e");
@@ -329,5 +337,25 @@ class DashboardProvider extends ChangeNotifier {
     _isMixScreenLoading = false;
     notifyListeners();
     return itemsMixLiveTvList;
+  }
+
+  bool _hasMoreMovies = true;
+  bool _hasMoreShows = true;
+  bool _hasMoreSports = true;
+  bool _hasMoreLiveTv = true;
+
+  bool hasMoreData() {
+    switch (_selectedMixScreenContentType) {
+      case MediaContentType.movies:
+        return _hasMoreMovies;
+      case MediaContentType.tvShows:
+        return _hasMoreShows;
+      case MediaContentType.sports:
+        return _hasMoreSports;
+      case MediaContentType.liveTv:
+        return _hasMoreLiveTv;
+      default:
+        return false;
+    }
   }
 }

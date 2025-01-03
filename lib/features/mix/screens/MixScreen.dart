@@ -25,9 +25,29 @@ class Mixscreen extends StatefulWidget {
 }
 
 class _MixscreenState extends State<Mixscreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      // User is near the bottom of the scrollable area
+      final provider = Provider.of<DashboardProvider>(context, listen: false);
+      if (!provider.isMixScreenLoading && provider.hasMoreData()) {
+        provider.fetchMixScreenData();
+      }
+    }
   }
 
   @override
@@ -43,6 +63,7 @@ class _MixscreenState extends State<Mixscreen> {
         body: Stack(
           children: [
             SingleChildScrollView(
+              controller: _scrollController,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 12.sp,
