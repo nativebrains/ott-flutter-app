@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:provider/provider.dart';
 
@@ -29,18 +30,16 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   List<FilterType> filterOptionsList = [];
 
   List<String?> categories = []; //['Language', 'Genre', 'Order Type'];
-  final Map<String, List<String>> options = {
-    'Language': ['Hindi', 'English', 'French', 'Malayalam', 'Arabic'],
-    'Genre': ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
-    'Order Type': ['Pickup', 'Delivery', 'Dine-In'],
-    'Category': ['Empty1']
-  };
+  final Map<String, List<String>> options = {};
+  // 'Language': ['Hindi', 'English', 'French', 'Malayalam', 'Arabic'],
+  // 'Genre': ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
+  // 'Order Type': ['Pickup', 'Delivery', 'Dine-In'],
+  // 'Category': ['Empty1']
 
 // Current selected category
   String selectedCategory = 'Order Type';
-
 // Selected radio button for "Order Type"
-  String selectedOrderType = 'Pickup';
+  String selectedOrderType = 'NEWEST';
 
 // Selected checkboxes for other categories
   Map<String, Set<String>> selectedOptions = {
@@ -58,9 +57,37 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
     filterOptionsList =
         FilterType.getFilterTypeListBySec(widget.filterTypeSec.filterType);
 
+    initialiseData();
+  }
+
+  void initialiseData() {
     categories = filterOptionsList
         .map((filterType) => filterType.filterTypeName)
         .toList();
+
+    for (var filter in filterList) {
+      String key;
+      switch (filter.filterType) {
+        case FilterType.TY_LANGUAGE:
+          key = 'Language';
+          break;
+        case FilterType.TY_GENRE:
+          key = 'Genre';
+          break;
+        case FilterType.TY_CATEGORY_SP:
+        case FilterType.TY_CATEGORY_TV:
+          key = 'Category';
+          break;
+        default:
+          key = 'Order Type';
+      }
+
+      if (!options.containsKey(key)) {
+        options[key] = [filter.filterName!];
+      } else {
+        options[key]!.add(filter.filterName!);
+      }
+    }
   }
 
   @override
@@ -210,8 +237,9 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                             selectedOptions = {
                               'Language': {},
                               'Genre': {},
+                              'Category': {},
                             };
-                            selectedOrderType = 'Pickup';
+                            selectedOrderType = 'NEWEST';
                           });
                         },
                         style: OutlinedButton.styleFrom(
@@ -274,9 +302,14 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
           },
           activeColor: Colors.pink,
         ),
-        CustomText(
-          text: title,
-          color: Colors.white,
+        Flexible(
+          child: CustomText(
+            text: title,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(
+          width: 4.sp,
         ),
       ],
     );
@@ -292,9 +325,11 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
           onChanged: onChanged,
           activeColor: Colors.pink,
         ),
-        CustomText(
-          text: title,
-          color: Colors.white,
+        Flexible(
+          child: CustomText(
+            text: title,
+            color: Colors.white,
+          ),
         ),
       ],
     );
