@@ -263,6 +263,8 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
+                          Map<String, dynamic> selectedData = getSelectedData();
+                          print(selectedData);
                           // Perform the apply action
                           Navigator.of(context).pop(); // Close the bottom sheet
                           widget.onTap(); // Trigger the callback
@@ -333,5 +335,21 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
         ),
       ],
     );
+  }
+
+  Map<String, dynamic> getSelectedData() {
+    Map<String, dynamic> data = {};
+
+    // Add selected order type
+    data['Order Type'] = selectedOrderType;
+
+    // Add selected options for other categories
+    selectedOptions.forEach((category, selectedItems) {
+      if (selectedItems.isNotEmpty) {
+        data[category] = selectedItems.toList();
+      }
+    });
+
+    return data;
   }
 }
