@@ -22,7 +22,8 @@ class ApiLoggerInterceptor extends InterceptorsWrapper {
         print('FormData Fields:');
         formData.fields.forEach((field) {
           try {
-            print('${field.key}: ${API.fromBase64(field.value)}');
+            print("Original ${field.key}: ${field.value}");
+            print('Decoded ${field.key}: ${API.fromBase64(field.value)}');
           } catch (e) {
             print('${field.key}: ${field.value}');
           }

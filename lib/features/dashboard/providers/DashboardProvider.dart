@@ -13,6 +13,7 @@ import '../../../constants/ApiEndpoints.dart';
 import '../../../constants/constants.dart';
 import '../../../core/services/ApiService.dart';
 import '../../../core/services/shared_preference.dart';
+import '../../mix/models/FilterDataModel.dart';
 import '../../mix/models/ItemShowModel.dart';
 import '../models/HomeDataModel.dart';
 
@@ -21,6 +22,7 @@ class DashboardProvider extends ChangeNotifier {
   static String? _statusMessage;
   static MediaContentType? _selectedMixScreenContentType;
   HomeDataModel? dashboardData;
+  FilterDataModel? filterDataModel;
   List<ItemWatchListModel> itemsWatchListData = [];
 
   bool _isHomeScreenLoading = false;
@@ -62,6 +64,9 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   Future<HomeDataModel?> fetchDashboardHomeData({bool refresh = false}) async {
+    // Fetch Bottom Filter Sheet Data
+    fetchFilterData(refresh: refresh);
+
     if (!refresh) {
       final String? cachedDataString =
           await SharedPrefs.getCachedData(ApiEndpoints.HOME_URL);
@@ -357,5 +362,40 @@ class DashboardProvider extends ChangeNotifier {
       default:
         return false;
     }
+  }
+
+  Future<void> fetchFilterData({bool refresh = false}) async {
+    if (!refresh) {
+      final String? cachedDataString =
+          await SharedPrefs.getCachedData(ApiEndpoints.FILTER_LIST_URL);
+      if (cachedDataString != null) {
+        // Return cached data if available
+        final Map<String, dynamic> data = json.decode(cachedDataString);
+        filterDataModel = FilterDataModel.fromJson(data);
+        notifyListeners();
+        return;
+      }
+    }
+
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.FILTER_LIST_URL,
+        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+      );
+
+      if (response.status == 200) {
+        // Cache the fresh data
+        await SharedPrefs.cacheData(
+            json.encode(response.data), ApiEndpoints.FILTER_LIST_URL);
+        final Map<String, dynamic> data =
+            json.decode(json.encode(response.data));
+        filterDataModel = FilterDataModel.fromJson(data);
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchFilterData";
+    }
+
+    notifyListeners();
   }
 }

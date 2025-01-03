@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
+import 'package:provider/provider.dart';
 
 import '../../../widgets/custom/custom_text.dart';
+import '../providers/DashboardProvider.dart';
 
 class Customfilterbottomsheet extends StatefulWidget {
   final VoidCallback onTap;
@@ -20,6 +22,7 @@ class Customfilterbottomsheet extends StatefulWidget {
 }
 
 class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
+  late DashboardProvider dashboardProvider;
   final List<String> categories = ['Language', 'Genre', 'Order Type'];
   final Map<String, List<String>> options = {
     'Language': ['Hindi', 'English', 'French', 'Malayalam', 'Arabic'],
@@ -38,6 +41,13 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
     'Language': {},
     'Genre': {},
   };
+
+  @override
+  void initState() {
+    super.initState();
+    dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    print(dashboardProvider.filterDataModel?.toJson());
+  }
 
   @override
   Widget build(BuildContext context) {
