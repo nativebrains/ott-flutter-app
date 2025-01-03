@@ -18,4 +18,19 @@ enum MediaContentType {
         return '';
     }
   }
+
+  int get filterType {
+    switch (this) {
+      case MediaContentType.movies:
+        return 1;
+      case MediaContentType.tvShows:
+        return 2;
+      case MediaContentType.sports:
+        return 4;
+      case MediaContentType.liveTv:
+        return 3;
+      default:
+        return 0;
+    }
+  }
 }

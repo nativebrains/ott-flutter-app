@@ -1,3 +1,6 @@
+import 'package:islamforever/features/mix/models/Filter.dart';
+import 'package:islamforever/features/mix/models/FilterType.dart';
+
 class FilterDataModel {
   List<LanguageModel> language;
   List<GenreModel> genre;
@@ -33,6 +36,72 @@ class FilterDataModel {
       'sportsCategory': sportsCategory.map((e) => e.toJson()).toList(),
       'tvCategory': tvCategory.map((e) => e.toJson()).toList(),
     };
+  }
+
+  List<Filter> getCombinedFilters() {
+    List<Filter> combinedFilters = [];
+
+    for (var language in language) {
+      combinedFilters.add(Filter(
+        filterId: language.languageId.toString(),
+        filterName: language.languageName,
+        filterType: FilterType.TY_LANGUAGE,
+      ));
+    }
+
+    for (var genre in genre) {
+      combinedFilters.add(Filter(
+        filterId: genre.genreId.toString(),
+        filterName: genre.genreName,
+        filterType: FilterType.TY_GENRE,
+      ));
+    }
+
+    for (var category in sportsCategory) {
+      combinedFilters.add(Filter(
+        filterId: category.categoryId.toString(),
+        filterName: category.categoryName,
+        filterType: FilterType.TY_CATEGORY_SP,
+      ));
+    }
+
+    for (var category in tvCategory) {
+      combinedFilters.add(Filter(
+        filterId: category.categoryId.toString(),
+        filterName: category.categoryName,
+        filterType: FilterType.TY_CATEGORY_TV,
+      ));
+    }
+
+    combinedFilters.addAll(listOfOrderType());
+
+    return combinedFilters;
+  }
+
+  List<Filter> listOfOrderType() {
+    return [
+      Filter(
+        filterId: 'new',
+        filterName: 'NEWEST',
+        filterType: FilterType.TY_ORDER_TYPE,
+        isSelected: true,
+      ),
+      Filter(
+        filterId: 'old',
+        filterName: 'OLDEST',
+        filterType: FilterType.TY_ORDER_TYPE,
+      ),
+      Filter(
+        filterId: 'alpha',
+        filterName: 'A to Z',
+        filterType: FilterType.TY_ORDER_TYPE,
+      ),
+      Filter(
+        filterId: 'rand',
+        filterName: 'RANDOM',
+        filterType: FilterType.TY_ORDER_TYPE,
+      ),
+    ];
   }
 }
 

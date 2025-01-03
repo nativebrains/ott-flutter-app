@@ -3,6 +3,8 @@ import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/custom/custom_text.dart';
+import '../../mix/models/Filter.dart';
+import '../../mix/models/FilterType.dart';
 import '../providers/DashboardProvider.dart';
 
 class Customfilterbottomsheet extends StatefulWidget {
@@ -23,15 +25,19 @@ class Customfilterbottomsheet extends StatefulWidget {
 
 class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   late DashboardProvider dashboardProvider;
-  final List<String> categories = ['Language', 'Genre', 'Order Type'];
+  List<Filter> filterList = [];
+  List<FilterType> filterOptionsList = [];
+
+  List<String?> categories = []; //['Language', 'Genre', 'Order Type'];
   final Map<String, List<String>> options = {
     'Language': ['Hindi', 'English', 'French', 'Malayalam', 'Arabic'],
     'Genre': ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
     'Order Type': ['Pickup', 'Delivery', 'Dine-In'],
+    'Category': ['Empty1']
   };
 
 // Current selected category
-  String selectedCategory = 'Language';
+  String selectedCategory = 'Order Type';
 
 // Selected radio button for "Order Type"
   String selectedOrderType = 'Pickup';
@@ -40,13 +46,21 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   Map<String, Set<String>> selectedOptions = {
     'Language': {},
     'Genre': {},
+    'Category': {},
   };
 
   @override
   void initState() {
     super.initState();
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    print(dashboardProvider.filterDataModel?.toJson());
+    // initialise all filters in the list
+    filterList = dashboardProvider.filterDataModel?.getCombinedFilters() ?? [];
+    filterOptionsList =
+        FilterType.getFilterTypeListBySec(widget.filterTypeSec.filterType);
+
+    categories = filterOptionsList
+        .map((filterType) => filterType.filterTypeName)
+        .toList();
   }
 
   @override
@@ -108,7 +122,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                           return GestureDetector(
                             onTap: () {
                               setBottomSheetState(() {
-                                selectedCategory = category;
+                                selectedCategory = category ?? "";
                               });
                             },
                             child: Container(
@@ -118,7 +132,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                                   ? Colors.grey[800]
                                   : Colors.transparent,
                               child: Text(
-                                category,
+                                category ?? "",
                                 style: TextStyle(
                                   color: selectedCategory == category
                                       ? Colors.white
