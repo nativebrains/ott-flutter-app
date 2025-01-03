@@ -29,8 +29,8 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   List<Filter> filterList = [];
   List<FilterType> filterOptionsList = [];
 
-  List<String?> categories = []; //['Language', 'Genre', 'Order Type'];
-  final Map<String, List<String>> options = {};
+  List<FilterType?> categories = []; //['Language', 'Genre', 'Order Type'];
+  final Map<String, List<Filter>> options = {};
   // 'Language': ['Hindi', 'English', 'French', 'Malayalam', 'Arabic'],
   // 'Genre': ['Action', 'Comedy', 'Drama', 'Horror', 'Romance'],
   // 'Order Type': ['Pickup', 'Delivery', 'Dine-In'],
@@ -42,7 +42,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   String selectedOrderType = 'NEWEST';
 
 // Selected checkboxes for other categories
-  Map<String, Set<String>> selectedOptions = {
+  Map<String, Set<Filter>> selectedOptions = {
     'Language': {},
     'Genre': {},
     'Category': {},
@@ -61,9 +61,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   }
 
   void initialiseData() {
-    categories = filterOptionsList
-        .map((filterType) => filterType.filterTypeName)
-        .toList();
+    categories = filterOptionsList;
 
     for (var filter in filterList) {
       String key;
@@ -83,9 +81,9 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
       }
 
       if (!options.containsKey(key)) {
-        options[key] = [filter.filterName!];
+        options[key] = [filter];
       } else {
-        options[key]!.add(filter.filterName!);
+        options[key]!.add(filter);
       }
     }
   }
@@ -149,19 +147,22 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                           return GestureDetector(
                             onTap: () {
                               setBottomSheetState(() {
-                                selectedCategory = category ?? "";
+                                selectedCategory =
+                                    category.filterTypeName ?? "";
                               });
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16.0, horizontal: 12),
-                              color: selectedCategory == category
-                                  ? Colors.grey[800]
-                                  : Colors.transparent,
+                              color:
+                                  selectedCategory == category!.filterTypeName
+                                      ? Colors.grey[800]
+                                      : Colors.transparent,
                               child: Text(
-                                category ?? "",
+                                category.filterTypeName ?? "",
                                 style: TextStyle(
-                                  color: selectedCategory == category
+                                  color: selectedCategory ==
+                                          category.filterTypeName
                                       ? Colors.white
                                       : Colors.grey,
                                   fontWeight: FontWeight.bold,
@@ -185,7 +186,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                           if (selectedCategory == 'Order Type') {
                             // Show radio buttons for Order Type
                             return _buildRadioItem(
-                              item,
+                              item.filterName ?? "",
                               selectedOrderType,
                               (value) {
                                 setBottomSheetState(() {
@@ -294,7 +295,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   }
 
   Widget _buildCheckboxItem(
-      String title, Set<String> selectedItems, Function(bool) onChanged) {
+      Filter title, Set<Filter> selectedItems, Function(bool) onChanged) {
     return Row(
       children: [
         Checkbox(
@@ -306,7 +307,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
         ),
         Flexible(
           child: CustomText(
-            text: title,
+            text: title.filterName ?? "",
             color: Colors.white,
           ),
         ),
