@@ -3,12 +3,14 @@ import 'package:islamforever/features/mix/models/Filter.dart';
 import 'package:islamforever/features/mix/models/FilterType.dart';
 
 class FilterUtil {
-  static List<Filter> jsonToList(String json) {
-    return jsonDecode(json).map((e) => Filter.fromJson(e)).toList();
-  }
-
   static String listToJson(List<Filter> list) {
     return jsonEncode(list.map((e) => e.toJson()).toList());
+  }
+
+  static List<Filter> jsonToList(String json) {
+    return (jsonDecode(json) as List<dynamic>)
+        .map((e) => Filter.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   static List<Filter> jsonToSelectList(String json) {
@@ -31,5 +33,9 @@ class FilterUtil {
         .map((filter) => filter.getFilterId().toString())
         .toList();
     return ids.join(',');
+  }
+
+  static String? getFilterIdFromName(List<Filter> filters, String name) {
+    return filters.firstWhere((filter) => filter.filterName == name).filterId;
   }
 }

@@ -78,7 +78,7 @@ class FilterDataModel {
     return combinedFilters;
   }
 
-  List<Filter> listOfOrderType() {
+  static List<Filter> listOfOrderType() {
     return [
       Filter(
         filterId: 'new',

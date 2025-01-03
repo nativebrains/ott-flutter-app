@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
+import 'package:islamforever/features/mix/models/FilterDataModel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/custom/custom_text.dart';
 import '../../mix/models/Filter.dart';
 import '../../mix/models/FilterType.dart';
+import '../../mix/models/FilterUtil.dart';
 import '../providers/DashboardProvider.dart';
 
 class Customfilterbottomsheet extends StatefulWidget {
@@ -339,17 +341,31 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
   }
 
   Map<String, dynamic> getSelectedData() {
-    Map<String, dynamic> data = {};
+    List<Filter> selectedFilters = [];
 
     // Add selected order type
-    data['Order Type'] = selectedOrderType;
+
+    Filter filter = Filter(
+      filterId: FilterUtil.getFilterIdFromName(
+          FilterDataModel.listOfOrderType(), selectedOrderType),
+      filterName: selectedOrderType,
+      filterType: FilterType.TY_ORDER_TYPE,
+      isSelected: true,
+    );
+    selectedFilters.add(filter);
 
     // Add selected options for other categories
     selectedOptions.forEach((category, selectedItems) {
-      if (selectedItems.isNotEmpty) {
-        data[category] = selectedItems.toList();
+      for (var item in selectedItems) {
+        item.isSelected = true;
+        selectedFilters.add(item);
       }
     });
+
+    String filterData = FilterUtil.listToJson(selectedFilters);
+    Map<String, dynamic> data = {};
+    FilterUtil.jsonForParameter(FilterUtil.jsonToSelectList(filterData), data,
+        widget.filterTypeSec.filterType);
 
     return data;
   }
