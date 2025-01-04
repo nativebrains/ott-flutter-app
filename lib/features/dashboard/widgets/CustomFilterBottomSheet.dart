@@ -4,7 +4,9 @@ import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/mix/models/FilterDataModel.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants/error_message.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../authentication/providers/AuthenticationProvider.dart';
 import '../../mix/models/Filter.dart';
 import '../../mix/models/FilterType.dart';
 import '../../mix/models/FilterUtil.dart';
@@ -291,6 +293,8 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                             };
                             selectedOrderType = 'NEWEST';
                           });
+                          showCustomToast(context, "Filters Cleared! Apply Now",
+                              backgroudnColor: Colors.green);
                         },
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.all(16),

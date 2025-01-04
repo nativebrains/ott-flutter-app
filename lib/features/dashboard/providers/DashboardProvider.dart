@@ -32,6 +32,8 @@ class DashboardProvider extends ChangeNotifier {
   bool get isWatchListScreenLoading => _isWatchListScreenLoading;
 
   // Mix Screen Content
+  Map<String, dynamic> _filterData = {};
+  Map<String, dynamic> get getfilterData => _filterData;
   bool _isMixScreenLoading = false;
   bool get isMixScreenLoading => _isMixScreenLoading;
   List<ItemMovieModel> itemsMixMoviesList = [];
@@ -59,6 +61,13 @@ class DashboardProvider extends ChangeNotifier {
 
   void setSelectedMixScreenContentType(MediaContentType contentType) {
     _selectedMixScreenContentType = contentType;
+    _filterData = {};
+    fetchMixScreenData(reset: true);
+    notifyListeners();
+  }
+
+  void setFilterDataAndRefresh(Map<String, dynamic> filterData) {
+    _filterData = filterData;
     fetchMixScreenData(reset: true);
     notifyListeners();
   }
@@ -222,7 +231,13 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.MOVIE_FILTER_URL,
-        jsonEncode({'lang_id': '', 'genre_id': '', 'filter': 'new'}),
+        jsonEncode(
+          {
+            'lang_id': _filterData['lang_id'] ?? '',
+            'genre_id': _filterData['genre_id'] ?? '',
+            'filter': _filterData['filter'] ?? 'new',
+          },
+        ),
         page: mixMoviesPageIndex,
       );
 
@@ -254,7 +269,13 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.SHOW_FILTER_URL,
-        jsonEncode({'lang_id': '', 'genre_id': '', 'filter': 'new'}),
+        jsonEncode(
+          {
+            'lang_id': _filterData['lang_id'] ?? '',
+            'genre_id': _filterData['genre_id'] ?? '',
+            'filter': _filterData['filter'] ?? 'new',
+          },
+        ),
         page: mixShowsPageIndex,
       );
 
@@ -286,7 +307,12 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.SPORT_FILTER_URL,
-        jsonEncode({'cat_id': '', 'filter': 'new'}),
+        jsonEncode(
+          {
+            'cat_id': _filterData['cat_id'] ?? '',
+            'filter': _filterData['filter'] ?? 'new',
+          },
+        ),
         page: mixSportPageIndex,
       );
 
@@ -318,7 +344,12 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.TV_FILTER_URL,
-        jsonEncode({'cat_id': '', 'filter': 'new'}),
+        jsonEncode(
+          {
+            'cat_id': _filterData['cat_id'] ?? '',
+            'filter': _filterData['filter'] ?? 'new',
+          },
+        ),
         page: mixLiveTvPageIndex,
       );
 
