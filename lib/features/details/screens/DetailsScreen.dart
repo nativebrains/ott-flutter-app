@@ -672,6 +672,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                           "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg",
                       title: null,
                       id: null,
+                      mediaContentType: MediaContentType.getMediaType(""),
                     )),
               ),
             ],

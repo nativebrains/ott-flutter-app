@@ -94,7 +94,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 2,
-            backgroundColor: ColorCode.shadowColor,
+            backgroundColor: ColorCode.themeOrangePinkStart,
             textColor: Colors.white,
             fontSize: 15.sp,
           );

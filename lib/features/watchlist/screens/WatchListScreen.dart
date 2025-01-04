@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/watchlist/models/ItemWatchListModel.dart';
 import 'package:provider/provider.dart';
 
@@ -94,6 +95,8 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
                                 url: item.postImage ?? "",
                                 id: item.postId,
                                 title: item.postTitle,
+                                mediaContentType: MediaContentType.getMediaType(
+                                    item.postType.toString()),
                               ),
                             );
                           }).toList(),

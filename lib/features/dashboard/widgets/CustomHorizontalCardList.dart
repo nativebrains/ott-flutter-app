@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -41,6 +42,8 @@ class _CustomhorizontalcardlistState extends State<Customhorizontalcardlist> {
                   url: entry.value.videoImage ?? "",
                   id: entry.value.videoId,
                   title: entry.value.videoTitle,
+                  mediaContentType: MediaContentType.getMediaType(
+                      entry.value.videoType.toString()),
                 ));
           }).toList(),
         ),

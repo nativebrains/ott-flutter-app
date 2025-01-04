@@ -257,6 +257,7 @@ class _SearchscreenState extends State<Searchscreen> {
               url: item.showImage ?? "",
               id: item.showId,
               title: item.showName,
+              mediaContentType: item.mediaContentType,
             ),
           ),
         );
@@ -283,6 +284,7 @@ class _SearchscreenState extends State<Searchscreen> {
               url: item.sportImage ?? "",
               id: item.sportId,
               title: item.sportName,
+              mediaContentType: item.mediaContentType,
             ),
           ),
         );
@@ -296,6 +298,7 @@ class _SearchscreenState extends State<Searchscreen> {
               url: item.tvImage ?? "",
               id: item.tvId,
               title: item.tvName,
+              mediaContentType: item.mediaContentType,
             ),
           ),
         );

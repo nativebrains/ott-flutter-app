@@ -97,6 +97,8 @@ class _SeeallscreenState extends State<Seeallscreen> {
                 url: item.videoImage ?? "",
                 id: item.videoId,
                 title: item.videoTitle,
+                mediaContentType:
+                    MediaContentType.getMediaType(item.videoType.toString()),
               ),
             );
           }

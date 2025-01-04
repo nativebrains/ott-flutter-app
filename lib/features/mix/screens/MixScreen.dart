@@ -129,6 +129,7 @@ class _MixscreenState extends State<Mixscreen> {
           url: item.showImage ?? "",
           id: item.showId,
           title: item.showName,
+          mediaContentType: item.mediaContentType,
         );
       } else if (item is ItemSportModel) {
         return Customhorizontalcard(
@@ -137,6 +138,7 @@ class _MixscreenState extends State<Mixscreen> {
           url: item.sportImage ?? "",
           id: item.sportId,
           title: item.sportName,
+          mediaContentType: item.mediaContentType,
         );
       } else if (item is ItemLiveTVModel) {
         return Customhorizontalcard(
@@ -145,6 +147,7 @@ class _MixscreenState extends State<Mixscreen> {
           url: item.tvImage ?? "",
           id: item.tvId,
           title: item.tvName,
+          mediaContentType: item.mediaContentType,
         );
       } else {
         return Container();
