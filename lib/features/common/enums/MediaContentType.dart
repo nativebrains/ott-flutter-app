@@ -33,4 +33,19 @@ enum MediaContentType {
         return 0;
     }
   }
+
+  static MediaContentType? getMediaType(String type) {
+    switch (type.toLowerCase()) {
+      case 'movies':
+        return MediaContentType.movies;
+      case 'shows':
+        return MediaContentType.tvShows;
+      case 'sports':
+        return MediaContentType.sports;
+      case 'livetv':
+        return MediaContentType.liveTv;
+      default:
+        return null;
+    }
+  }
 }
