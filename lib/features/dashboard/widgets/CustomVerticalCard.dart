@@ -28,7 +28,7 @@ class Customverticalcard extends StatelessWidget {
           context,
           RouteConstantName.detailsScreen,
           arguments: DetailsScreenArguments(
-            title: "Movies",
+            id: id.toString(),
             mediaContentType: MediaContentType.movies,
           ),
         );

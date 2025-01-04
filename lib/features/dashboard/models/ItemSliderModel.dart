@@ -1,3 +1,5 @@
+import '../../common/enums/MediaContentType.dart';
+
 class ItemSliderModel {
   final String? sliderTitle;
   final String? sliderType;
@@ -6,6 +8,7 @@ class ItemSliderModel {
   final String? videoAccess;
   final String? langCatName;
   final bool isPremium;
+  final MediaContentType mediaContentType;
 
   ItemSliderModel({
     this.sliderTitle,
@@ -15,6 +18,7 @@ class ItemSliderModel {
     this.videoAccess,
     this.langCatName,
     this.isPremium = false,
+    this.mediaContentType = MediaContentType.slider,
   });
 
   factory ItemSliderModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,8 @@ class ItemSliderModel {
       videoAccess: json['video_access'] ?? '',
       langCatName: json['lang_cat_name'] ?? '',
       isPremium: json['video_access'] == 'Paid',
+      mediaContentType:
+          MediaContentType.getMediaType(json['slider_type'] ?? 'sports')!,
     );
   }
 

@@ -1,3 +1,5 @@
+import '../../common/enums/MediaContentType.dart';
+
 class ItemSportModel {
   int? sportId;
   String? sportName;
@@ -24,6 +26,7 @@ class ItemSportModel {
   String? subTitleUrl3;
   String? sportShareLink;
   String? sportView;
+  final MediaContentType mediaContentType = MediaContentType.sports;
 
   ItemSportModel({
     this.sportId,

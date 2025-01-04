@@ -1,3 +1,5 @@
+import '../../common/enums/MediaContentType.dart';
+
 class ItemShowModel {
   int? showId;
   String? showName;
@@ -7,6 +9,7 @@ class ItemShowModel {
   String? showRating;
   String? showContentRating;
   bool isPremium = false;
+  final MediaContentType mediaContentType = MediaContentType.tvShows;
 
   ItemShowModel({
     this.showId,

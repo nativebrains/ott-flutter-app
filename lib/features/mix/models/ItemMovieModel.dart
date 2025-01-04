@@ -1,3 +1,5 @@
+import '../../common/enums/MediaContentType.dart';
+
 class ItemMovieModel {
   int? movieId;
   String? movieName;
@@ -27,6 +29,7 @@ class ItemMovieModel {
   String? movieShareLink;
   String? movieContentRating;
   String? movieView;
+  final MediaContentType mediaContentType = MediaContentType.movies;
 
   ItemMovieModel({
     this.movieId,

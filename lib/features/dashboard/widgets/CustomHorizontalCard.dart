@@ -31,7 +31,7 @@ class Customhorizontalcard extends StatelessWidget {
           context,
           RouteConstantName.detailsScreen,
           arguments: DetailsScreenArguments(
-            title: showTitle ? "Sports or Live TV" : "Tv Shows",
+            id: id.toString(),
             mediaContentType:
                 showTitle ? MediaContentType.sports : MediaContentType.tvShows,
           ),

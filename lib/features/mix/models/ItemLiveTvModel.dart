@@ -1,3 +1,5 @@
+import '../../common/enums/MediaContentType.dart';
+
 class ItemLiveTVModel {
   int? tvId;
   String? tvName;
@@ -11,6 +13,7 @@ class ItemLiveTVModel {
   bool isPremium = false;
   String? tvView;
   String? tvShareLink;
+  final MediaContentType mediaContentType = MediaContentType.liveTv;
 
   ItemLiveTVModel({
     this.tvId,

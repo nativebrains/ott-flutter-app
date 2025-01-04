@@ -13,10 +13,10 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../widgets/custom/custom_text.dart';
 
 class DetailsScreenArguments {
-  final String title;
+  final String id;
   final MediaContentType mediaContentType;
 
-  DetailsScreenArguments({required this.title, required this.mediaContentType});
+  DetailsScreenArguments({required this.id, required this.mediaContentType});
 }
 
 class Detailsscreen extends StatefulWidget {
@@ -29,6 +29,14 @@ class Detailsscreen extends StatefulWidget {
 
 class _DetailsscreenState extends State<Detailsscreen> {
   int _selectedSeasonIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    print("Details Items ID = " + widget.detailsScreenArguments.id);
+    print("Details Items Type = " +
+        widget.detailsScreenArguments.mediaContentType.displayName);
+  }
 
   @override
   Widget build(BuildContext context) {

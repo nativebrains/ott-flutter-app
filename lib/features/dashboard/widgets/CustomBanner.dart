@@ -33,8 +33,8 @@ class _CustombannerState extends State<Custombanner> {
                   context,
                   RouteConstantName.detailsScreen,
                   arguments: DetailsScreenArguments(
-                    title: "Banner",
-                    mediaContentType: MediaContentType.movies,
+                    id: item.sliderPostId.toString(),
+                    mediaContentType: item.mediaContentType,
                   ),
                 );
               },
