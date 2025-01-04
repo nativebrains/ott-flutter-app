@@ -92,6 +92,8 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
                                 isPremium: true,
                                 showTitle: true,
                                 url: item.postImage ?? "",
+                                id: item.postId,
+                                title: item.postTitle,
                               ),
                             );
                           }).toList(),

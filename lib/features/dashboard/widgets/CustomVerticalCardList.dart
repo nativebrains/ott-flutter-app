@@ -33,6 +33,8 @@ class _CustomverticalcardlistState extends State<Customverticalcardlist> {
                 child: Customverticalcard(
                   isPremium: entry.value.isPremium,
                   url: entry.value.videoImage ?? "",
+                  id: entry.value.videoId,
+                  title: entry.value.videoTitle,
                 ));
           }).toList(),
         ),

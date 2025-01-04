@@ -118,24 +118,32 @@ class _MixscreenState extends State<Mixscreen> {
         return Customverticalcard(
           isPremium: item.isPremium ?? false,
           url: item.movieImage ?? "",
+          id: item.movieId,
+          title: item.movieName,
         );
       } else if (item is ItemShowModel) {
         return Customhorizontalcard(
           isPremium: item.isPremium,
           showTitle: true,
           url: item.showImage ?? "",
+          id: item.showId,
+          title: item.showName,
         );
       } else if (item is ItemSportModel) {
         return Customhorizontalcard(
           isPremium: item.isPremium,
           showTitle: true,
           url: item.sportImage ?? "",
+          id: item.sportId,
+          title: item.sportName,
         );
       } else if (item is ItemLiveTVModel) {
         return Customhorizontalcard(
           isPremium: item.isPremium,
           showTitle: true,
           url: item.tvImage ?? "",
+          id: item.tvId,
+          title: item.tvName,
         );
       } else {
         return Container();

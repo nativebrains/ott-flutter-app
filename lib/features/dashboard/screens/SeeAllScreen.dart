@@ -81,6 +81,8 @@ class _SeeallscreenState extends State<Seeallscreen> {
               child: Customverticalcard(
                 isPremium: item.isPremium,
                 url: item.videoImage ?? "",
+                id: item.videoId,
+                title: item.videoTitle,
               ),
             );
           } else {
@@ -90,6 +92,8 @@ class _SeeallscreenState extends State<Seeallscreen> {
                 isPremium: item.isPremium,
                 showTitle: true,
                 url: item.videoImage ?? "",
+                id: item.videoId,
+                title: item.videoTitle,
               ),
             );
           }

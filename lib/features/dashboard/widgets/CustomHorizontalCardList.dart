@@ -39,6 +39,8 @@ class _CustomhorizontalcardlistState extends State<Customhorizontalcardlist> {
                   isPremium: entry.value.isPremium,
                   showTitle: widget.showTitle,
                   url: entry.value.videoImage ?? "",
+                  id: entry.value.videoId,
+                  title: entry.value.videoTitle,
                 ));
           }).toList(),
         ),

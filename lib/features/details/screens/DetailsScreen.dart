@@ -536,6 +536,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     url:
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT978tsS4711GcHRnrEiIp48seju5Q18IBvgw&s",
                     isPremium: false,
+                    id: null,
+                    title: null,
                   ),
                 ),
               ),
@@ -655,10 +657,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 (index) => Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child: Customhorizontalcard(
-                        isPremium: true,
-                        showTitle: true,
-                        url:
-                            "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg")),
+                      isPremium: true,
+                      showTitle: true,
+                      url:
+                          "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg",
+                      title: null,
+                      id: null,
+                    )),
               ),
             ],
           ),

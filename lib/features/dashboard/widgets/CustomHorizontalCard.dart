@@ -9,14 +9,19 @@ import '../../common/enums/MediaContentType.dart';
 import '../../details/screens/DetailsScreen.dart';
 
 class Customhorizontalcard extends StatelessWidget {
+  final int? id;
   final String url;
   final bool isPremium;
   final bool showTitle;
-  const Customhorizontalcard(
-      {super.key,
-      required this.isPremium,
-      required this.showTitle,
-      required this.url});
+  final String? title;
+  const Customhorizontalcard({
+    super.key,
+    required this.isPremium,
+    required this.showTitle,
+    required this.url,
+    required this.id,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +84,7 @@ class Customhorizontalcard extends StatelessWidget {
               width: 175.sp,
               padding: const EdgeInsets.only(top: 4.0),
               child: TextScroll(
-                'Movie Title will Display Here...',
+                title ?? "",
                 velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
                 style: TextStyle(color: Colors.white, fontSize: 12.sp),
               ),

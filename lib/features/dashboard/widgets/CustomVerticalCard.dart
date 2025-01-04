@@ -8,10 +8,17 @@ import '../../common/enums/MediaContentType.dart';
 import '../../details/screens/DetailsScreen.dart';
 
 class Customverticalcard extends StatelessWidget {
+  final int? id;
   final String url;
   final bool isPremium;
-  const Customverticalcard(
-      {super.key, required this.isPremium, required this.url});
+  final String? title;
+  const Customverticalcard({
+    super.key,
+    required this.isPremium,
+    required this.url,
+    required this.id,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
