@@ -67,6 +67,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       Navigator.pushNamed(
         context,
         RouteConstantName.searchScreen,
+        arguments: query,
       );
       _clearSearch();
     }

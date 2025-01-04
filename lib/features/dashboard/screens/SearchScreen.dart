@@ -1,15 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
+import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
+import 'package:islamforever/features/mix/models/ItemShowModel.dart';
+import 'package:islamforever/features/mix/models/ItemSportModel.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/loader_widget/loader_widget.dart';
+import '../providers/DashboardProvider.dart';
+import '../widgets/CustomHorizontalCard.dart';
+import '../widgets/CustomVerticalCard.dart';
 
 class Searchscreen extends StatefulWidget {
-  const Searchscreen({super.key});
+  final String searchQuery;
+  const Searchscreen({super.key, required this.searchQuery});
 
   @override
   State<Searchscreen> createState() => _SearchscreenState();
 }
 
 class _SearchscreenState extends State<Searchscreen> {
+  late DashboardProvider dashboardProvider;
+  List<dynamic> searchResults = [];
+  List<Widget> showsList = [];
+  List<Widget> moviesList = [];
+  List<Widget> sportsList = [];
+  List<Widget> liveTvList = [];
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    fetchData(widget.searchQuery);
+  }
+
+  Future<void> fetchData(String query) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    searchResults = await dashboardProvider.searchQueryAll(query);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,14 +87,15 @@ class _SearchscreenState extends State<Searchscreen> {
             expandedHeight: 55.0, // Set height for expanded AppBar
           ),
           // SliverList for your content
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 20.sp),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  getNoItemsFound(),
-                ],
-              ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                if (searchResults.isEmpty)
+                  getNoItemsFound()
+                else
+                  getItemsList(),
+                if (_isLoading) const LoaderWidget(),
+              ],
             ),
           ),
         ],
@@ -80,6 +120,160 @@ class _SearchscreenState extends State<Searchscreen> {
           'No items found',
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
+      ],
+    );
+  }
+
+  Widget getShowsList(List<Widget> showsList) {
+    if (showsList.isEmpty) return Container();
+    return Column(
+      children: [
+        SizedBox(height: 12.sp),
+        Text(
+          "Shows",
+          style: GoogleFonts.poppins(
+            color: ColorCode.whiteColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: showsList,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+      ],
+    );
+  }
+
+  Widget getMoviesList(List<Widget> moviesList) {
+    if (moviesList.isEmpty) return Container();
+    return Column(
+      children: [
+        SizedBox(height: 12.sp),
+        Text(
+          "Movies",
+          style: GoogleFonts.poppins(
+            color: ColorCode.whiteColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: moviesList,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+      ],
+    );
+  }
+
+  Widget getSportsList(List<Widget> sportsList) {
+    if (sportsList.isEmpty) return Container();
+    return Column(
+      children: [
+        SizedBox(height: 12.sp),
+        Text(
+          "Sports",
+          style: GoogleFonts.poppins(
+            color: ColorCode.whiteColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: sportsList,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+      ],
+    );
+  }
+
+  Widget getLiveTvList(List<Widget> liveTvList) {
+    if (liveTvList.isEmpty) return Container();
+    return Column(
+      children: [
+        SizedBox(height: 12.sp),
+        Text(
+          "Live TV",
+          style: GoogleFonts.poppins(
+            color: ColorCode.whiteColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: liveTvList,
+          ),
+        ),
+        SizedBox(height: 12.sp),
+      ],
+    );
+  }
+
+  Widget getItemsList() {
+    for (var item in searchResults) {
+      if (item is ItemShowModel) {
+        showsList.add(
+          Customhorizontalcard(
+            isPremium: item.isPremium,
+            showTitle: true,
+            url: item.showImage ?? "",
+            id: item.showId,
+            title: item.showName,
+          ),
+        );
+      } else if (item is ItemMovieModel) {
+        moviesList.add(
+          Customverticalcard(
+            isPremium: item.isPremium ?? false,
+            url: item.movieImage ?? "",
+            id: item.movieId,
+            title: item.movieName,
+          ),
+        );
+      } else if (item is ItemSportModel) {
+        sportsList.add(
+          Customhorizontalcard(
+            isPremium: item.isPremium,
+            showTitle: true,
+            url: item.sportImage ?? "",
+            id: item.sportId,
+            title: item.sportName,
+          ),
+        );
+      } else if (item is ItemLiveTVModel) {
+        liveTvList.add(
+          Customhorizontalcard(
+            isPremium: item.isPremium,
+            showTitle: true,
+            url: item.tvImage ?? "",
+            id: item.tvId,
+            title: item.tvName,
+          ),
+        );
+      }
+    }
+
+    return Column(
+      children: [
+        getShowsList(showsList),
+        getMoviesList(moviesList),
+        getSportsList(sportsList),
+        getLiveTvList(liveTvList),
       ],
     );
   }

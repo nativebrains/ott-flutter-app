@@ -429,4 +429,63 @@ class DashboardProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<List<dynamic>> searchQueryAll(String searchQuery) async {
+    List<dynamic> resultList = [];
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.SEARCH_URL,
+        jsonEncode({'search_text': searchQuery}),
+      );
+
+      if (response.status == 200) {
+        final liveTVJson = response.data;
+        final showArray = liveTVJson['shows'];
+        final movieArray = liveTVJson['movies'];
+        final sportArray = liveTVJson['sports'];
+        final tvArray = liveTVJson['live_tv'];
+
+        resultList = [
+          ...showArray.map((json) {
+            return ItemShowModel(
+                showId: json['show_id'],
+                showName: json['show_title'],
+                showImage: json['show_poster'],
+                isPremium: json['show_access'] == 'Paid');
+          }),
+          ...movieArray.map((json) {
+            return ItemMovieModel(
+              movieId: json['movie_id'],
+              movieName: json['movie_title'],
+              movieImage: json['movie_poster'],
+              movieDuration: json['movie_duration'],
+              isPremium: json['movie_access'] == 'Paid',
+            );
+          }),
+          ...sportArray.map((json) {
+            return ItemSportModel(
+              sportId: json['sport_id'],
+              sportName: json['sport_title'],
+              sportImage: json['sport_image'],
+              isPremium: json['sport_access'] == 'Paid',
+            );
+          }),
+          ...tvArray.map((json) {
+            return ItemLiveTVModel(
+              tvId: json['tv_id'],
+              tvName: json['tv_title'],
+              tvImage: json['tv_image'],
+              isPremium: json['tv_access'] == 'Paid',
+            );
+          }),
+        ];
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in searchQueryAll";
+    }
+
+    notifyListeners();
+    return resultList;
+  }
 }

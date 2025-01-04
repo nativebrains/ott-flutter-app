@@ -106,8 +106,11 @@ class RouterGenerator {
         );
 
       case RouteConstantName.searchScreen:
+        final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) => const Searchscreen(),
+          builder: (context) => Searchscreen(
+            searchQuery: args,
+          ),
           settings: const RouteSettings(
             name: RouteConstantName.searchScreen,
           ),
