@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/assets_images.dart';
+import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeModel.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomVerticalCard.dart';
@@ -35,6 +36,8 @@ class _CustomverticalcardlistState extends State<Customverticalcardlist> {
                   url: entry.value.videoImage ?? "",
                   id: entry.value.videoId,
                   title: entry.value.videoTitle,
+                  mediaContentType: MediaContentType.getMediaType(
+                      entry.value.videoType.toString()),
                 ));
           }).toList(),
         ),

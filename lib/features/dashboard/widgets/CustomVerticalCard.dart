@@ -12,12 +12,14 @@ class Customverticalcard extends StatelessWidget {
   final String url;
   final bool isPremium;
   final String? title;
+  final MediaContentType mediaContentType;
   const Customverticalcard({
     super.key,
     required this.isPremium,
     required this.url,
     required this.id,
     required this.title,
+    required this.mediaContentType,
   });
 
   @override
@@ -29,7 +31,7 @@ class Customverticalcard extends StatelessWidget {
           RouteConstantName.detailsScreen,
           arguments: DetailsScreenArguments(
             id: id.toString(),
-            mediaContentType: MediaContentType.movies,
+            mediaContentType: mediaContentType,
           ),
         );
       },

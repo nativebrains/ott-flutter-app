@@ -546,6 +546,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     isPremium: false,
                     id: null,
                     title: null,
+                    mediaContentType: MediaContentType.movies,
                   ),
                 ),
               ),

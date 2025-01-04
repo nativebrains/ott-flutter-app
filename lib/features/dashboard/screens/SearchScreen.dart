@@ -269,6 +269,7 @@ class _SearchscreenState extends State<Searchscreen> {
               url: item.movieImage ?? "",
               id: item.movieId,
               title: item.movieName,
+              mediaContentType: item.mediaContentType,
             ),
           ),
         );

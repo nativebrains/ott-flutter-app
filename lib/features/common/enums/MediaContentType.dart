@@ -3,7 +3,9 @@ enum MediaContentType {
   tvShows,
   sports,
   slider,
-  liveTv;
+  liveTv,
+  recent,
+  noType;
 
   String get displayName {
     switch (this) {
@@ -17,8 +19,10 @@ enum MediaContentType {
         return 'Live TV';
       case MediaContentType.slider:
         return 'Slider';
+      case MediaContentType.recent:
+        return 'Recent';
       default:
-        return '';
+        return 'noType';
     }
   }
 
@@ -34,12 +38,14 @@ enum MediaContentType {
         return 4;
       case MediaContentType.slider:
         return 5;
+      case MediaContentType.recent:
+        return 6;
       default:
         return 0;
     }
   }
 
-  static MediaContentType? getMediaType(String type) {
+  static MediaContentType getMediaType(String type) {
     switch (type.toLowerCase()) {
       case 'movies':
         return MediaContentType.movies;
@@ -51,8 +57,10 @@ enum MediaContentType {
         return MediaContentType.slider;
       case 'sports':
         return MediaContentType.sports;
+      case 'recent':
+        return MediaContentType.recent;
       default:
-        return null;
+        return MediaContentType.noType;
     }
   }
 }

@@ -120,6 +120,7 @@ class _MixscreenState extends State<Mixscreen> {
           url: item.movieImage ?? "",
           id: item.movieId,
           title: item.movieName,
+          mediaContentType: item.mediaContentType,
         );
       } else if (item is ItemShowModel) {
         return Customhorizontalcard(

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/models/HomeDataModel.dart';
 import 'package:islamforever/features/dashboard/models/ItemHomeContentModel.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
@@ -83,6 +84,8 @@ class _SeeallscreenState extends State<Seeallscreen> {
                 url: item.videoImage ?? "",
                 id: item.videoId,
                 title: item.videoTitle,
+                mediaContentType:
+                    MediaContentType.getMediaType(item.videoType.toString()),
               ),
             );
           } else {
