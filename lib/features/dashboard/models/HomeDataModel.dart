@@ -81,8 +81,8 @@ class HomeDataModel {
                           videoId: content['video_id'],
                           videoTitle: content['video_title'],
                           videoImage: content['video_image'],
-                          videoType: content['video_type'],
-                          homeType: content['video_type'],
+                          videoType: content['video_type'] ?? 'Movie',
+                          homeType: content['video_type'] ?? 'Movie',
                           isPremium: content['video_access'] == 'Paid',
                         ))
                     .toList()

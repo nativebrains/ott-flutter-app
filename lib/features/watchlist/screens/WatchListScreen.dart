@@ -95,8 +95,12 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
                                 url: item.postImage ?? "",
                                 id: item.postId,
                                 title: item.postTitle,
-                                mediaContentType: MediaContentType.getMediaType(
-                                    item.postType.toString()),
+                                mediaContentType:
+                                    MediaContentType.getMediaTypeForSlider(
+                                        item.postType.toString()),
+                                seasonId: item.seasonId.toString(),
+                                episodeId: item.episodeId.toString(),
+                                episodeRedirect: item.postType == "Shows",
                               ),
                             );
                           }).toList(),

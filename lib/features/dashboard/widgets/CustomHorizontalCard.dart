@@ -15,6 +15,9 @@ class Customhorizontalcard extends StatelessWidget {
   final bool showTitle;
   final String? title;
   final MediaContentType mediaContentType;
+  final String? seasonId;
+  final String? episodeId;
+  final bool? episodeRedirect;
   const Customhorizontalcard({
     super.key,
     required this.isPremium,
@@ -23,6 +26,9 @@ class Customhorizontalcard extends StatelessWidget {
     required this.id,
     required this.title,
     required this.mediaContentType,
+    this.seasonId,
+    this.episodeId,
+    this.episodeRedirect,
   });
 
   @override
@@ -35,6 +41,9 @@ class Customhorizontalcard extends StatelessWidget {
           arguments: DetailsScreenArguments(
             id: id.toString(),
             mediaContentType: mediaContentType,
+            episodeId: episodeId,
+            seasonId: seasonId,
+            episodeRedirect: episodeRedirect,
           ),
         );
       },

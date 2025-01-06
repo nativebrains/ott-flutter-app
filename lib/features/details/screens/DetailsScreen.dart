@@ -15,8 +15,16 @@ import '../../../widgets/custom/custom_text.dart';
 class DetailsScreenArguments {
   final String id;
   final MediaContentType mediaContentType;
+  final String? seasonId;
+  final String? episodeId;
+  final bool? episodeRedirect;
 
-  DetailsScreenArguments({required this.id, required this.mediaContentType});
+  DetailsScreenArguments(
+      {required this.id,
+      required this.mediaContentType,
+      this.seasonId,
+      this.episodeId,
+      this.episodeRedirect});
 }
 
 class Detailsscreen extends StatefulWidget {

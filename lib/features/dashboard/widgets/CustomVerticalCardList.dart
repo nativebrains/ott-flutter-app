@@ -38,6 +38,9 @@ class _CustomverticalcardlistState extends State<Customverticalcardlist> {
                   title: entry.value.videoTitle,
                   mediaContentType: MediaContentType.getMediaType(
                       entry.value.videoType.toString()),
+                  seasonId: entry.value.seasonId,
+                  episodeId: entry.value.episodeId,
+                  episodeRedirect: entry.value.homeType == "Recent",
                 ));
           }).toList(),
         ),

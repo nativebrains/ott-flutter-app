@@ -13,6 +13,10 @@ class Customverticalcard extends StatelessWidget {
   final bool isPremium;
   final String? title;
   final MediaContentType mediaContentType;
+  final String? seasonId;
+  final String? episodeId;
+  final bool? episodeRedirect;
+
   const Customverticalcard({
     super.key,
     required this.isPremium,
@@ -20,6 +24,9 @@ class Customverticalcard extends StatelessWidget {
     required this.id,
     required this.title,
     required this.mediaContentType,
+    this.episodeId,
+    this.episodeRedirect,
+    this.seasonId,
   });
 
   @override
@@ -32,6 +39,9 @@ class Customverticalcard extends StatelessWidget {
           arguments: DetailsScreenArguments(
             id: id.toString(),
             mediaContentType: mediaContentType,
+            seasonId: seasonId,
+            episodeId: episodeId,
+            episodeRedirect: episodeRedirect,
           ),
         );
       },

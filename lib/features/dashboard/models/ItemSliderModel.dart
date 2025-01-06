@@ -18,7 +18,7 @@ class ItemSliderModel {
     this.videoAccess,
     this.langCatName,
     this.isPremium = false,
-    this.mediaContentType = MediaContentType.slider,
+    this.mediaContentType = MediaContentType.sports,
   });
 
   factory ItemSliderModel.fromJson(Map<String, dynamic> json) {
@@ -30,8 +30,8 @@ class ItemSliderModel {
       videoAccess: json['video_access'] ?? '',
       langCatName: json['lang_cat_name'] ?? '',
       isPremium: json['video_access'] == 'Paid',
-      mediaContentType:
-          MediaContentType.getMediaType(json['slider_type'] ?? 'sports')!,
+      mediaContentType: MediaContentType.getMediaTypeForSlider(
+          json['slider_type'] ?? 'sports'), //  default for Sliders
     );
   }
 
