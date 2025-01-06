@@ -7,6 +7,10 @@ import 'package:islamforever/core/loader_widget/loader_widget.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomVerticalCard.dart';
+import 'package:islamforever/features/details/models/GenericDetailsResponseModel.dart';
+import 'package:islamforever/features/details/models/MediaItemDetails.dart';
+import 'package:islamforever/features/details/providers/DetailsProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -36,14 +40,44 @@ class Detailsscreen extends StatefulWidget {
 }
 
 class _DetailsscreenState extends State<Detailsscreen> {
+  late DetailsProvider detailsProvider;
   int _selectedSeasonIndex = 0;
+  late GenericDetailsResponseModel? genericDetailsResponseModel;
+  late MediaItemDetails? mediaItemDetails;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    detailsProvider = Provider.of<DetailsProvider>(context, listen: false);
     print("Details Items ID = " + widget.detailsScreenArguments.id);
     print("Details Items Type = " +
         widget.detailsScreenArguments.mediaContentType.displayName);
+
+    fetchDetailsData();
+  }
+
+  void fetchDetailsData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    switch (widget.detailsScreenArguments.mediaContentType) {
+      case MediaContentType.movies:
+        genericDetailsResponseModel = await detailsProvider
+            .fetchMovieDetails(widget.detailsScreenArguments.id);
+        mediaItemDetails =
+            MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
+        break;
+      case MediaContentType.tvShows:
+        break;
+      case MediaContentType.sports:
+        break;
+      case MediaContentType.liveTv:
+        break;
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -51,28 +85,34 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return Scaffold(
       backgroundColor: ColorCode.bgColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              getTopSection(),
-              SizedBox(height: 8.sp),
-              getDescriptionSection(),
-              SizedBox(height: 8.sp),
-              Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
-              SizedBox(height: 16.sp),
-              getSeasons(),
-              SizedBox(height: 24.sp),
-              getEpisodes(),
-              SizedBox(height: 24.sp),
-              getActors(),
-              SizedBox(height: 24.sp),
-              getDirectors(),
-              SizedBox(height: 24.sp),
-              getRelatedMovies(),
-              SizedBox(height: 30.sp),
-            ],
-          ),
+        child: Stack(
+          children: [
+            if (!_isLoading)
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    getTopSection(),
+                    SizedBox(height: 8.sp),
+                    getDescriptionSection(),
+                    SizedBox(height: 8.sp),
+                    Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
+                    SizedBox(height: 16.sp),
+                    getSeasons(),
+                    SizedBox(height: 24.sp),
+                    getEpisodes(),
+                    SizedBox(height: 24.sp),
+                    getActors(),
+                    SizedBox(height: 24.sp),
+                    getDirectors(),
+                    SizedBox(height: 24.sp),
+                    getRelatedMovies(),
+                    SizedBox(height: 30.sp),
+                  ],
+                ),
+              ),
+            if (_isLoading) const LoaderWidget(),
+          ],
         ),
       ),
     );
@@ -85,7 +125,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
         children: [
           // Background image
           Image.network(
-            'https://cdn.mos.cms.futurecdn.net/eUc7ioQCCUoqXSybUsPeA6-1200-80.jpg',
+            mediaItemDetails?.image ?? "",
             fit: BoxFit.cover,
             width: double.infinity, // Set the width to infinity
             height: 235.sp,
@@ -163,78 +203,6 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
-  Widget buildDotItem(int index) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: Colors.pink,
-              shape: BoxShape.circle,
-            ),
-          ),
-          SizedBox(width: 10),
-          CustomText(
-            text: 'Item ${index + 2}',
-            fontSize: 12.sp,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget getTrailerWidget() {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(6.sp),
-            child: Icon(
-              Icons.play_arrow,
-              size: 32.sp,
-              color: Colors.white,
-            ),
-          ),
-          CustomText(
-            text: 'Trailer',
-            fontSize: 14.sp,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget getAddToMyListWidget() {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(6.sp),
-            child: Icon(
-              Icons.add,
-              size: 32.sp,
-              color: Colors.white,
-            ),
-          ),
-          CustomText(
-            text: 'My List',
-            fontSize: 14.sp,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget getDescriptionSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,7 +210,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: CustomText(
-            text: 'Tom\'s Guide',
+            text: mediaItemDetails?.title ?? "",
             color: Colors.white,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -259,7 +227,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ),
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: GradientText(
-            'IMDB 7.8',
+            'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
             colors: [
               Colors.orange,
@@ -279,13 +247,30 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   child: CustomText(
-                    text: 'Nov 02, 1998',
+                    text: mediaItemDetails?.releaseDate ?? "",
                     fontSize: 12.sp,
                     color: Colors.white,
                   ),
                 ),
               ),
-              ...List.generate(10, (index) => buildDotItem(index)),
+              if (mediaItemDetails?.duration != null ||
+                  mediaItemDetails?.duration != "null")
+                buildDotItem(0, mediaItemDetails?.duration ?? "0"),
+              if (mediaItemDetails?.contentRating != null ||
+                  mediaItemDetails?.contentRating != "null")
+                buildDotItem(1,
+                    "Content Rating ${mediaItemDetails?.contentRating ?? ""}"),
+              if (mediaItemDetails?.views != null ||
+                  mediaItemDetails?.views != "null")
+                buildDotItem(2, "Views ${mediaItemDetails?.views ?? ""}"),
+              if (mediaItemDetails?.language != null ||
+                  mediaItemDetails?.language != "null")
+                buildDotItem(3, mediaItemDetails?.language ?? ""),
+              if (genericDetailsResponseModel?.genres != null)
+                ...List.generate(
+                    genericDetailsResponseModel!.genres!.length,
+                    (index) => buildDotItem(index,
+                        genericDetailsResponseModel!.genres![index].genreName)),
             ],
           ),
         ),
@@ -380,6 +365,79 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildDotItem(int index, String text) {
+    if (text.isEmpty) return Container();
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: Colors.pink,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: 10),
+          CustomText(
+            text: text,
+            fontSize: 12.sp,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getTrailerWidget() {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(6.sp),
+            child: Icon(
+              Icons.play_arrow,
+              size: 32.sp,
+              color: Colors.white,
+            ),
+          ),
+          CustomText(
+            text: 'Trailer',
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getAddToMyListWidget() {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(6.sp),
+            child: Icon(
+              Icons.add,
+              size: 32.sp,
+              color: Colors.white,
+            ),
+          ),
+          CustomText(
+            text: 'My List',
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+        ],
+      ),
     );
   }
 

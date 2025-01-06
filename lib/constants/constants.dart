@@ -21,7 +21,7 @@ class Constants {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj43xv6I8Q_ePizU8zKQDRPMURnKyA4qDmEQ&s',
   ];
 
-  // Category Constants
+  static const String ARRAY_NAME = 'VIDEO_STREAMING_APP';
   static const String CATEGORY_NAME = 'category_name';
   static const String CATEGORY_ID = 'category_id';
   static const String CATEGORY_IMAGE = 'category_image';

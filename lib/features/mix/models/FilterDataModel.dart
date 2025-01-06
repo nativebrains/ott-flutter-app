@@ -129,7 +129,7 @@ class LanguageModel {
 }
 
 class GenreModel {
-  int genreId;
+  String genreId;
   String genreName;
 
   GenreModel({

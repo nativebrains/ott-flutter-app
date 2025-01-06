@@ -11,6 +11,7 @@ import 'package:islamforever/core/error_widget/error_widget.dart';
 import 'package:islamforever/features/authentication/providers/AuthenticationProvider.dart';
 import 'package:islamforever/features/common/providers/CommonProvider.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
+import 'package:islamforever/features/details/providers/DetailsProvider.dart';
 import 'package:islamforever/firebase_options.dart';
 import 'package:islamforever/routes/routes.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +58,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AuthenticationProvider>(
           create: (ctx) => AuthenticationProvider(),
+        ),
+        ChangeNotifierProvider<DetailsProvider>(
+          create: (ctx) => DetailsProvider(),
         ),
       ],
       child: ScreenUtilInit(
