@@ -9,6 +9,7 @@ import '../../mix/models/ItemMovieModel.dart';
 class MediaItemDetails {
   String? title;
   String? image;
+  String? poster;
   String? description;
   String? rating;
   String? releaseDate;
@@ -39,6 +40,7 @@ class MediaItemDetails {
     this.downloadEnable,
     this.isPremium,
     this.mediaContentType = MediaContentType.movies,
+    this.poster,
   });
 
   static MediaItemDetails getMediaItemDetails(
@@ -61,6 +63,7 @@ class MediaItemDetails {
         downloadEnable: movie.isDownload,
         isPremium: movie.isPremium,
         mediaContentType: MediaContentType.movies,
+        poster: movie.moviePoster,
       );
     } else if (responseModel.item is ItemShowModel) {
       ItemShowModel tvShow = responseModel.item as ItemShowModel;

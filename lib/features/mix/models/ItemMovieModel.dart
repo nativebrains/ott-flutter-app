@@ -5,6 +5,7 @@ class ItemMovieModel {
   int? movieId;
   String? movieName;
   String? movieImage;
+  String? moviePoster;
   String? movieDuration;
   String? movieDescription;
   String? movieDate;
@@ -38,6 +39,7 @@ class ItemMovieModel {
     this.movieId,
     this.movieName,
     this.movieImage,
+    this.moviePoster,
     this.movieDuration,
     this.movieDescription,
     this.movieDate,
@@ -71,7 +73,8 @@ class ItemMovieModel {
     return ItemMovieModel(
       movieId: json[Constants.MOVIE_ID],
       movieName: json[Constants.MOVIE_TITLE],
-      movieImage: json[Constants.MOVIE_POSTER],
+      movieImage: json[Constants.MOVIE_IMAGE],
+      moviePoster: json[Constants.MOVIE_POSTER],
       movieDuration: json[Constants.MOVIE_DURATION],
       movieDescription: json[Constants.MOVIE_DESC],
       movieDate: json[Constants.MOVIE_DATE],

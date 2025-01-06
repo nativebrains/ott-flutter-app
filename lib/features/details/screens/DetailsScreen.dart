@@ -578,7 +578,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             ),
             SizedBox(width: 12.sp),
             CustomText(
-              text: 'Director',
+              text: 'Directors',
               fontSize: 16.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -630,68 +630,66 @@ class _DetailsscreenState extends State<Detailsscreen> {
   Widget getRelatedMovies() {
     return Column(
       children: [
-        Row(
-          children: [
-            SizedBox(width: 24.sp),
-            Container(
-              width: 2,
-              height: 20,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+        _buildHeader('Related Movies'),
+        SizedBox(height: 12.sp),
+        _buildRelatedItems(genericDetailsResponseModel?.itemRelated),
+      ],
+    );
+  }
+
+  Widget _buildHeader(String title) {
+    return Row(
+      children: [
+        SizedBox(width: 24.sp),
+        Container(
+          width: 2,
+          height: 20,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.orange,
+                Colors.pink,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
+        SizedBox(width: 12.sp),
+        CustomText(
+          text: title,
+          fontSize: 16.sp,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRelatedItems(List<dynamic>? items) {
+    if (items == null) return Container();
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          SizedBox(width: 24.sp),
+          ...List.generate(
+            items.length,
+            (index) => Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Customverticalcard(
+                url: (items[index] as ItemMovieModel).moviePoster ?? "",
+                isPremium: (items[index] as ItemMovieModel).isPremium ?? false,
+                id: (items[index] as ItemMovieModel).movieId,
+                title: (items[index] as ItemMovieModel).movieName,
+                mediaContentType:
+                    (items[index] as ItemMovieModel).mediaContentType,
               ),
             ),
-            SizedBox(width: 12.sp),
-            CustomText(
-              text: 'Related Movies',
-              fontSize: 16.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ],
-        ),
-        SizedBox(height: 12.sp),
-        if (genericDetailsResponseModel?.itemRelated != null)
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                SizedBox(width: 24.sp),
-                ...List.generate(
-                  genericDetailsResponseModel!.itemRelated!.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: Customverticalcard(
-                      url: (genericDetailsResponseModel!.itemRelated![index]
-                                  as ItemMovieModel)
-                              .movieImage ??
-                          "",
-                      isPremium: (genericDetailsResponseModel!
-                                  .itemRelated![index] as ItemMovieModel)
-                              .isPremium ??
-                          false,
-                      id: (genericDetailsResponseModel!.itemRelated![index]
-                              as ItemMovieModel)
-                          .movieId,
-                      title: (genericDetailsResponseModel!.itemRelated![index]
-                              as ItemMovieModel)
-                          .movieName,
-                      mediaContentType: (genericDetailsResponseModel!
-                              .itemRelated![index] as ItemMovieModel)
-                          .mediaContentType,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-      ],
+          ),
+        ],
+      ),
     );
   }
 
