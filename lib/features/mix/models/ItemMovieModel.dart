@@ -71,7 +71,7 @@ class ItemMovieModel {
     return ItemMovieModel(
       movieId: json[Constants.MOVIE_ID],
       movieName: json[Constants.MOVIE_TITLE],
-      movieImage: json[Constants.MOVIE_IMAGE],
+      movieImage: json[Constants.MOVIE_POSTER],
       movieDuration: json[Constants.MOVIE_DURATION],
       movieDescription: json[Constants.MOVIE_DESC],
       movieDate: json[Constants.MOVIE_DATE],

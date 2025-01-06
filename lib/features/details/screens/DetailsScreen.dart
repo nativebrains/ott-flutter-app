@@ -12,6 +12,7 @@ import 'package:islamforever/features/details/models/ActorModel.dart';
 import 'package:islamforever/features/details/models/GenericDetailsResponseModel.dart';
 import 'package:islamforever/features/details/models/MediaItemDetails.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
+import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -656,28 +657,40 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ],
         ),
         SizedBox(height: 12.sp),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(width: 24.sp),
-              ...List.generate(
-                10,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Customverticalcard(
-                    url:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT978tsS4711GcHRnrEiIp48seju5Q18IBvgw&s",
-                    isPremium: false,
-                    id: null,
-                    title: null,
-                    mediaContentType: MediaContentType.movies,
+        if (genericDetailsResponseModel?.itemRelated != null)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                SizedBox(width: 24.sp),
+                ...List.generate(
+                  genericDetailsResponseModel!.itemRelated!.length,
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Customverticalcard(
+                      url: (genericDetailsResponseModel!.itemRelated![index]
+                                  as ItemMovieModel)
+                              .movieImage ??
+                          "",
+                      isPremium: (genericDetailsResponseModel!
+                                  .itemRelated![index] as ItemMovieModel)
+                              .isPremium ??
+                          false,
+                      id: (genericDetailsResponseModel!.itemRelated![index]
+                              as ItemMovieModel)
+                          .movieId,
+                      title: (genericDetailsResponseModel!.itemRelated![index]
+                              as ItemMovieModel)
+                          .movieName,
+                      mediaContentType: (genericDetailsResponseModel!
+                              .itemRelated![index] as ItemMovieModel)
+                          .mediaContentType,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        )
+              ],
+            ),
+          )
       ],
     );
   }
