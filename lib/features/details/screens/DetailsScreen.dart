@@ -2,11 +2,13 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:html/parser.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/core/loader_widget/loader_widget.dart';
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomHorizontalCard.dart';
 import 'package:islamforever/features/dashboard/widgets/CustomVerticalCard.dart';
+import 'package:islamforever/features/details/models/ActorModel.dart';
 import 'package:islamforever/features/details/models/GenericDetailsResponseModel.dart';
 import 'package:islamforever/features/details/models/MediaItemDetails.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
@@ -97,10 +99,18 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     getDescriptionSection(),
                     SizedBox(height: 8.sp),
                     Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
-                    SizedBox(height: 16.sp),
-                    getSeasons(),
-                    SizedBox(height: 24.sp),
-                    getEpisodes(),
+                    if (mediaItemDetails?.mediaContentType !=
+                        MediaContentType.movies)
+                      SizedBox(height: 16.sp),
+                    if (mediaItemDetails?.mediaContentType !=
+                        MediaContentType.movies)
+                      getSeasons(),
+                    if (mediaItemDetails?.mediaContentType !=
+                        MediaContentType.movies)
+                      SizedBox(height: 24.sp),
+                    if (mediaItemDetails?.mediaContentType !=
+                        MediaContentType.movies)
+                      getEpisodes(),
                     SizedBox(height: 24.sp),
                     getActors(),
                     SizedBox(height: 24.sp),
@@ -309,12 +319,21 @@ class _DetailsscreenState extends State<Detailsscreen> {
             ),
           ],
         ),
+        SizedBox(
+          height: 6.sp,
+        ),
         Row(
           children: [
-            SizedBox(width: 24.sp),
-            getTrailerWidget(),
+            if (mediaItemDetails?.trailer != null ||
+                mediaItemDetails?.trailer != "null")
+              SizedBox(width: 24.sp),
+            if (mediaItemDetails?.trailer != null ||
+                mediaItemDetails?.trailer != "null")
+              getTrailerWidget(),
             SizedBox(width: 24.sp),
             getAddToMyListWidget(),
+            SizedBox(width: 24.sp),
+            getDownloadBtnWidget(),
             Expanded(child: Container()),
             InkWell(
               onTap: () {},
@@ -342,22 +361,23 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ],
         ),
         SizedBox(
-          height: 20.sp,
+          height: 12.sp,
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(width: 20.sp),
-              ...List.generate(5, (index) => _buildServerItem(index)),
-            ],
+        // No Need for Movies
+        if (mediaItemDetails?.mediaContentType != MediaContentType.movies)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                SizedBox(width: 20.sp),
+                ...List.generate(5, (index) => _buildServerItem(index)),
+              ],
+            ),
           ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
           child: CustomText(
-            text:
-                'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
+            text: parse(mediaItemDetails?.description.toString()).body!.text,
             color: Colors.grey.shade700,
             fontSize: 15.sp,
             fontWeight: FontWeight.normal,
@@ -395,7 +415,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getTrailerWidget() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        // TODO: link to trailer
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -417,6 +439,30 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
+  Widget getDownloadBtnWidget() {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(6.sp),
+            child: Icon(
+              Icons.download,
+              size: 32.sp,
+              color: Colors.white,
+            ),
+          ),
+          CustomText(
+            text: 'Download',
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget getAddToMyListWidget() {
     return InkWell(
       onTap: () {},
@@ -426,7 +472,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
           Padding(
             padding: EdgeInsets.all(6.sp),
             child: Icon(
-              Icons.add,
+              (mediaItemDetails!.inWatchList ?? false)
+                  ? Icons.remove
+                  : Icons.add,
               size: 32.sp,
               color: Colors.white,
             ),
@@ -459,6 +507,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getActors() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -492,7 +541,12 @@ class _DetailsscreenState extends State<Detailsscreen> {
           child: Row(
             children: [
               SizedBox(width: 6.sp),
-              ...List.generate(10, (index) => buildActorItem(index)),
+              if (genericDetailsResponseModel?.actors != null)
+                ...List.generate(
+                    genericDetailsResponseModel!.actors!.length,
+                    (index) => buildActorItem(
+                        index, genericDetailsResponseModel!.actors![index])),
+              SizedBox(width: 6.sp),
             ],
           ),
         )
@@ -502,6 +556,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getDirectors() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -535,7 +590,12 @@ class _DetailsscreenState extends State<Detailsscreen> {
           child: Row(
             children: [
               SizedBox(width: 6.sp),
-              ...List.generate(10, (index) => buildActorItem(index)),
+              if (genericDetailsResponseModel?.actors != null)
+                ...List.generate(
+                    genericDetailsResponseModel!.directors!.length,
+                    (index) => buildActorItem(
+                        index, genericDetailsResponseModel!.directors![index])),
+              SizedBox(width: 6.sp),
             ],
           ),
         )
@@ -543,21 +603,20 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
-  Widget buildActorItem(int index) {
+  Widget buildActorItem(int index, ActorModel actor) {
     return Container(
       margin: EdgeInsets.only(left: 16),
       child: Column(
         children: [
           CircleAvatar(
             radius: 35.sp,
-            backgroundImage: NetworkImage(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ZFCyWu6NWupUeYfXszQabRkXWPjzbIr9Cw&s'),
+            backgroundImage: NetworkImage(actor.actorImage ?? ""),
           ),
           SizedBox(height: 10),
           Container(
             width: 70.sp,
             child: TextScroll(
-              'Actor/Director $index is a Good One.',
+              actor.actorName ?? "",
               velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
               style: TextStyle(color: Colors.white, fontSize: 12.sp),
             ),

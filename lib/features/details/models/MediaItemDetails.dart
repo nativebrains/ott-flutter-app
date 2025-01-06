@@ -1,3 +1,4 @@
+import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/details/models/GenericDetailsResponseModel.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
@@ -15,7 +16,12 @@ class MediaItemDetails {
   String? contentRating;
   String? views;
   String? language;
-  // ... other properties
+  String? trailer;
+  bool? inWatchList;
+  bool? upcoming;
+  bool? downloadEnable;
+  bool? isPremium;
+  MediaContentType mediaContentType;
 
   MediaItemDetails({
     this.title,
@@ -27,6 +33,12 @@ class MediaItemDetails {
     this.contentRating,
     this.views,
     this.language,
+    this.trailer,
+    this.inWatchList,
+    this.upcoming,
+    this.downloadEnable,
+    this.isPremium,
+    this.mediaContentType = MediaContentType.movies,
   });
 
   static MediaItemDetails getMediaItemDetails(
@@ -43,6 +55,12 @@ class MediaItemDetails {
         contentRating: movie.movieContentRating,
         views: movie.movieView,
         language: movie.movieLanguage,
+        trailer: movie.movieTrailer,
+        inWatchList: movie.inwatchList,
+        upcoming: movie.upcoming,
+        downloadEnable: movie.isDownload,
+        isPremium: movie.isPremium,
+        mediaContentType: MediaContentType.movies,
       );
     } else if (responseModel.item is ItemShowModel) {
       ItemShowModel tvShow = responseModel.item as ItemShowModel;

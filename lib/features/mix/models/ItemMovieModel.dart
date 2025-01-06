@@ -30,6 +30,8 @@ class ItemMovieModel {
   String? movieShareLink;
   String? movieContentRating;
   String? movieView;
+  bool? inwatchList;
+  bool? upcoming;
   final MediaContentType mediaContentType = MediaContentType.movies;
 
   ItemMovieModel({
@@ -61,6 +63,8 @@ class ItemMovieModel {
     this.movieShareLink,
     this.movieContentRating,
     this.movieView,
+    this.inwatchList = false,
+    this.upcoming = false,
   });
 
   factory ItemMovieModel.fromJson(Map<String, dynamic> json) {
@@ -93,6 +97,8 @@ class ItemMovieModel {
       movieShareLink: json[Constants.MOVIE_SHARE_LINK],
       movieContentRating: json[Constants.MOVIE_CONTENT_RATING],
       movieView: json[Constants.MOVIE_VIEW],
+      inwatchList: json[Constants.USER_WATCHLIST_STATUS],
+      upcoming: json[Constants.UPCOMING_STATUS] == "true",
     );
   }
 
