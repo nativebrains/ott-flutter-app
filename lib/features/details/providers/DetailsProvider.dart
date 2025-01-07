@@ -93,6 +93,31 @@ class DetailsProvider extends ChangeNotifier {
         genericDetailsResponseModel =
             GenericDetailsResponseModel.fromSportsJson(response.data);
         genericDetailsResponseModel.isPurchased = response.user_plan_status;
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return genericDetailsResponseModel;
+  }
+
+  Future<GenericDetailsResponseModel?> fetchLiveTvDetails(String tvId) async {
+    GenericDetailsResponseModel? genericDetailsResponseModel;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.TV_DETAILS_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'tv_id': tvId,
+        }),
+      );
+
+      if (response.status == 200) {
+        genericDetailsResponseModel =
+            GenericDetailsResponseModel.fromLiveTvJson(response.data);
+        genericDetailsResponseModel.isPurchased = response.user_plan_status;
         print("All Good");
         print(genericDetailsResponseModel.item.toString());
       }

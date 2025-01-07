@@ -101,7 +101,12 @@ class MediaItemDetails {
       return MediaItemDetails(
         title: liveTv.tvName,
         image: liveTv.tvImage,
-        description: liveTv.tvDescription,
+        description: liveTv.description,
+        views: liveTv.tvView,
+        inWatchList: liveTv.inWatchlist,
+        isPremium: liveTv.isPremium,
+        mediaContentType: MediaContentType.liveTv,
+        poster: liveTv.tvImage,
       );
     } else {
       return MediaItemDetails();

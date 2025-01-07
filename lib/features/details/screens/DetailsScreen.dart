@@ -14,6 +14,7 @@ import 'package:islamforever/features/details/models/MediaItemDetails.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
 import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
 import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
+import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
@@ -104,6 +105,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
       case MediaContentType.liveTv:
+        genericDetailsResponseModel = await detailsProvider
+            .fetchLiveTvDetails(widget.detailsScreenArguments.id);
+        mediaItemDetails =
+            MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
     }
     setState(() {
@@ -380,12 +385,16 @@ class _DetailsscreenState extends State<Detailsscreen> {
             if (mediaItemDetails?.trailer != null ||
                 mediaItemDetails?.trailer != "null" &&
                     mediaItemDetails?.mediaContentType !=
-                        MediaContentType.sports)
+                        MediaContentType.sports &&
+                    mediaItemDetails?.mediaContentType !=
+                        MediaContentType.liveTv)
               SizedBox(width: 24.sp),
             if (mediaItemDetails?.trailer != null ||
                 mediaItemDetails?.trailer != "null" &&
                     mediaItemDetails?.mediaContentType !=
-                        MediaContentType.sports)
+                        MediaContentType.sports &&
+                    mediaItemDetails?.mediaContentType !=
+                        MediaContentType.liveTv)
               getTrailerWidget(),
             if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
               SizedBox(width: 24.sp),
@@ -425,16 +434,16 @@ class _DetailsscreenState extends State<Detailsscreen> {
           height: 12.sp,
         ),
         // No Need for Movies
-        if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                SizedBox(width: 20.sp),
-                ...List.generate(5, (index) => _buildServerItem(index)),
-              ],
-            ),
-          ),
+        // if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
+        //   SingleChildScrollView(
+        //     scrollDirection: Axis.horizontal,
+        //     child: Row(
+        //       children: [
+        //         SizedBox(width: 20.sp),
+        //         ...List.generate(5, (index) => _buildServerItem(index)),
+        //       ],
+        //     ),
+        //   ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
           child: CustomText(
@@ -788,6 +797,22 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   title: (items[index] as ItemMovieModel).movieName,
                   mediaContentType:
                       (items[index] as ItemMovieModel).mediaContentType,
+                ),
+              ),
+            ),
+          if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
+            ...List.generate(
+              items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Customhorizontalcard(
+                  url: (items[index] as ItemLiveTVModel).tvImage ?? "",
+                  isPremium: (items[index] as ItemLiveTVModel).isPremium,
+                  id: (items[index] as ItemLiveTVModel).tvId,
+                  title: (items[index] as ItemLiveTVModel).tvName,
+                  mediaContentType:
+                      (items[index] as ItemLiveTVModel).mediaContentType,
+                  showTitle: true,
                 ),
               ),
             ),

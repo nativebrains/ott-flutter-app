@@ -1,6 +1,7 @@
 import 'package:islamforever/constants/constants.dart';
 import 'package:islamforever/features/details/models/ActorModel.dart';
 import 'package:islamforever/features/mix/models/FilterDataModel.dart';
+import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
@@ -72,6 +73,16 @@ class GenericDetailsResponseModel {
       item: ItemSportModel.fromJson(json),
       itemRelated: (json[Constants.RELATED_SPORT_ARRAY_NAME] as List)
           .map((e) => ItemSportModel.fromJson(e))
+          .toList(),
+    );
+  }
+
+  factory GenericDetailsResponseModel.fromLiveTvJson(
+      Map<String, dynamic> json) {
+    return GenericDetailsResponseModel(
+      item: ItemLiveTVModel.fromJson(json),
+      itemRelated: (json[Constants.RELATED_TV_ARRAY_NAME] as List)
+          .map((e) => ItemLiveTVModel.fromJson(e))
           .toList(),
     );
   }

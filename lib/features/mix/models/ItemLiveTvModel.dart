@@ -4,30 +4,34 @@ class ItemLiveTVModel {
   int? tvId;
   String? tvName;
   String? tvImage;
-  String? tvDescription;
-  String? tvType;
+  String? description;
+  String? tvUrlType;
   String? tvUrl;
   String? tvUrl2;
   String? tvUrl3;
-  String? tvCategory;
+  int? tvCatId;
+  String? categoryName;
   bool isPremium = false;
   String? tvView;
-  String? tvShareLink;
+  String? shareUrl;
+  bool? inWatchlist;
   final MediaContentType mediaContentType = MediaContentType.liveTv;
 
   ItemLiveTVModel({
     this.tvId,
     this.tvName,
     this.tvImage,
-    this.tvDescription,
-    this.tvType,
+    this.description,
+    this.tvUrlType,
     this.tvUrl,
     this.tvUrl2,
     this.tvUrl3,
-    this.tvCategory,
+    this.tvCatId,
+    this.categoryName,
     this.isPremium = false,
     this.tvView,
-    this.tvShareLink,
+    this.shareUrl,
+    this.inWatchlist,
   });
 
   factory ItemLiveTVModel.fromJson(Map<String, dynamic> json) {
@@ -35,15 +39,17 @@ class ItemLiveTVModel {
       tvId: json['tv_id'],
       tvName: json['tv_title'],
       tvImage: json['tv_logo'],
-      tvDescription: json['tv_description'],
-      tvType: json['tv_type'],
+      description: json['description'],
+      tvUrlType: json['tv_url_type'],
       tvUrl: json['tv_url'],
       tvUrl2: json['tv_url2'],
       tvUrl3: json['tv_url3'],
-      tvCategory: json['tv_category'],
-      isPremium: json['tv_access'] ?? false,
-      tvView: json['tv_view'],
-      tvShareLink: json['tv_share_link'],
+      tvCatId: json['tv_cat_id'],
+      categoryName: json['category_name'],
+      isPremium: json['tv_access'] == 'Paid',
+      tvView: json['views'],
+      shareUrl: json['share_url'],
+      inWatchlist: json['in_watchlist'],
     );
   }
 
@@ -52,15 +58,17 @@ class ItemLiveTVModel {
       'tvId': tvId,
       'tvName': tvName,
       'tvImage': tvImage,
-      'tvDescription': tvDescription,
-      'tvType': tvType,
+      'description': description,
+      'tvUrlType': tvUrlType,
       'tvUrl': tvUrl,
       'tvUrl2': tvUrl2,
       'tvUrl3': tvUrl3,
-      'tvCategory': tvCategory,
+      'tvCatId': tvCatId,
+      'categoryName': categoryName,
       'isPremium': isPremium,
       'tvView': tvView,
-      'tvShareLink': tvShareLink,
+      'shareUrl': shareUrl,
+      'inWatchlist': inWatchlist,
     };
   }
 }
