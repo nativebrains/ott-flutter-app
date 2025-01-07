@@ -16,6 +16,7 @@ import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
 import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
+import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -51,6 +52,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   int _selectedSeasonIndex = 0;
   ItemSeasonModel? selectedSeasonModel;
   List<ItemEpisodeModel>? itemEpisodeModel;
+  bool _episodesLoading = false;
   late GenericDetailsResponseModel? genericDetailsResponseModel;
   late MediaItemDetails? mediaItemDetails;
   bool _isLoading = false;
@@ -84,8 +86,14 @@ class _DetailsscreenState extends State<Detailsscreen> {
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         if (genericDetailsResponseModel?.seasons != null) {
           if (genericDetailsResponseModel?.seasons?.isNotEmpty != null) {
+            setState(() {
+              _episodesLoading = true;
+            });
             itemEpisodeModel = await detailsProvider.fetchSeasonEpisodeDetails(
                 genericDetailsResponseModel!.seasons![0].seasonId);
+            setState(() {
+              _episodesLoading = false;
+            });
           }
         }
         break;
@@ -128,6 +136,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     if (mediaItemDetails?.mediaContentType !=
                         MediaContentType.movies)
                       getEpisodes(),
+
+                    // Actors
                     SizedBox(height: 24.sp),
                     getActors(),
                     SizedBox(height: 24.sp),
@@ -531,6 +541,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
   }
 
   Widget getActors() {
+    if (genericDetailsResponseModel?.actors?.isEmpty ?? true) {
+      return Container();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -580,6 +593,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
   }
 
   Widget getDirectors() {
+    if (genericDetailsResponseModel?.directors?.isEmpty ?? true) {
+      return Container();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -667,11 +683,12 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getRelatedItems() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildHeader(
             'Related ${mediaItemDetails?.mediaContentType.displayName}'),
         SizedBox(height: 12.sp),
-        // _buildRelatedItems(genericDetailsResponseModel?.itemRelated),
+        _buildRelatedItems(genericDetailsResponseModel?.itemRelated),
       ],
     );
   }
@@ -711,22 +728,40 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(width: 24.sp),
-          ...List.generate(
-            items.length,
-            (index) => Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Customverticalcard(
-                url: (items[index] as ItemMovieModel).moviePoster ?? "",
-                isPremium: (items[index] as ItemMovieModel).isPremium ?? false,
-                id: (items[index] as ItemMovieModel).movieId,
-                title: (items[index] as ItemMovieModel).movieName,
-                mediaContentType:
-                    (items[index] as ItemMovieModel).mediaContentType,
+          if (mediaItemDetails?.mediaContentType == MediaContentType.tvShows)
+            ...List.generate(
+              items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Customhorizontalcard(
+                  isPremium: (items[index] as ItemShowModel).isPremium,
+                  showTitle: false,
+                  url: (items[index] as ItemShowModel).showImage ?? "",
+                  title: (items[index] as ItemShowModel).showName,
+                  id: (items[index] as ItemShowModel).showId,
+                  mediaContentType: MediaContentType.tvShows,
+                ),
               ),
             ),
-          ),
+          if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
+            ...List.generate(
+              items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Customverticalcard(
+                  url: (items[index] as ItemMovieModel).moviePoster ?? "",
+                  isPremium:
+                      (items[index] as ItemMovieModel).isPremium ?? false,
+                  id: (items[index] as ItemMovieModel).movieId,
+                  title: (items[index] as ItemMovieModel).movieName,
+                  mediaContentType:
+                      (items[index] as ItemMovieModel).mediaContentType,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -775,15 +810,19 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   (index) => Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child: GestureDetector(
-                      onTap: () async{
-                        setState(()  {
+                      onTap: () async {
+                        setState(() {
                           _selectedSeasonIndex = index;
                           selectedSeasonModel =
                               genericDetailsResponseModel!.seasons![index];
+                          _episodesLoading = true;
                         });
                         itemEpisodeModel =
-                              await detailsProvider.fetchSeasonEpisodeDetails(
-                                  selectedSeasonModel!.seasonId);
+                            await detailsProvider.fetchSeasonEpisodeDetails(
+                                selectedSeasonModel!.seasonId);
+                        setState(() {
+                          _episodesLoading = false;
+                        });
                       },
                       child: Container(
                           padding:
@@ -817,6 +856,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getEpisodes() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -850,24 +890,46 @@ class _DetailsscreenState extends State<Detailsscreen> {
           child: Row(
             children: [
               SizedBox(width: 24.sp),
-              if (genericDetailsResponseModel?.seasons != null)
+              if (itemEpisodeModel != null && !_episodesLoading)
                 ...List.generate(
-                  10,
+                  itemEpisodeModel!.length,
                   (index) => Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: Customhorizontalcard(
-                        isPremium: true,
+                        isPremium: itemEpisodeModel![index].isPremium ?? false,
                         showTitle: true,
-                        url:
-                            "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg",
-                        title: null,
-                        id: null,
-                        mediaContentType: MediaContentType.getMediaType(""),
+                        url: itemEpisodeModel![index].episodeImage ?? "",
+                        title: itemEpisodeModel![index].episodeName,
+                        id: itemEpisodeModel![index].episodeId,
+                        mediaContentType: MediaContentType.tvShows,
+                        shouldRedirect: false,
                       )),
                 ),
             ],
           ),
-        )
+        ),
+        if (itemEpisodeModel != null &&
+            itemEpisodeModel!.isEmpty &&
+            !_episodesLoading)
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+              child: CustomText(
+                text: 'No Episodes Found ',
+                fontSize: 16.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        if (_episodesLoading)
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            )),
+          )
       ],
     );
   }

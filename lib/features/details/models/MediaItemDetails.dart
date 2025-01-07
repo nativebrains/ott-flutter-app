@@ -66,7 +66,6 @@ class MediaItemDetails {
         poster: movie.moviePoster,
       );
     } else if (responseModel.item is ItemShowModel) {
-      print("here");
       ItemShowModel tvShow = responseModel.item as ItemShowModel;
       return MediaItemDetails(
         title: tvShow.showName,

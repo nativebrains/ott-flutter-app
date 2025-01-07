@@ -18,6 +18,7 @@ class Customhorizontalcard extends StatelessWidget {
   final String? seasonId;
   final String? episodeId;
   final bool? episodeRedirect;
+  final bool shouldRedirect;
   const Customhorizontalcard({
     super.key,
     required this.isPremium,
@@ -29,23 +30,25 @@ class Customhorizontalcard extends StatelessWidget {
     this.seasonId,
     this.episodeId,
     this.episodeRedirect,
+    this.shouldRedirect = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          RouteConstantName.detailsScreen,
-          arguments: DetailsScreenArguments(
-            id: id.toString(),
-            mediaContentType: mediaContentType,
-            episodeId: episodeId,
-            seasonId: seasonId,
-            episodeRedirect: episodeRedirect,
-          ),
-        );
+        if (shouldRedirect)
+          Navigator.pushNamed(
+            context,
+            RouteConstantName.detailsScreen,
+            arguments: DetailsScreenArguments(
+              id: id.toString(),
+              mediaContentType: mediaContentType,
+              episodeId: episodeId,
+              seasonId: seasonId,
+              episodeRedirect: episodeRedirect,
+            ),
+          );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
