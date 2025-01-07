@@ -2,20 +2,20 @@ import '../../common/enums/MediaContentType.dart';
 
 class ItemSportModel {
   int? sportId;
-  String? sportName;
+  String? sportTitle;
   String? sportImage;
   String? sportDuration;
   String? sportDescription;
   String? sportDate;
   String? sportCategory;
   String? sportType;
-  String? sportUrl;
+  String? videoUrl;
   bool isPremium = false;
   bool isDownload = false;
   String? downloadUrl;
-  String? quality480;
-  String? quality720;
-  String? quality1080;
+  String? videoUrl480;
+  String? videoUrl720;
+  String? videoUrl1080;
   bool isSubTitle = false;
   bool isQuality = false;
   String? subTitleLanguage1;
@@ -26,24 +26,26 @@ class ItemSportModel {
   String? subTitleUrl3;
   String? sportShareLink;
   String? sportView;
+  bool? subtitleOnOff;
+  bool? inWatchlist;
   final MediaContentType mediaContentType = MediaContentType.sports;
 
   ItemSportModel({
     this.sportId,
-    this.sportName,
+    this.sportTitle,
     this.sportImage,
     this.sportDuration,
     this.sportDescription,
     this.sportDate,
     this.sportCategory,
     this.sportType,
-    this.sportUrl,
+    this.videoUrl,
     this.isPremium = false,
     this.isDownload = false,
     this.downloadUrl,
-    this.quality480,
-    this.quality720,
-    this.quality1080,
+    this.videoUrl480,
+    this.videoUrl720,
+    this.videoUrl1080,
     this.isSubTitle = false,
     this.isQuality = false,
     this.subTitleLanguage1,
@@ -54,55 +56,59 @@ class ItemSportModel {
     this.subTitleUrl3,
     this.sportShareLink,
     this.sportView,
+    this.subtitleOnOff,
+    this.inWatchlist,
   });
 
   factory ItemSportModel.fromJson(Map<String, dynamic> json) {
     return ItemSportModel(
       sportId: json['sport_id'],
-      sportName: json['sport_title'],
+      sportTitle: json['sport_title'],
       sportImage: json['sport_image'],
       sportDuration: json['sport_duration'],
-      sportDescription: json['sport_description'],
-      sportDate: json['sport_date'],
-      sportCategory: json['sport_category'],
-      sportType: json['sport_type'],
-      sportUrl: json['sport_url'],
-      isPremium: json['sport_access'] ?? false,
-      isDownload: json['is_download'] ?? false,
+      sportDescription: json['description'],
+      sportDate: json['date'],
+      sportCategory: json['category_name'],
+      sportType: json['video_type'],
+      videoUrl: json['video_url'],
+      isPremium: json['sport_access'] == 'Paid',
+      isDownload: json['download_enable'] == 'true',
       downloadUrl: json['download_url'],
-      quality480: json['quality_480'],
-      quality720: json['quality_720'],
-      quality1080: json['quality_1080'],
-      isSubTitle: json['is_sub_title'] ?? false,
-      isQuality: json['is_quality'] ?? false,
-      subTitleLanguage1: json['sub_title_language1'],
-      subTitleUrl1: json['sub_title_url1'],
-      subTitleLanguage2: json['sub_title_language2'],
-      subTitleUrl2: json['sub_title_url2'],
-      subTitleLanguage3: json['sub_title_language3'],
-      subTitleUrl3: json['sub_title_url3'],
-      sportShareLink: json['sport_share_link'],
-      sportView: json['sport_view'],
+      videoUrl480: json['video_url_480'],
+      videoUrl720: json['video_url_720'],
+      videoUrl1080: json['video_url_1080'],
+      isSubTitle: json['subtitle_on_off'] == "true",
+      isQuality: json['video_quality'] == "true",
+      subTitleLanguage1: json['subtitle_language1'],
+      subTitleUrl1: json['subtitle_url1'],
+      subTitleLanguage2: json['subtitle_language2'],
+      subTitleUrl2: json['subtitle_url2'],
+      subTitleLanguage3: json['subtitle_language3'],
+      subTitleUrl3: json['subtitle_url3'],
+      sportShareLink: json['share_url'],
+      sportView: json['views'],
+      subtitleOnOff: json['subtitle_on_off'] == "true",
+      inWatchlist: json['in_watchlist'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'sportId': sportId,
-      'sportName': sportName,
+      'sportTitle': sportTitle,
       'sportImage': sportImage,
       'sportDuration': sportDuration,
       'sportDescription': sportDescription,
       'sportDate': sportDate,
       'sportCategory': sportCategory,
       'sportType': sportType,
-      'sportUrl': sportUrl,
+      'videoUrl': videoUrl,
       'isPremium': isPremium,
       'isDownload': isDownload,
       'downloadUrl': downloadUrl,
-      'quality480': quality480,
-      'quality720': quality720,
-      'quality1080': quality1080,
+      'videoUrl480': videoUrl480,
+      'videoUrl720': videoUrl720,
+      'videoUrl1080': videoUrl1080,
       'isSubTitle': isSubTitle,
       'isQuality': isQuality,
       'subTitleLanguage1': subTitleLanguage1,
@@ -113,6 +119,8 @@ class ItemSportModel {
       'subTitleUrl3': subTitleUrl3,
       'sportShareLink': sportShareLink,
       'sportView': sportView,
+      'subtitleOnOff': subtitleOnOff,
+      'inWatchlist': inWatchlist,
     };
   }
 }

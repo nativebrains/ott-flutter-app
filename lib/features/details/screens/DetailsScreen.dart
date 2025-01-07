@@ -98,6 +98,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
         }
         break;
       case MediaContentType.sports:
+        genericDetailsResponseModel = await detailsProvider
+            .fetchSportsDetails(widget.detailsScreenArguments.id);
+        mediaItemDetails =
+            MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
       case MediaContentType.liveTv:
         break;

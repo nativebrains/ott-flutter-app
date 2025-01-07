@@ -320,7 +320,7 @@ class DashboardProvider extends ChangeNotifier {
         for (var item in response.data) {
           ItemSportModel objItem = ItemSportModel(
             sportId: item['sport_id'],
-            sportName: item['sport_title'],
+            sportTitle: item['sport_title'],
             sportImage: item['sport_image'],
             isPremium: item['sport_access'] == 'Paid',
           );
@@ -465,7 +465,7 @@ class DashboardProvider extends ChangeNotifier {
           ...sportArray.map((json) {
             return ItemSportModel(
               sportId: json['sport_id'],
-              sportName: json['sport_title'],
+              sportTitle: json['sport_title'],
               sportImage: json['sport_image'],
               isPremium: json['sport_access'] == 'Paid',
             );

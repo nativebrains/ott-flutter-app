@@ -81,9 +81,16 @@ class MediaItemDetails {
     } else if (responseModel.item is ItemSportModel) {
       ItemSportModel sports = responseModel.item as ItemSportModel;
       return MediaItemDetails(
-        title: sports.sportName,
+        title: sports.sportTitle,
         image: sports.sportImage,
         description: sports.sportDescription,
+        duration: sports.sportDuration,
+        views: sports.sportView,
+        inWatchList: sports.inWatchlist,
+        downloadEnable: sports.isDownload,
+        isPremium: sports.isPremium,
+        mediaContentType: MediaContentType.sports,
+        poster: sports.sportImage,
       );
     } else if (responseModel.item is ItemLiveTVModel) {
       ItemLiveTVModel liveTv = responseModel.item as ItemLiveTVModel;

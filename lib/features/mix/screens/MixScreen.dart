@@ -137,7 +137,7 @@ class _MixscreenState extends State<Mixscreen> {
           showTitle: true,
           url: item.sportImage ?? "",
           id: item.sportId,
-          title: item.sportName,
+          title: item.sportTitle,
           mediaContentType: item.mediaContentType,
         );
       } else if (item is ItemLiveTVModel) {

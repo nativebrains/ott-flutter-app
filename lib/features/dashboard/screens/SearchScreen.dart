@@ -283,7 +283,7 @@ class _SearchscreenState extends State<Searchscreen> {
               showTitle: true,
               url: item.sportImage ?? "",
               id: item.sportId,
-              title: item.sportName,
+              title: item.sportTitle,
               mediaContentType: item.mediaContentType,
             ),
           ),

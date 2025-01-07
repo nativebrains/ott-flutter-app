@@ -78,6 +78,33 @@ class DetailsProvider extends ChangeNotifier {
     return genericDetailsResponseModel;
   }
 
+  Future<GenericDetailsResponseModel?> fetchSportsDetails(String showId) async {
+    GenericDetailsResponseModel? genericDetailsResponseModel;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.SPORT_DETAILS_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'sport_id': showId,
+        }),
+      );
+
+      if (response.status == 200) {
+        genericDetailsResponseModel =
+            GenericDetailsResponseModel.fromSportsJson(response.data);
+        genericDetailsResponseModel.isPurchased = response.user_plan_status;
+        print("All Good");
+        print(genericDetailsResponseModel.item.toString());
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return genericDetailsResponseModel;
+  }
+
   Future<ActorDetailsModel?> fetchActorDetails(bool isActor, String id) async {
     ActorDetailsModel? actorDetailsModel;
     try {
@@ -117,9 +144,6 @@ class DetailsProvider extends ChangeNotifier {
         itemEpisodeModel = (response.data as List)
             .map((e) => ItemEpisodeModel.fromJson(e))
             .toList();
-
-        print("All Good");
-        print(itemEpisodeModel.length);
       }
     } catch (e) {
       print("Error: $e");
