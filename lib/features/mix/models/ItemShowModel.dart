@@ -9,6 +9,8 @@ class ItemShowModel {
   String? showRating;
   String? showContentRating;
   bool isPremium = false;
+  bool? upcoming;
+
   final MediaContentType mediaContentType = MediaContentType.tvShows;
 
   ItemShowModel({
@@ -20,6 +22,7 @@ class ItemShowModel {
     this.showRating,
     this.showContentRating,
     this.isPremium = false,
+    this.upcoming = false,
   });
 
   factory ItemShowModel.fromJson(Map<String, dynamic> json) {
@@ -27,11 +30,12 @@ class ItemShowModel {
       showId: json['show_id'],
       showName: json['show_name'],
       showImage: json['show_poster'],
-      showDescription: json['showDescription'],
-      showLanguage: json['showLanguage'],
-      showRating: json['showRating'],
-      showContentRating: json['showContentRating'],
-      isPremium: json['show_access'] ?? false,
+      showDescription: json['show_info'],
+      showLanguage: json['show_lang'],
+      showRating: json['imdb_rating'],
+      showContentRating: json['content_rating'],
+      isPremium: json['series_access'] == "Paid",
+      upcoming: json['upcoming'] == "true",
     );
   }
 

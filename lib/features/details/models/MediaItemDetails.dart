@@ -66,12 +66,18 @@ class MediaItemDetails {
         poster: movie.moviePoster,
       );
     } else if (responseModel.item is ItemShowModel) {
+      print("here");
       ItemShowModel tvShow = responseModel.item as ItemShowModel;
       return MediaItemDetails(
         title: tvShow.showName,
         image: tvShow.showImage,
         description: tvShow.showDescription,
         rating: tvShow.showRating,
+        contentRating: tvShow.showContentRating,
+        language: tvShow.showLanguage,
+        upcoming: tvShow.upcoming,
+        mediaContentType: MediaContentType.tvShows,
+        poster: tvShow.showImage,
       );
     } else if (responseModel.item is ItemSportModel) {
       ItemSportModel sports = responseModel.item as ItemSportModel;

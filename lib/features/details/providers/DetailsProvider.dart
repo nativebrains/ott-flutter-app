@@ -52,6 +52,31 @@ class DetailsProvider extends ChangeNotifier {
     return genericDetailsResponseModel;
   }
 
+  Future<GenericDetailsResponseModel?> fetchShowsDetails(String showId) async {
+    GenericDetailsResponseModel? genericDetailsResponseModel;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.SHOW_DETAILS_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'show_id': showId,
+        }),
+      );
+
+      if (response.status == 200) {
+        genericDetailsResponseModel =
+            GenericDetailsResponseModel.fromShowsJson(response.data);
+        genericDetailsResponseModel.isPurchased = response.user_plan_status;
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return genericDetailsResponseModel;
+  }
+
   Future<ActorDetailsModel?> fetchActorDetails(bool isActor, String id) async {
     ActorDetailsModel? actorDetailsModel;
     try {

@@ -74,6 +74,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
       case MediaContentType.tvShows:
+        genericDetailsResponseModel = await detailsProvider
+            .fetchShowsDetails(widget.detailsScreenArguments.id);
+        mediaItemDetails =
+            MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
       case MediaContentType.sports:
         break;
@@ -119,7 +123,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     SizedBox(height: 24.sp),
                     getDirectors(),
                     SizedBox(height: 24.sp),
-                    getRelatedMovies(),
+                    getRelatedItems(),
                     SizedBox(height: 30.sp),
                   ],
                 ),
@@ -268,13 +272,15 @@ class _DetailsscreenState extends State<Detailsscreen> {
               ),
               if (mediaItemDetails?.duration != null ||
                   mediaItemDetails?.duration != "null")
-                buildDotItem(0, mediaItemDetails?.duration ?? "0"),
+                buildDotItem(0, mediaItemDetails?.duration ?? ""),
               if (mediaItemDetails?.contentRating != null ||
                   mediaItemDetails?.contentRating != "null")
                 buildDotItem(1,
-                    "Content Rating ${mediaItemDetails?.contentRating ?? ""}"),
-              if (mediaItemDetails?.views != null ||
-                  mediaItemDetails?.views != "null")
+                    "Content Rating ${mediaItemDetails?.contentRating ?? "0.0"}"),
+              if ((mediaItemDetails?.views != null ||
+                      mediaItemDetails?.views != "null") &&
+                  mediaItemDetails?.mediaContentType !=
+                      MediaContentType.tvShows)
                 buildDotItem(2, "Views ${mediaItemDetails?.views ?? ""}"),
               if (mediaItemDetails?.language != null ||
                   mediaItemDetails?.language != "null")
@@ -287,41 +293,42 @@ class _DetailsscreenState extends State<Detailsscreen> {
             ],
           ),
         ),
-        Row(
-          children: [
-            SizedBox(width: 16),
-            CustomText(
-              text: 'Share :',
-              fontSize: 14.sp,
-              color: Colors.white,
-            ),
-            SizedBox(width: 10),
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.facebook),
-              iconSize: 20.sp,
-              color: Colors.blue,
-              onPressed: () {
-                // Handle Facebook button press
-              },
-            ),
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.twitter),
-              color: Colors.blue,
-              iconSize: 20.sp,
-              onPressed: () {
-                // Handle Twitter button press
-              },
-            ),
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.whatsapp),
-              color: Colors.green,
-              iconSize: 20.sp,
-              onPressed: () {
-                // Handle WhatsApp button press
-              },
-            ),
-          ],
-        ),
+        if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+          Row(
+            children: [
+              SizedBox(width: 16),
+              CustomText(
+                text: 'Share :',
+                fontSize: 14.sp,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.facebook),
+                iconSize: 20.sp,
+                color: Colors.blue,
+                onPressed: () {
+                  // Handle Facebook button press
+                },
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.twitter),
+                color: Colors.blue,
+                iconSize: 20.sp,
+                onPressed: () {
+                  // Handle Twitter button press
+                },
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.whatsapp),
+                color: Colors.green,
+                iconSize: 20.sp,
+                onPressed: () {
+                  // Handle WhatsApp button press
+                },
+              ),
+            ],
+          ),
         SizedBox(
           height: 6.sp,
         ),
@@ -333,10 +340,14 @@ class _DetailsscreenState extends State<Detailsscreen> {
             if (mediaItemDetails?.trailer != null ||
                 mediaItemDetails?.trailer != "null")
               getTrailerWidget(),
-            SizedBox(width: 24.sp),
-            getAddToMyListWidget(),
-            SizedBox(width: 24.sp),
-            getDownloadBtnWidget(),
+            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+              SizedBox(width: 24.sp),
+            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+              getAddToMyListWidget(),
+            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+              SizedBox(width: 24.sp),
+            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+              getDownloadBtnWidget(),
             Expanded(child: Container()),
             InkWell(
               onTap: () {},
@@ -367,7 +378,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
           height: 12.sp,
         ),
         // No Need for Movies
-        if (mediaItemDetails?.mediaContentType != MediaContentType.movies)
+        if (mediaItemDetails?.mediaContentType != MediaContentType.movies &&
+            mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -643,12 +655,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
-  Widget getRelatedMovies() {
+  Widget getRelatedItems() {
     return Column(
       children: [
-        _buildHeader('Related Movies'),
+        _buildHeader(
+            'Related ${mediaItemDetails?.mediaContentType.displayName}'),
         SizedBox(height: 12.sp),
-        _buildRelatedItems(genericDetailsResponseModel?.itemRelated),
+        // _buildRelatedItems(genericDetailsResponseModel?.itemRelated),
       ],
     );
   }
@@ -711,6 +724,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getSeasons() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -742,35 +756,43 @@ class _DetailsscreenState extends State<Detailsscreen> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(width: 24.sp),
-              ...List.generate(
-                10,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedSeasonIndex = index;
-                      });
-                    },
-                    child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          gradient: LinearGradient(
-                            colors: _selectedSeasonIndex == index
-                                ? [Colors.orange, Colors.pink]
-                                : [ColorCode.cardInfoBg, ColorCode.cardInfoBg],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
+              if (genericDetailsResponseModel?.seasons != null)
+                ...List.generate(
+                  genericDetailsResponseModel!.seasons!.length,
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedSeasonIndex = index;
+                        });
+                      },
+                      child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            gradient: LinearGradient(
+                              colors: _selectedSeasonIndex == index
+                                  ? [Colors.orange, Colors.pink]
+                                  : [
+                                      ColorCode.cardInfoBg,
+                                      ColorCode.cardInfoBg
+                                    ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
-                        ),
-                        child: CustomText(text: "Season $index")),
+                          child: CustomText(
+                              text: genericDetailsResponseModel!
+                                  .seasons![index].seasonName
+                                  .toString())),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         )
@@ -813,6 +835,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
           child: Row(
             children: [
               SizedBox(width: 24.sp),
+              if (genericDetailsResponseModel?.seasons != null)
               ...List.generate(
                 10,
                 (index) => Padding(
