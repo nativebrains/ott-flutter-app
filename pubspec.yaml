@@ -1,7 +1,7 @@
 name: islamforever
 description: "Dawat-e-Islam project by Awais Mansha"
 publish_to: "none"
-version: 1.0.3+1
+version: 1.0.4+1
 
 environment:
   sdk: ^3.5.1
