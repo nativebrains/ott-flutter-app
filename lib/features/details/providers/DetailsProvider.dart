@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:islamforever/constants/constants.dart';
 import 'package:islamforever/features/details/models/ActorDetailsModel.dart';
+import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
@@ -91,9 +92,6 @@ class DetailsProvider extends ChangeNotifier {
 
       if (response.status == 200) {
         actorDetailsModel = ActorDetailsModel.fromJson(response.data);
-
-        print("All Good");
-        print(actorDetailsModel.adBirthDate);
       }
     } catch (e) {
       print("Error: $e");
@@ -102,5 +100,33 @@ class DetailsProvider extends ChangeNotifier {
 
     notifyListeners();
     return actorDetailsModel;
+  }
+
+  Future<List<ItemEpisodeModel>?> fetchSeasonEpisodeDetails(int? id) async {
+    List<ItemEpisodeModel>? itemEpisodeModel;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.EPISODE_LIST_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'season_id': id,
+        }),
+      );
+
+      if (response.status == 200) {
+        itemEpisodeModel = (response.data as List)
+            .map((e) => ItemEpisodeModel.fromJson(e))
+            .toList();
+
+        print("All Good");
+        print(itemEpisodeModel.length);
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return itemEpisodeModel;
   }
 }

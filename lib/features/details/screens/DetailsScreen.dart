@@ -13,7 +13,9 @@ import 'package:islamforever/features/details/models/GenericDetailsResponseModel
 import 'package:islamforever/features/details/models/MediaItemDetails.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
 import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
+import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
+import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -47,6 +49,8 @@ class Detailsscreen extends StatefulWidget {
 class _DetailsscreenState extends State<Detailsscreen> {
   late DetailsProvider detailsProvider;
   int _selectedSeasonIndex = 0;
+  ItemSeasonModel? selectedSeasonModel;
+  List<ItemEpisodeModel>? itemEpisodeModel;
   late GenericDetailsResponseModel? genericDetailsResponseModel;
   late MediaItemDetails? mediaItemDetails;
   bool _isLoading = false;
@@ -78,6 +82,12 @@ class _DetailsscreenState extends State<Detailsscreen> {
             .fetchShowsDetails(widget.detailsScreenArguments.id);
         mediaItemDetails =
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
+        if (genericDetailsResponseModel?.seasons != null) {
+          if (genericDetailsResponseModel?.seasons?.isNotEmpty != null) {
+            itemEpisodeModel = await detailsProvider.fetchSeasonEpisodeDetails(
+                genericDetailsResponseModel!.seasons![0].seasonId);
+          }
+        }
         break;
       case MediaContentType.sports:
         break;
@@ -765,10 +775,15 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   (index) => Padding(
                     padding: const EdgeInsets.only(right: 12.0),
                     child: GestureDetector(
-                      onTap: () {
-                        setState(() {
+                      onTap: () async{
+                        setState(()  {
                           _selectedSeasonIndex = index;
+                          selectedSeasonModel =
+                              genericDetailsResponseModel!.seasons![index];
                         });
+                        itemEpisodeModel =
+                              await detailsProvider.fetchSeasonEpisodeDetails(
+                                  selectedSeasonModel!.seasonId);
                       },
                       child: Container(
                           padding:
@@ -836,20 +851,20 @@ class _DetailsscreenState extends State<Detailsscreen> {
             children: [
               SizedBox(width: 24.sp),
               if (genericDetailsResponseModel?.seasons != null)
-              ...List.generate(
-                10,
-                (index) => Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: Customhorizontalcard(
-                      isPremium: true,
-                      showTitle: true,
-                      url:
-                          "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg",
-                      title: null,
-                      id: null,
-                      mediaContentType: MediaContentType.getMediaType(""),
-                    )),
-              ),
+                ...List.generate(
+                  10,
+                  (index) => Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: Customhorizontalcard(
+                        isPremium: true,
+                        showTitle: true,
+                        url:
+                            "https://anniehaydesign.weebly.com/uploads/9/5/4/6/95469676/landscape-poster-3_orig.jpg",
+                        title: null,
+                        id: null,
+                        mediaContentType: MediaContentType.getMediaType(""),
+                      )),
+                ),
             ],
           ),
         )
