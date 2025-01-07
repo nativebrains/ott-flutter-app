@@ -156,7 +156,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                       SizedBox(height: 24.sp),
                       getDirectors(),
                     ],
-                    SizedBox(height: 24.sp),
+                    SizedBox(height: 12.sp),
                     getRelatedItems(),
                     SizedBox(height: 30.sp),
                   ],
@@ -278,7 +278,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
               color: ColorCode.cardInfoHeader,
               borderRadius: BorderRadius.circular(50),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: GradientText(
               'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
@@ -979,7 +979,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             padding: const EdgeInsets.all(12.0),
             child: Center(
               child: CustomText(
-                text: 'No Episodes Found ',
+                text: 'No Episodes Found!',
                 fontSize: 16.sp,
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
@@ -991,7 +991,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             padding: const EdgeInsets.all(12.0),
             child: Center(
                 child: CircularProgressIndicator(
-              color: Colors.white,
+              color: ColorCode.themeOrangePinkStart,
             )),
           )
       ],

@@ -109,7 +109,7 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
         }, // SliverList for your content
         body: Stack(
           children: [
-            if (!_isLoading) DisplayActorDetails(),
+            if (!_isLoading && actorDetailsModel != null) DisplayActorDetails(),
             if (_isLoading) const LoaderWidget(),
           ],
         ),
