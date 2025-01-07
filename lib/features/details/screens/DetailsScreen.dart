@@ -429,26 +429,36 @@ class _DetailsscreenState extends State<Detailsscreen> {
           height: 12.sp,
         ),
         // No Need for Movies
-        // if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
-        //   SingleChildScrollView(
-        //     scrollDirection: Axis.horizontal,
-        //     child: Row(
-        //       children: [
-        //         SizedBox(width: 20.sp),
-        //         ...List.generate(5, (index) => _buildServerItem(index)),
-        //       ],
-        //     ),
-        //   ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-          child: CustomText(
-            text: parse(mediaItemDetails?.description.toString()).body!.text,
-            color: Colors.grey.shade700,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.normal,
-            maxLines: 500,
+        if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                SizedBox(width: 20.sp),
+                if (mediaItemDetails?.server1Url != null &&
+                    mediaItemDetails?.server1Url != "")
+                  _buildServerItem(1),
+                if (mediaItemDetails?.server2Url != null &&
+                    mediaItemDetails?.server2Url != "")
+                  _buildServerItem(2),
+                if (mediaItemDetails?.server3Url != null &&
+                    mediaItemDetails?.server3Url != "")
+                  _buildServerItem(3)
+              ],
+            ),
           ),
-        ),
+        if (mediaItemDetails?.description != null &&
+            mediaItemDetails?.description != "")
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+            child: CustomText(
+              text: parse(mediaItemDetails?.description.toString()).body!.text,
+              color: Colors.grey.shade700,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.normal,
+              maxLines: 500,
+            ),
+          ),
       ],
     );
   }

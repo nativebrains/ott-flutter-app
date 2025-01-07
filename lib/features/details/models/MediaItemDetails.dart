@@ -27,6 +27,9 @@ class MediaItemDetails {
   MediaContentType mediaContentType;
   String? shareLink;
   bool? isDownload;
+  String? server1Url;
+  String? server2Url;
+  String? server3Url;
 
   MediaItemDetails({
     this.id,
@@ -49,6 +52,9 @@ class MediaItemDetails {
     this.category,
     this.shareLink,
     this.isDownload,
+    this.server1Url,
+    this.server2Url,
+    this.server3Url,
   });
 
   static MediaItemDetails getMediaItemDetails(
@@ -122,6 +128,9 @@ class MediaItemDetails {
         mediaContentType: MediaContentType.liveTv,
         poster: liveTv.tvImage,
         shareLink: liveTv.shareUrl,
+        server1Url: liveTv.tvUrl,
+        server2Url: liveTv.tvUrl2,
+        server3Url: liveTv.tvUrl3,
       );
     } else {
       return MediaItemDetails();
