@@ -18,6 +18,7 @@ import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
+import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -268,9 +269,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
-          height: 12.sp,
-        ),
+        if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
+          SizedBox(
+            height: 12.sp,
+          ),
         if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -822,6 +824,22 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   title: (items[index] as ItemLiveTVModel).tvName,
                   mediaContentType:
                       (items[index] as ItemLiveTVModel).mediaContentType,
+                  showTitle: true,
+                ),
+              ),
+            ),
+          if (mediaItemDetails?.mediaContentType == MediaContentType.sports)
+            ...List.generate(
+              items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Customhorizontalcard(
+                  url: (items[index] as ItemSportModel).sportImage ?? "",
+                  isPremium: (items[index] as ItemSportModel).isPremium,
+                  id: (items[index] as ItemSportModel).sportId,
+                  title: (items[index] as ItemSportModel).sportTitle,
+                  mediaContentType:
+                      (items[index] as ItemSportModel).mediaContentType,
                   showTitle: true,
                 ),
               ),
