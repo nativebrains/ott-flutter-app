@@ -19,4 +19,5 @@ class RouteConstantName {
   static const String paymentScreen = "/paymentScreen";
   static const String seeAllScreen = "/seeAllScreen";
   static const String detailsScreen = "/detailsScreen";
+  static const String actorDetailsScreen = "/actorDetailsScreen";
 }

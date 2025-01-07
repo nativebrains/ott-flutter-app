@@ -10,6 +10,7 @@ import 'package:islamforever/features/account/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
+import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
 import 'package:islamforever/features/details/screens/DetailsScreen.dart';
 import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
@@ -191,6 +192,16 @@ class RouterGenerator {
           ),
           settings: const RouteSettings(
             name: RouteConstantName.detailsScreen,
+          ),
+        );
+      case RouteConstantName.actorDetailsScreen:
+        final args = settings.arguments as ActorDetailsScreenArguments;
+        return MaterialPageRoute(
+          builder: (context) => ActorDetailsScreen(
+            actorDetailsScreenArguments: args,
+          ),
+          settings: const RouteSettings(
+            name: RouteConstantName.actorDetailsScreen,
           ),
         );
       default:

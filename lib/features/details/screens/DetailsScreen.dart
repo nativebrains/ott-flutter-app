@@ -12,11 +12,13 @@ import 'package:islamforever/features/details/models/ActorModel.dart';
 import 'package:islamforever/features/details/models/GenericDetailsResponseModel.dart';
 import 'package:islamforever/features/details/models/MediaItemDetails.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
+import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../../constants/routes_names.dart';
 import '../../../widgets/custom/custom_text.dart';
 
 class DetailsScreenArguments {
@@ -545,8 +547,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
               if (genericDetailsResponseModel?.actors != null)
                 ...List.generate(
                     genericDetailsResponseModel!.actors!.length,
-                    (index) => buildActorItem(
-                        index, genericDetailsResponseModel!.actors![index])),
+                    (index) => buildActorItem(index,
+                        genericDetailsResponseModel!.actors![index], true)),
               SizedBox(width: 6.sp),
             ],
           ),
@@ -594,8 +596,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
               if (genericDetailsResponseModel?.actors != null)
                 ...List.generate(
                     genericDetailsResponseModel!.directors!.length,
-                    (index) => buildActorItem(
-                        index, genericDetailsResponseModel!.directors![index])),
+                    (index) => buildActorItem(index,
+                        genericDetailsResponseModel!.directors![index], false)),
               SizedBox(width: 6.sp),
             ],
           ),
@@ -604,25 +606,39 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
-  Widget buildActorItem(int index, ActorModel actor) {
-    return Container(
-      margin: EdgeInsets.only(left: 16),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 35.sp,
-            backgroundImage: NetworkImage(actor.actorImage ?? ""),
+  Widget buildActorItem(int index, ActorModel actor, bool isActor) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          RouteConstantName.actorDetailsScreen,
+          arguments: ActorDetailsScreenArguments(
+            id: actor.actorId.toString(),
+            mediaContentType: mediaItemDetails!.mediaContentType,
+            title: actor.actorName.toString(),
+            isActor: isActor,
           ),
-          SizedBox(height: 10),
-          Container(
-            width: 70.sp,
-            child: TextScroll(
-              actor.actorName ?? "",
-              velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
-              style: TextStyle(color: Colors.white, fontSize: 12.sp),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 16),
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 35.sp,
+              backgroundImage: NetworkImage(actor.actorImage ?? ""),
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            Container(
+              width: 70.sp,
+              child: TextScroll(
+                actor.actorName ?? "",
+                velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
+                style: TextStyle(color: Colors.white, fontSize: 12.sp),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
