@@ -26,6 +26,7 @@ class MediaItemDetails {
   bool? isPremium;
   MediaContentType mediaContentType;
   String? shareLink;
+  bool? isDownload;
 
   MediaItemDetails({
     this.id,
@@ -47,6 +48,7 @@ class MediaItemDetails {
     this.poster,
     this.category,
     this.shareLink,
+    this.isDownload,
   });
 
   static MediaItemDetails getMediaItemDetails(
@@ -72,6 +74,7 @@ class MediaItemDetails {
         mediaContentType: MediaContentType.movies,
         poster: movie.moviePoster,
         shareLink: movie.movieShareLink,
+        isDownload: movie.isDownload,
       );
     } else if (responseModel.item is ItemShowModel) {
       ItemShowModel tvShow = responseModel.item as ItemShowModel;
@@ -104,6 +107,7 @@ class MediaItemDetails {
         mediaContentType: MediaContentType.sports,
         poster: sports.sportImage,
         shareLink: sports.sportShareLink,
+        isDownload: sports.isDownload,
       );
     } else if (responseModel.item is ItemLiveTVModel) {
       ItemLiveTVModel liveTv = responseModel.item as ItemLiveTVModel;

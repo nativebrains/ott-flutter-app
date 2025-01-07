@@ -141,37 +141,21 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     SizedBox(height: 8.sp),
                     Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
                     if (mediaItemDetails?.mediaContentType ==
-                        MediaContentType.tvShows)
+                        MediaContentType.tvShows) ...[
                       SizedBox(height: 16.sp),
-                    if (mediaItemDetails?.mediaContentType ==
-                        MediaContentType.tvShows)
                       getSeasons(),
-                    if (mediaItemDetails?.mediaContentType ==
-                        MediaContentType.tvShows)
                       SizedBox(height: 24.sp),
-                    if (mediaItemDetails?.mediaContentType ==
-                        MediaContentType.tvShows)
                       getEpisodes(),
-                    if (mediaItemDetails?.mediaContentType ==
-                            MediaContentType.movies ||
-                        mediaItemDetails?.mediaContentType ==
-                            MediaContentType.tvShows)
+                    ],
+                    if ([
+                      MediaContentType.movies,
+                      MediaContentType.tvShows,
+                    ].contains(mediaItemDetails?.mediaContentType)) ...[
                       SizedBox(height: 24.sp),
-                    if (mediaItemDetails?.mediaContentType ==
-                            MediaContentType.movies ||
-                        mediaItemDetails?.mediaContentType ==
-                            MediaContentType.tvShows)
                       getActors(),
-                    if (mediaItemDetails?.mediaContentType ==
-                            MediaContentType.movies ||
-                        mediaItemDetails?.mediaContentType ==
-                            MediaContentType.tvShows)
                       SizedBox(height: 24.sp),
-                    if (mediaItemDetails?.mediaContentType ==
-                            MediaContentType.movies ||
-                        mediaItemDetails?.mediaContentType ==
-                            MediaContentType.tvShows)
                       getDirectors(),
+                    ],
                     SizedBox(height: 24.sp),
                     getRelatedItems(),
                     SizedBox(height: 30.sp),
@@ -405,8 +389,11 @@ class _DetailsscreenState extends State<Detailsscreen> {
               SizedBox(width: 24.sp),
               getAddToMyListWidget(),
             ],
-            if (mediaItemDetails?.mediaContentType ==
-                MediaContentType.movies) ...[
+            if (mediaItemDetails?.mediaContentType == MediaContentType.movies &&
+                (mediaItemDetails?.isDownload ?? false) &&
+                ((mediaItemDetails?.isPremium ?? false)
+                    ? (genericDetailsResponseModel?.isPurchased ?? false)
+                    : true)) ...[
               SizedBox(width: 24.sp),
               getDownloadBtnWidget(),
             ],
