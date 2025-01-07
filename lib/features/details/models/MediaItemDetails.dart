@@ -15,6 +15,7 @@ class MediaItemDetails {
   String? releaseDate;
   String? duration;
   String? contentRating;
+  String? category;
   String? views;
   String? language;
   String? trailer;
@@ -41,6 +42,7 @@ class MediaItemDetails {
     this.isPremium,
     this.mediaContentType = MediaContentType.movies,
     this.poster,
+    this.category,
   });
 
   static MediaItemDetails getMediaItemDetails(
@@ -84,7 +86,9 @@ class MediaItemDetails {
         title: sports.sportTitle,
         image: sports.sportImage,
         description: sports.sportDescription,
+        releaseDate: sports.sportDate,
         duration: sports.sportDuration,
+        category: sports.sportCategory,
         views: sports.sportView,
         inWatchList: sports.inWatchlist,
         downloadEnable: sports.isDownload,

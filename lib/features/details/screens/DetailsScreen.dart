@@ -128,24 +128,38 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     getDescriptionSection(),
                     SizedBox(height: 8.sp),
                     Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
-                    if (mediaItemDetails?.mediaContentType !=
-                        MediaContentType.movies)
+                    if (mediaItemDetails?.mediaContentType ==
+                        MediaContentType.tvShows)
                       SizedBox(height: 16.sp),
-                    if (mediaItemDetails?.mediaContentType !=
-                        MediaContentType.movies)
+                    if (mediaItemDetails?.mediaContentType ==
+                        MediaContentType.tvShows)
                       getSeasons(),
-                    if (mediaItemDetails?.mediaContentType !=
-                        MediaContentType.movies)
+                    if (mediaItemDetails?.mediaContentType ==
+                        MediaContentType.tvShows)
                       SizedBox(height: 24.sp),
-                    if (mediaItemDetails?.mediaContentType !=
-                        MediaContentType.movies)
+                    if (mediaItemDetails?.mediaContentType ==
+                        MediaContentType.tvShows)
                       getEpisodes(),
-
-                    // Actors
-                    SizedBox(height: 24.sp),
-                    getActors(),
-                    SizedBox(height: 24.sp),
-                    getDirectors(),
+                    if (mediaItemDetails?.mediaContentType ==
+                            MediaContentType.movies ||
+                        mediaItemDetails?.mediaContentType ==
+                            MediaContentType.tvShows)
+                      SizedBox(height: 24.sp),
+                    if (mediaItemDetails?.mediaContentType ==
+                            MediaContentType.movies ||
+                        mediaItemDetails?.mediaContentType ==
+                            MediaContentType.tvShows)
+                      getActors(),
+                    if (mediaItemDetails?.mediaContentType ==
+                            MediaContentType.movies ||
+                        mediaItemDetails?.mediaContentType ==
+                            MediaContentType.tvShows)
+                      SizedBox(height: 24.sp),
+                    if (mediaItemDetails?.mediaContentType ==
+                            MediaContentType.movies ||
+                        mediaItemDetails?.mediaContentType ==
+                            MediaContentType.tvShows)
+                      getDirectors(),
                     SizedBox(height: 24.sp),
                     getRelatedItems(),
                     SizedBox(height: 30.sp),
@@ -260,22 +274,23 @@ class _DetailsscreenState extends State<Detailsscreen> {
         SizedBox(
           height: 12.sp,
         ),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12.0),
-          decoration: BoxDecoration(
-            color: ColorCode.cardInfoHeader,
-            borderRadius: BorderRadius.circular(50),
+        if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 12.0),
+            decoration: BoxDecoration(
+              color: ColorCode.cardInfoHeader,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            child: GradientText(
+              'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
+              colors: [
+                Colors.orange,
+                Colors.pink,
+              ],
+            ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: GradientText(
-            'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
-            colors: [
-              Colors.orange,
-              Colors.pink,
-            ],
-          ),
-        ),
         SizedBox(
           height: 12.sp,
         ),
@@ -283,20 +298,24 @@ class _DetailsscreenState extends State<Detailsscreen> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 6.0),
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: CustomText(
-                    text: mediaItemDetails?.releaseDate ?? "",
-                    fontSize: 12.sp,
-                    color: Colors.white,
+              if (mediaItemDetails?.releaseDate != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: CustomText(
+                      text: mediaItemDetails?.releaseDate ?? "",
+                      fontSize: 12.sp,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
               if (mediaItemDetails?.duration != null ||
                   mediaItemDetails?.duration != "null")
                 buildDotItem(0, mediaItemDetails?.duration ?? ""),
+              if (mediaItemDetails?.category != null ||
+                  mediaItemDetails?.category != "null")
+                buildDotItem(1, mediaItemDetails?.category ?? ""),
               if (mediaItemDetails?.contentRating != null ||
                   mediaItemDetails?.contentRating != "null")
                 buildDotItem(1,
@@ -359,18 +378,22 @@ class _DetailsscreenState extends State<Detailsscreen> {
         Row(
           children: [
             if (mediaItemDetails?.trailer != null ||
-                mediaItemDetails?.trailer != "null")
+                mediaItemDetails?.trailer != "null" &&
+                    mediaItemDetails?.mediaContentType !=
+                        MediaContentType.sports)
               SizedBox(width: 24.sp),
             if (mediaItemDetails?.trailer != null ||
-                mediaItemDetails?.trailer != "null")
+                mediaItemDetails?.trailer != "null" &&
+                    mediaItemDetails?.mediaContentType !=
+                        MediaContentType.sports)
               getTrailerWidget(),
             if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
               SizedBox(width: 24.sp),
             if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
               getAddToMyListWidget(),
-            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+            if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
               SizedBox(width: 24.sp),
-            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+            if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
               getDownloadBtnWidget(),
             Expanded(child: Container()),
             InkWell(
@@ -402,8 +425,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
           height: 12.sp,
         ),
         // No Need for Movies
-        if (mediaItemDetails?.mediaContentType != MediaContentType.movies &&
-            mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+        if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -686,6 +708,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
   }
 
   Widget getRelatedItems() {
+    if (genericDetailsResponseModel?.itemRelated?.isEmpty ?? true) {
+      return Container();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
