@@ -178,4 +178,33 @@ class DetailsProvider extends ChangeNotifier {
     notifyListeners();
     return itemEpisodeModel;
   }
+
+  Future<bool> addOrRemoveWatchList(
+      bool? inWatchList, int? id, String? shortDisplayName) async {
+    bool isSuccess = false;
+    try {
+      final response = await apiService.post(
+        (inWatchList ?? false)
+            ? ApiEndpoints.REMOVE_FROM_WATCHLIST_URL
+            : ApiEndpoints.ADD_TO_WATCHLIST_URL,
+        jsonEncode({
+          'post_id': id,
+          'post_type': shortDisplayName,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+        }),
+      );
+
+      if (response.status == 200) {
+        final jsonData = response.data;
+        _statusMessage = jsonData[0]['msg'];
+        isSuccess = true;
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return isSuccess;
+  }
 }

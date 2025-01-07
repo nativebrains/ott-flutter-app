@@ -7,6 +7,7 @@ import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import '../../mix/models/ItemMovieModel.dart';
 
 class MediaItemDetails {
+  int? id;
   String? title;
   String? image;
   String? poster;
@@ -24,8 +25,10 @@ class MediaItemDetails {
   bool? downloadEnable;
   bool? isPremium;
   MediaContentType mediaContentType;
+  String? shareLink;
 
   MediaItemDetails({
+    this.id,
     this.title,
     this.image,
     this.description,
@@ -43,6 +46,7 @@ class MediaItemDetails {
     this.mediaContentType = MediaContentType.movies,
     this.poster,
     this.category,
+    this.shareLink,
   });
 
   static MediaItemDetails getMediaItemDetails(
@@ -50,6 +54,7 @@ class MediaItemDetails {
     if (responseModel.item is ItemMovieModel) {
       ItemMovieModel movie = responseModel.item as ItemMovieModel;
       return MediaItemDetails(
+        id: movie.movieId,
         title: movie.movieName,
         image: movie.movieImage,
         description: movie.movieDescription,
@@ -66,10 +71,12 @@ class MediaItemDetails {
         isPremium: movie.isPremium,
         mediaContentType: MediaContentType.movies,
         poster: movie.moviePoster,
+        shareLink: movie.movieShareLink,
       );
     } else if (responseModel.item is ItemShowModel) {
       ItemShowModel tvShow = responseModel.item as ItemShowModel;
       return MediaItemDetails(
+        id: tvShow.showId,
         title: tvShow.showName,
         image: tvShow.showImage,
         description: tvShow.showDescription,
@@ -83,6 +90,7 @@ class MediaItemDetails {
     } else if (responseModel.item is ItemSportModel) {
       ItemSportModel sports = responseModel.item as ItemSportModel;
       return MediaItemDetails(
+        id: sports.sportId,
         title: sports.sportTitle,
         image: sports.sportImage,
         description: sports.sportDescription,
@@ -95,10 +103,12 @@ class MediaItemDetails {
         isPremium: sports.isPremium,
         mediaContentType: MediaContentType.sports,
         poster: sports.sportImage,
+        shareLink: sports.sportShareLink,
       );
     } else if (responseModel.item is ItemLiveTVModel) {
       ItemLiveTVModel liveTv = responseModel.item as ItemLiveTVModel;
       return MediaItemDetails(
+        id: liveTv.tvId,
         title: liveTv.tvName,
         image: liveTv.tvImage,
         description: liveTv.description,
@@ -107,6 +117,7 @@ class MediaItemDetails {
         isPremium: liveTv.isPremium,
         mediaContentType: MediaContentType.liveTv,
         poster: liveTv.tvImage,
+        shareLink: liveTv.shareUrl,
       );
     } else {
       return MediaItemDetails();

@@ -22,7 +22,9 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
+import '../../../utils/share_utils.dart';
 import '../../../widgets/custom/custom_text.dart';
 
 class DetailsScreenArguments {
@@ -57,7 +59,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   late GenericDetailsResponseModel? genericDetailsResponseModel;
   late MediaItemDetails? mediaItemDetails;
   bool _isLoading = false;
-
+  bool _normalLoading = false;
   @override
   void initState() {
     super.initState();
@@ -69,9 +71,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
     fetchDetailsData();
   }
 
-  void fetchDetailsData() async {
+  void fetchDetailsData({bool showNormalLoading = false}) async {
     setState(() {
-      _isLoading = true;
+      if (showNormalLoading) {
+        _normalLoading = true;
+      } else {
+        _isLoading = true;
+      }
     });
     switch (widget.detailsScreenArguments.mediaContentType) {
       case MediaContentType.movies:
@@ -112,6 +118,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
         break;
     }
     setState(() {
+      _normalLoading = false;
       _isLoading = false;
     });
   }
@@ -172,6 +179,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 ),
               ),
             if (_isLoading) const LoaderWidget(),
+            if (_normalLoading) const LoaderWidget()
           ],
         ),
       ),
@@ -290,7 +298,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             child: GradientText(
               'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
-              colors: [
+              colors: const [
                 Colors.orange,
                 Colors.pink,
               ],
@@ -304,36 +312,21 @@ class _DetailsscreenState extends State<Detailsscreen> {
           child: Row(
             children: [
               if (mediaItemDetails?.releaseDate != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 6.0),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: CustomText(
-                      text: mediaItemDetails?.releaseDate ?? "",
-                      fontSize: 12.sp,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              if (mediaItemDetails?.duration != null ||
-                  mediaItemDetails?.duration != "null")
+                buildDotItem(-1, mediaItemDetails?.releaseDate ?? ""),
+              if (mediaItemDetails?.duration?.isNotEmpty ?? false)
                 buildDotItem(0, mediaItemDetails?.duration ?? ""),
-              if (mediaItemDetails?.category != null ||
-                  mediaItemDetails?.category != "null")
+              if (mediaItemDetails?.category?.isNotEmpty ?? false)
                 buildDotItem(1, mediaItemDetails?.category ?? ""),
-              if (mediaItemDetails?.contentRating != null ||
-                  mediaItemDetails?.contentRating != "null")
+              if (mediaItemDetails?.contentRating?.isNotEmpty ?? false)
                 buildDotItem(1,
                     "Content Rating ${mediaItemDetails?.contentRating ?? "0.0"}"),
-              if ((mediaItemDetails?.views != null ||
-                      mediaItemDetails?.views != "null") &&
+              if ((mediaItemDetails?.views?.isNotEmpty ?? false) &&
                   mediaItemDetails?.mediaContentType !=
                       MediaContentType.tvShows)
                 buildDotItem(2, "Views ${mediaItemDetails?.views ?? ""}"),
-              if (mediaItemDetails?.language != null ||
-                  mediaItemDetails?.language != "null")
+              if (mediaItemDetails?.language?.isNotEmpty ?? false)
                 buildDotItem(3, mediaItemDetails?.language ?? ""),
-              if (genericDetailsResponseModel?.genres != null)
+              if (genericDetailsResponseModel?.genres?.isNotEmpty ?? false)
                 ...List.generate(
                     genericDetailsResponseModel!.genres!.length,
                     (index) => buildDotItem(index,
@@ -357,6 +350,11 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 color: Colors.blue,
                 onPressed: () {
                   // Handle Facebook button press
+                  ShareUtils.shareFacebook(
+                    context,
+                    mediaItemDetails?.title ?? "Title",
+                    mediaItemDetails?.shareLink ?? "Link",
+                  );
                 },
               ),
               IconButton(
@@ -365,6 +363,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 iconSize: 20.sp,
                 onPressed: () {
                   // Handle Twitter button press
+                  ShareUtils.shareTwitter(
+                    context,
+                    mediaItemDetails?.title ?? "Title",
+                    mediaItemDetails?.shareLink ?? "Link",
+                    "",
+                    "",
+                  );
                 },
               ),
               IconButton(
@@ -373,6 +378,11 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 iconSize: 20.sp,
                 onPressed: () {
                   // Handle WhatsApp button press
+                  ShareUtils.shareWhatsapp(
+                    context,
+                    mediaItemDetails?.title ?? "Title",
+                    mediaItemDetails?.shareLink ?? "Link",
+                  );
                 },
               ),
             ],
@@ -382,28 +392,24 @@ class _DetailsscreenState extends State<Detailsscreen> {
         ),
         Row(
           children: [
-            if (mediaItemDetails?.trailer != null ||
-                mediaItemDetails?.trailer != "null" &&
-                    mediaItemDetails?.mediaContentType !=
-                        MediaContentType.sports &&
-                    mediaItemDetails?.mediaContentType !=
-                        MediaContentType.liveTv)
+            if (mediaItemDetails?.trailer != null &&
+                mediaItemDetails?.trailer != "" &&
+                mediaItemDetails?.mediaContentType != MediaContentType.sports &&
+                mediaItemDetails?.mediaContentType !=
+                    MediaContentType.liveTv) ...[
               SizedBox(width: 24.sp),
-            if (mediaItemDetails?.trailer != null ||
-                mediaItemDetails?.trailer != "null" &&
-                    mediaItemDetails?.mediaContentType !=
-                        MediaContentType.sports &&
-                    mediaItemDetails?.mediaContentType !=
-                        MediaContentType.liveTv)
               getTrailerWidget(),
-            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
+            ],
+            if (mediaItemDetails?.mediaContentType !=
+                MediaContentType.tvShows) ...[
               SizedBox(width: 24.sp),
-            if (mediaItemDetails?.mediaContentType != MediaContentType.tvShows)
               getAddToMyListWidget(),
-            if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
+            ],
+            if (mediaItemDetails?.mediaContentType ==
+                MediaContentType.movies) ...[
               SizedBox(width: 24.sp),
-            if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
               getDownloadBtnWidget(),
+            ],
             Expanded(child: Container()),
             InkWell(
               onTap: () {},
@@ -535,7 +541,24 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getAddToMyListWidget() {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        setState(() {
+          _normalLoading = true;
+        });
+        bool isSuccess = await detailsProvider.addOrRemoveWatchList(
+          mediaItemDetails!.inWatchList,
+          mediaItemDetails?.id,
+          mediaItemDetails?.mediaContentType.shortDisplayName,
+        );
+
+        showCustomToast(context, DetailsProvider.getStatusMessage ?? "",
+            backgroudnColor: isSuccess ? Colors.green : Colors.red);
+        // Refresh
+        if (isSuccess) fetchDetailsData(showNormalLoading: true);
+        setState(() {
+          _normalLoading = false;
+        });
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

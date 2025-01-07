@@ -20,6 +20,21 @@ enum MediaContentType {
     }
   }
 
+  String get shortDisplayName {
+    switch (this) {
+      case MediaContentType.movies:
+        return 'Movies';
+      case MediaContentType.tvShows:
+        return 'Shows'; // this is changed
+      case MediaContentType.sports:
+        return 'Sports';
+      case MediaContentType.liveTv:
+        return 'LiveTV';
+      default:
+        return 'Movies';
+    }
+  }
+
   int get filterType {
     switch (this) {
       case MediaContentType.movies:
