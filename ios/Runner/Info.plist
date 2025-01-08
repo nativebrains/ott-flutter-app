@@ -37,6 +37,14 @@
 		<string>Photo Library Access Needed for Profile picture inside the App</string>
 		<key>NSCameraUsageDescription</key>
 		<string>Camera Access Needed for profile pictures</string>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>processing</string>
+			<string>remote-notification</string>
+		</array>
+		<key>NSUserNotificationAlertStyle</key>
+		<string>alert</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>

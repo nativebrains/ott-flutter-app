@@ -10,6 +10,11 @@ import '../../../constants/app_colors.dart';
 import '../../../constants/routes_names.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../webview/screens/WebviewScreen.dart';
+import '../providers/NotificationPermissionHandler.dart';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Settingsscreen extends StatefulWidget {
   const Settingsscreen({super.key});
@@ -19,7 +24,16 @@ class Settingsscreen extends StatefulWidget {
 }
 
 class _SettingsscreenState extends State<Settingsscreen> {
-  bool _switchValue = false;
+  late NotificationPermissionHandler _permissionHandler;
+
+  @override
+  void initState() {
+    super.initState();
+    _permissionHandler =
+        Provider.of<NotificationPermissionHandler>(context, listen: false);
+    _permissionHandler.checkInitialPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +46,18 @@ class _SettingsscreenState extends State<Settingsscreen> {
                 height: 1.sp,
                 color: Colors.grey.withOpacity(0.3),
               ),
-              getItem("Enable Push Notification",
-                  hasSwitch: true,
-                  switchValue: _switchValue, switchCallback: (newValue) {
-                setState(() {
-                  _switchValue = newValue;
-                });
-              }),
+              Consumer<NotificationPermissionHandler>(
+                builder: (context, permissionHandler, child) {
+                  return getItem(
+                    "Enable Push Notification",
+                    hasSwitch: true,
+                    switchValue: permissionHandler.switchValue,
+                    switchCallback: (newValue) {
+                      permissionHandler.updateSwitchValue(newValue);
+                    },
+                  );
+                },
+              ),
               getItem("About", onItemClickCallback: () {
                 Navigator.pushNamed(
                   context,
