@@ -13,6 +13,7 @@ import 'package:islamforever/features/common/providers/CommonProvider.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
 import 'package:islamforever/features/settings/providers/NotificationPermissionHandler.dart';
+import 'package:islamforever/features/settings/providers/SettingsProvider.dart';
 import 'package:islamforever/firebase_options.dart';
 import 'package:islamforever/routes/routes.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<NotificationPermissionHandler>(
           create: (ctx) => NotificationPermissionHandler(),
+        ),
+        ChangeNotifierProvider<SettingsProvider>(
+          create: (ctx) => SettingsProvider(),
         ),
       ],
       child: ScreenUtilInit(
