@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:html/parser.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../utils/extras.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../settings/models/AboutAppModel.dart';
+import '../../settings/providers/SettingsProvider.dart';
 
 enum WebviewType { PRIVACY, TERMS }
 
@@ -18,44 +22,27 @@ class WebviewScreen extends StatefulWidget {
 }
 
 class _WebviewScreenState extends State<WebviewScreen> {
-  late WebViewController controller;
+  late SettingsProvider settingsProvider;
+  late AboutAppModel? aboutAppModel;
   bool _isLoading = true; // State variable to track loading
 
   @override
   void initState() {
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(ColorCode.bgColor)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (String url) {
-            setState(() {
-              _isLoading = true;
-            });
-          },
-          onPageFinished: (String url) async {
-            // Inject custom CSS to change text color to white
-            await controller.runJavaScript('''
-  var style = document.createElement('style');
-  style.innerHTML = `
-    body, body * {
-      color: white !important;
-      background-color: black !important;
-    }
-    a {
-      color: #00aaff !important; /* Optional: Customize link color */
-    }
-  `;
-  document.head.appendChild(style);
-''');
-            setState(() {
-              _isLoading = false;
-            });
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(getUrl()));
     super.initState();
+    settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
+    _fetchData();
+  }
+
+  Future<void> _fetchData({bool refresh = false}) async {
+    setState(() {
+      _isLoading = true; // Indicate loading
+    });
+
+    aboutAppModel = await settingsProvider.fetchAboutData();
+
+    setState(() {
+      _isLoading = false; // Indicate loading
+    });
   }
 
   @override
@@ -95,23 +82,38 @@ class _WebviewScreenState extends State<WebviewScreen> {
                 centerTitle: false,
                 floating: true,
                 snap: true,
-                expandedHeight: 55.0, // Height for the AppBar
+                expandedHeight: 55.0, // Set height for expanded AppBar
               ),
-              // Add some placeholder slivers for content if needed
-              SliverToBoxAdapter(
-                child: SizedBox(height: 8.sp), // Adjust spacing if necessary
+              // SliverList for your content
+              SliverPadding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 24.sp, vertical: 20.sp),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    _isLoading
+                        ? []
+                        : [
+                            CustomText(
+                              text: parse(widget.webviewType ==
+                                          WebviewType.PRIVACY
+                                      ? aboutAppModel?.appHtmlPrivacy.toString()
+                                      : aboutAppModel?.appTerms.toString())
+                                  .body!
+                                  .text,
+                              fontSize: 14.sp,
+                              textAlign: TextAlign.start,
+                              color: ColorCode.whiteColor,
+                              maxLines: 100,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            SizedBox(height: 50.sp),
+                          ],
+                  ),
+                ),
               ),
             ],
           ),
-          // WebView covering the remaining space
-          Padding(
-            padding: EdgeInsets.only(
-              top: kToolbarHeight + MediaQuery.of(context).padding.top,
-            ),
-            child: WebViewWidget(
-              controller: controller,
-            ),
-          ),
+
           // Loading indicator
           if (_isLoading)
             Center(
