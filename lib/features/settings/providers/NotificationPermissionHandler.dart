@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationPermissionHandler with ChangeNotifier {
   bool _notificationPermissionAllowed = false;
@@ -8,6 +9,24 @@ class NotificationPermissionHandler with ChangeNotifier {
 
   bool get notificationPermissionAllowed => _notificationPermissionAllowed;
   bool get switchValue => _switchValue;
+
+  NotificationPermissionHandler() {
+    _loadSwitchValue();
+    checkInitialPermission();
+  }
+
+  /// Load the switch value from SharedPreferences
+  Future<void> _loadSwitchValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _switchValue = prefs.getBool('notification_toggle') ?? false;
+    notifyListeners();
+  }
+
+  /// Save the switch value to SharedPreferences
+  Future<void> _saveSwitchValue(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notification_toggle', value);
+  }
 
   /// Check Initial Permission
   Future<void> checkInitialPermission() async {
@@ -20,46 +39,35 @@ class NotificationPermissionHandler with ChangeNotifier {
       _switchValue = false;
     }
     notifyListeners();
+    _saveSwitchValue(_switchValue);
   }
 
-  /// Request Permission
-  Future<void> requestNotificationPermission() async {
-    final status = await Permission.notification.status;
-    if (status.isDenied || status.isRestricted || status.isPermanentlyDenied) {
-      final permissionStatus = await Permission.notification.request();
-      if (permissionStatus.isGranted) {
-        _notificationPermissionAllowed = true;
-        _switchValue = true;
-        notifyListeners();
-      } else {
-        Fluttertoast.showToast(
-            msg: 'Notification permission denied. Please enable it manually.');
-      }
-    } else if (status.isGranted) {
-      _notificationPermissionAllowed = true;
-      _switchValue = true;
-      notifyListeners();
-    }
-  }
-
+  /// Update Switch Value
   Future<void> updateSwitchValue(bool newValue) async {
     if (newValue) {
-      // Request notification permission
+      // Enable Notification
       final status = await Permission.notification.request();
       if (status.isGranted) {
+        _notificationPermissionAllowed = true;
         _switchValue = true;
         Fluttertoast.showToast(msg: 'Notification permission granted.');
       } else {
+        _notificationPermissionAllowed = false;
         _switchValue = false;
         Fluttertoast.showToast(
-            msg:
-                'Notification permission denied. Please enable it manually in settings.');
-        openAppSettings(); // Open settings for the user
+            msg: 'Notification permission denied. Please enable it manually.');
+        openAppSettings(); // Open settings for manual enabling
       }
     } else {
+      // Disable Notification Toggle in the App
       _switchValue = false;
-      Fluttertoast.showToast(msg: 'Notifications disabled.');
+      Fluttertoast.showToast(
+          msg:
+              'You cannot disable notifications directly. Please disable them in app settings.');
+      openAppSettings(); // Guide the user to Settings
     }
+
     notifyListeners();
+    _saveSwitchValue(_switchValue);
   }
 }
