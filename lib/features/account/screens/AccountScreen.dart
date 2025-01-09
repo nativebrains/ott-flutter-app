@@ -11,6 +11,7 @@ import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_dialog_notify.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../../widgets/extra/rounded_network_image.dart';
 
 class Accountscreen extends StatefulWidget {
   const Accountscreen({super.key});
@@ -21,10 +22,14 @@ class Accountscreen extends StatefulWidget {
 
 class _AccountscreenState extends State<Accountscreen> {
   late AccountProvider accountProvider;
+
   @override
   void initState() {
     super.initState();
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
+    if (AccountProvider.isLoggedIn) {
+      accountProvider.fetchDashboardAccountDetails();
+    }
   }
 
   @override
@@ -32,25 +37,29 @@ class _AccountscreenState extends State<Accountscreen> {
     accountProvider = Provider.of<AccountProvider>(context);
     return Scaffold(
       backgroundColor: ColorCode.bgColor,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min, // Add this line
-          children: [
-            if (!accountProvider.isLoading)
-              if (AccountProvider.isLoggedIn)
-                getLoggedInDashboard()
-              else
-                getLoggedOutDashbaord(),
-            if (accountProvider.isLoading) const LoaderWidget(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max, // Add this line
+              children: [
+                if (!accountProvider.isLoading)
+                  if (AccountProvider.isLoggedIn)
+                    getLoggedInDashboard()
+                  else
+                    getLoggedOutDashbaord(),
+              ],
+            ),
+          ),
+          if (accountProvider.isLoading) const LoaderWidget(),
+        ],
       ),
     );
   }
 
   Widget getLoggedOutDashbaord() {
     return Column(
-      mainAxisSize: MainAxisSize.min, // Set the main axis size to min
+      mainAxisSize: MainAxisSize.max, // Set the main axis size to min
       children: [
         SizedBox(
           height: 240.sp,
@@ -107,20 +116,23 @@ class _AccountscreenState extends State<Accountscreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      radius: 32,
-                      backgroundImage: AssetImage(AssetImages.dawateIslamiLogo),
+                    RoundedNetworkImage(
+                      imageUrl:
+                          accountProvider.itemDashBoardModel?.userImage ?? "",
+                      fit: BoxFit.cover,
+                      width: 75.sp,
+                      height: 75.sp,
                     ),
                     SizedBox(height: 8.sp),
                     CustomText(
-                      text: "Test",
+                      text: accountProvider.itemDashBoardModel?.userName ?? "",
                       color: ColorCode.whiteColor,
                       fontWeight: FontWeight.w600,
                       fontSize: 18.sp,
                     ),
                     SizedBox(height: 4.sp),
                     CustomText(
-                      text: "test@mailinator.com",
+                      text: accountProvider.itemDashBoardModel?.userEmail ?? "",
                       color: ColorCode.greyColor,
                       fontWeight: FontWeight.normal,
                       fontSize: 12.sp,
@@ -202,7 +214,12 @@ class _AccountscreenState extends State<Accountscreen> {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: CustomText(
-                  text: "N/A",
+                  text: accountProvider
+                              .itemDashBoardModel?.currentPlan?.isEmpty ??
+                          true
+                      ? "N/A"
+                      : accountProvider.itemDashBoardModel?.currentPlan ??
+                          "N/A",
                   color: ColorCode.whiteColor,
                   fontWeight: FontWeight.normal,
                   fontSize: 18.sp,
@@ -216,7 +233,10 @@ class _AccountscreenState extends State<Accountscreen> {
           Padding(
             padding: const EdgeInsets.only(left: 24.0),
             child: CustomText(
-              text: "Subscription expires on N/A",
+              text: accountProvider.itemDashBoardModel?.expiresOn?.isEmpty ??
+                      true
+                  ? "Subscription expires on N/A"
+                  : ("Subscription expires on ${accountProvider.itemDashBoardModel!.expiresOn}"),
               color: ColorCode.whiteColor,
               fontWeight: FontWeight.normal,
               fontSize: 14.sp,

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:islamforever/features/account/providers/AccountProvider.dart';
 import 'package:islamforever/features/account/screens/AccountScreen.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
@@ -32,6 +33,7 @@ class Dashboardscreen extends StatefulWidget {
 
 class _DashboardscreenState extends State<Dashboardscreen> {
   late DashboardProvider dashboardProvider;
+  late AccountProvider accountProvider;
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -52,6 +54,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     // TODO: implement initState
     super.initState();
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    accountProvider = Provider.of<AccountProvider>(context, listen: false);
     dashboardProvider.fetchDashboardHomeData();
   }
 
@@ -210,7 +213,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
         dashboardProvider.fetchMixScreenData(reset: true);
         break;
       case 3:
-        // await fetchAccountData(refresh: true);
+        accountProvider.fetchDashboardAccountDetails(refresh: true);
         break;
       case 4:
         // await fetchSettingsData(refresh: true);
