@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/account/providers/AccountProvider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
 import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
+import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_dialog_notify.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
@@ -17,68 +20,129 @@ class Accountscreen extends StatefulWidget {
 }
 
 class _AccountscreenState extends State<Accountscreen> {
+  late AccountProvider accountProvider;
+  @override
+  void initState() {
+    super.initState();
+    accountProvider = Provider.of<AccountProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
+    accountProvider = Provider.of<AccountProvider>(context);
     return Scaffold(
       backgroundColor: ColorCode.bgColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min, // Add this line
           children: [
-            Stack(
-              children: [
-                Image.asset(
-                  "assets/images/profile_bg.png",
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  height: 150.sp,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 110.sp),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 32,
-                          backgroundImage:
-                              AssetImage(AssetImages.dawateIslamiLogo),
-                        ),
-                        SizedBox(height: 8.sp),
-                        CustomText(
-                          text: "Test",
-                          color: ColorCode.whiteColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.sp,
-                        ),
-                        SizedBox(height: 4.sp),
-                        CustomText(
-                          text: "test@mailinator.com",
-                          color: ColorCode.greyColor,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 12.sp,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 24.sp,
-            ),
-            getMemberShipCard(),
-            SizedBox(
-              height: 30.sp,
-            ),
-            getAccountCard(),
-            SizedBox(
-              height: 30.sp,
-            ),
+            if (!accountProvider.isLoading)
+              if (AccountProvider.isLoggedIn)
+                getLoggedInDashboard()
+              else
+                getLoggedOutDashbaord(),
+            if (accountProvider.isLoading) const LoaderWidget(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget getLoggedOutDashbaord() {
+    return Column(
+      mainAxisSize: MainAxisSize.min, // Set the main axis size to min
+      children: [
+        SizedBox(
+          height: 240.sp,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: CustomText(
+            text: "You have to Login First to Access the Profile!",
+            color: ColorCode.whiteColor,
+            fontWeight: FontWeight.normal,
+            fontSize: 18.sp,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        SizedBox(
+          height: 30.sp,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: CustomElevatedButton(
+            label: 'Login',
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                RouteConstantName.authenticationScreen,
+              );
+            },
+            textColor: ColorCode.whiteColor,
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+            padding: EdgeInsets.all(20.0),
+            elevation: 3.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget getLoggedInDashboard() {
+    return Column(
+      children: [
+        Stack(
+          children: [
+            Image.asset(
+              "assets/images/profile_bg.png",
+              width: double.infinity,
+              fit: BoxFit.cover,
+              height: 150.sp,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 110.sp),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 32,
+                      backgroundImage: AssetImage(AssetImages.dawateIslamiLogo),
+                    ),
+                    SizedBox(height: 8.sp),
+                    CustomText(
+                      text: "Test",
+                      color: ColorCode.whiteColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.sp,
+                    ),
+                    SizedBox(height: 4.sp),
+                    CustomText(
+                      text: "test@mailinator.com",
+                      color: ColorCode.greyColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.sp,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 24.sp,
+        ),
+        getMemberShipCard(),
+        SizedBox(
+          height: 30.sp,
+        ),
+        getAccountCard(),
+        SizedBox(
+          height: 30.sp,
+        ),
+      ],
     );
   }
 
@@ -262,10 +326,18 @@ class _AccountscreenState extends State<Accountscreen> {
             child: CustomElevatedButton(
               label: 'Logout',
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  RouteConstantName.authenticationScreen,
-                );
+                _showLogoutDialog(context, (isLogout) async {
+                  if (isLogout) {
+                    bool isSuccess = await accountProvider.logout();
+                    if (isSuccess) {
+                      showCustomToast(context, "Logout Successfully!");
+                      Navigator.pushReplacementNamed(
+                        context,
+                        RouteConstantName.splashScreen,
+                      );
+                    }
+                  }
+                });
               },
               textColor: ColorCode.whiteColor,
               fontSize: 16.sp,
@@ -295,6 +367,23 @@ class _AccountscreenState extends State<Accountscreen> {
         ),
         child: child,
       ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context, Function(bool) callback) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (BuildContext context) {
+        return CustomNotifyDialog(
+          title: "Are you sure you want to Logout?",
+          buttonText: "Confirm",
+          onButtonPressed: () async {
+            Navigator.of(context).pop(); // For closing the dialog
+            callback(true);
+          },
+        );
+      },
     );
   }
 

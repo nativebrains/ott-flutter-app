@@ -85,6 +85,10 @@ class SharedPrefs {
         Constants.userDataKey, json.encode(userProfileModel.toJson()));
   }
 
+  static clearLoginUserData() async {
+    await _prefs.remove(Constants.userDataKey);
+  }
+
   static LoginUserModel? getLoginUserData() {
     final jsonString = _prefs.getString(Constants.userDataKey);
     if (jsonString == null) {
