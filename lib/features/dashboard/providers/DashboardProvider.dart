@@ -169,7 +169,7 @@ class DashboardProvider extends ChangeNotifier {
 
     try {
       final response = await apiService.post(
-        ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL,
+          ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL,
         jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
       );
 

@@ -52,63 +52,64 @@ class _WatchlistscreenState extends State<Watchlistscreen> {
         backgroundColor: ColorCode.bgColor,
         body: Stack(
           children: [
-            SingleChildScrollView(
-              padding:
-                  EdgeInsets.only(left: 12.sp, right: 12.sp, bottom: 12.sp),
-              child: Column(
-                children: [
-                  provider.itemsWatchListData.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 250.sp),
-                              const Icon(
-                                Icons.search,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                "No Items Found!",
-                                style: GoogleFonts.poppins(
-                                  color: ColorCode.whiteColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18.sp,
+            if (!provider.isWatchListScreenLoading)
+              SingleChildScrollView(
+                padding:
+                    EdgeInsets.only(left: 12.sp, right: 12.sp, bottom: 12.sp),
+                child: Column(
+                  children: [
+                    provider.itemsWatchListData.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 250.sp),
+                                const Icon(
+                                  Icons.search,
+                                  size: 50,
+                                  color: Colors.white,
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 12),
+                                Text(
+                                  "No Items Found!",
+                                  style: GoogleFonts.poppins(
+                                    color: ColorCode.whiteColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 2,
+                            childAspectRatio: 1.4,
+                            children: provider.itemsWatchListData.map((item) {
+                              return Container(
+                                margin: const EdgeInsets.only(
+                                    left: 6, right: 6, bottom: 6),
+                                child: Customhorizontalcard(
+                                  isPremium: true,
+                                  showTitle: true,
+                                  url: item.postImage ?? "",
+                                  id: item.postId,
+                                  title: item.postTitle,
+                                  mediaContentType:
+                                      MediaContentType.getMediaTypeForSlider(
+                                          item.postType.toString()),
+                                  seasonId: item.seasonId.toString(),
+                                  episodeId: item.episodeId.toString(),
+                                  episodeRedirect: item.postType == "Shows",
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        )
-                      : GridView.count(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.4,
-                          children: provider.itemsWatchListData.map((item) {
-                            return Container(
-                              margin: const EdgeInsets.only(
-                                  left: 6, right: 6, bottom: 6),
-                              child: Customhorizontalcard(
-                                isPremium: true,
-                                showTitle: true,
-                                url: item.postImage ?? "",
-                                id: item.postId,
-                                title: item.postTitle,
-                                mediaContentType:
-                                    MediaContentType.getMediaTypeForSlider(
-                                        item.postType.toString()),
-                                seasonId: item.seasonId.toString(),
-                                episodeId: item.episodeId.toString(),
-                                episodeRedirect: item.postType == "Shows",
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                  SizedBox(height: 12.sp)
-                ],
+                    SizedBox(height: 12.sp)
+                  ],
+                ),
               ),
-            ),
             if (provider
                 .isWatchListScreenLoading) // Show LoaderWidget if _isLoading is true
               const LoaderWidget(),

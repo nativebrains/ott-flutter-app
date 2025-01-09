@@ -35,7 +35,7 @@ class SharedPrefs {
       await _prefs.setStringList(key, value);
 
   //gets
-  static bool? getBool(String key) => _prefs.getBool(key);
+  static bool? getBool(String key) => _prefs.getBool(key) ?? false;
 
   static double? getDouble(String key) => _prefs.getDouble(key);
 
