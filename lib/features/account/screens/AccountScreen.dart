@@ -239,7 +239,7 @@ class _AccountscreenState extends State<Accountscreen> {
                   : ("Subscription expires on ${accountProvider.itemDashBoardModel!.expiresOn}"),
               color: ColorCode.whiteColor,
               fontWeight: FontWeight.normal,
-              fontSize: 14.sp,
+              fontSize: 13.sp,
             ),
           ),
           SizedBox(
@@ -336,7 +336,18 @@ class _AccountscreenState extends State<Accountscreen> {
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.normal,
               ), () {
-            showDeleteAccountDialog(context);
+            showDeleteAccountDialog(context, (shouldDelete) async {
+              if (shouldDelete) {
+                bool isSuccess = await accountProvider.deleteAccount();
+                if (isSuccess) {
+                  showCustomToast(context, "Account Deleted Successfully!");
+                  Navigator.pushReplacementNamed(
+                    context,
+                    RouteConstantName.splashScreen,
+                  );
+                }
+              }
+            });
           }),
           SizedBox(
             height: 16.sp,
@@ -407,7 +418,7 @@ class _AccountscreenState extends State<Accountscreen> {
     );
   }
 
-  void showDeleteAccountDialog(BuildContext context) {
+  void showDeleteAccountDialog(BuildContext context, Function(bool) callback) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -453,6 +464,7 @@ class _AccountscreenState extends State<Accountscreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Dismiss the dialog
+                    callback(false);
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.grey[200],
@@ -469,6 +481,7 @@ class _AccountscreenState extends State<Accountscreen> {
                   onPressed: () {
                     // Add your delete account logic here
                     Navigator.of(context).pop(); // Dismiss the dialog
+                    callback(true);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
