@@ -51,4 +51,43 @@ class PurchaseProvider extends ChangeNotifier {
     notifyListeners();
     return plansList;
   }
+
+  Future<bool> purchasePlan(
+    int? planId,
+    String paymentId,
+    String paymentGateway,
+    String couponCode,
+    String couponPercentage,
+  ) async {
+    bool isSuccess = false;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.TRANSACTION_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'plan_id': planId,
+          'payment_id': paymentId,
+          'payment_gateway': paymentGateway,
+          if (couponCode.isNotEmpty) 'coupon_code': couponCode,
+          if (couponPercentage.isNotEmpty)
+            'coupon_percentage': couponPercentage,
+        }),
+      );
+
+      if (response.status == 200) {
+        var dataList = response.data[0];
+        isSuccess = true;
+        _statusMessage = dataList[Constants.MSG];
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    _isLoading = false;
+    notifyListeners();
+    return isSuccess;
+  }
 }

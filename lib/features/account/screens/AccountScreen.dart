@@ -206,7 +206,7 @@ class _AccountscreenState extends State<Accountscreen> {
                 text: "Current Plan : ",
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 18.sp,
+                fontSize: 16.sp,
               ),
               Container(
                 padding:
@@ -224,7 +224,7 @@ class _AccountscreenState extends State<Accountscreen> {
                           "N/A",
                   color: ColorCode.whiteColor,
                   fontWeight: FontWeight.normal,
-                  fontSize: 18.sp,
+                  fontSize: 15.sp,
                 ),
               )
             ],

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:islamforever/features/purchase/models/ItemPlanModel.dart';
 import 'package:islamforever/features/purchase/providers/PurchaseProvider.dart';
+import 'package:islamforever/utils/extras.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
 import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../account/providers/AccountProvider.dart';
 
 class Subscriptionplanscreen extends StatefulWidget {
   const Subscriptionplanscreen({super.key});
@@ -18,11 +22,13 @@ class Subscriptionplanscreen extends StatefulWidget {
 
 class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
   late PurchaseProvider purchaseProvider;
+  late AccountProvider accountProvider;
   int _selectedPlan = 0; // Selected radio button index
 
   @override
   void initState() {
     super.initState();
+    accountProvider = Provider.of<AccountProvider>(context, listen: false);
     purchaseProvider = Provider.of<PurchaseProvider>(context, listen: false);
     if (PurchaseProvider.isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -140,10 +146,7 @@ class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
                   child: CustomElevatedButton(
                     label: 'PROCEED',
                     onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        RouteConstantName.paymentMethodScreen,
-                      );
+                      checkPurchaseAndNavigate();
                     },
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
@@ -239,5 +242,28 @@ class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
         ],
       ),
     );
+  }
+
+  void checkPurchaseAndNavigate() async {
+    ItemPlanModel? itemPlanModel =
+        purchaseProvider.plansList.elementAtOrNull(_selectedPlan);
+    if (itemPlanModel != null) {
+      // Item is free Purchase it now
+      if (toDouble(itemPlanModel.planPrice) == 0.0) {
+        bool isSuccess = await purchaseProvider.purchasePlan(
+            itemPlanModel.planId, '-', "N/A", "", "");
+        showCustomToast(context, PurchaseProvider.statusMessage,
+            backgroudnColor: isSuccess ? Colors.green : Colors.red);
+        if (isSuccess) {
+          await accountProvider.fetchProfileDetails();
+          Navigator.of(context).pop();
+        }
+      } else {
+        Navigator.pushNamed(
+          context,
+          RouteConstantName.paymentMethodScreen,
+        );
+      }
+    }
   }
 }

@@ -11,7 +11,7 @@ class ItemDashBoardModel {
   String? lastInvoiceDate;
   String? lastInvoicePlan;
   String? lastInvoiceAmount;
-  List<ItemTransactionModel> transactionsList;
+  List<ItemTransactionModel>? transactionsList;
 
   ItemDashBoardModel({
     this.userId,
@@ -39,9 +39,10 @@ class ItemDashBoardModel {
       lastInvoiceDate: json['last_invoice_date'],
       lastInvoicePlan: json['last_invoice_plan'],
       lastInvoiceAmount: json['last_invoice_amount'],
-      transactionsList: (json['transactions_list'] as List)
-          .map((transaction) => ItemTransactionModel.fromJson(transaction))
-          .toList(),
+      transactionsList: (json['transactions_list'] as List?)
+              ?.map((transaction) => ItemTransactionModel.fromJson(transaction))
+              .toList() ??
+          [],
     );
   }
 

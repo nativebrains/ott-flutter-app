@@ -125,7 +125,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
 
   Widget getUserTransactionCards() {
     if (accountProvider.itemDashBoardModel == null ||
-        accountProvider.itemDashBoardModel?.transactionsList.isEmpty == true) {
+        accountProvider.itemDashBoardModel?.transactionsList?.isEmpty == true) {
       return Container();
     }
     return Container(
@@ -145,11 +145,12 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
           SizedBox(
             height: 12.sp,
           ),
-          ...List.generate(
-            accountProvider.itemDashBoardModel!.transactionsList.length,
-            (index) => getTransactionCard(
-                accountProvider.itemDashBoardModel!.transactionsList[index]),
-          ),
+          if (accountProvider.itemDashBoardModel!.transactionsList != null)
+            ...List.generate(
+              accountProvider.itemDashBoardModel!.transactionsList!.length,
+              (index) => getTransactionCard(
+                  accountProvider.itemDashBoardModel!.transactionsList![index]),
+            ),
         ],
       ),
     );
@@ -482,7 +483,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                       text: "Current Plan : ",
                       color: ColorCode.whiteColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 18.sp,
+                      fontSize: 16.sp,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
@@ -500,7 +501,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                                 "N/A",
                         color: ColorCode.whiteColor,
                         fontWeight: FontWeight.normal,
-                        fontSize: 18.sp,
+                        fontSize: 15.sp,
                       ),
                     )
                   ],
@@ -518,7 +519,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                         : ("Subscription expires on ${accountProvider.itemDashBoardModel!.expiresOn}"),
                     color: ColorCode.whiteColor,
                     fontWeight: FontWeight.normal,
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                   ),
                 ),
                 SizedBox(
