@@ -364,10 +364,9 @@ class _AccountscreenState extends State<Accountscreen> {
                     bool isSuccess = await accountProvider.logout();
                     if (isSuccess) {
                       showCustomToast(context, "Logout Successfully!");
+                      Navigator.of(context).popUntil((route) => route.isFirst);
                       Navigator.pushReplacementNamed(
-                        context,
-                        RouteConstantName.splashScreen,
-                      );
+                          context, RouteConstantName.splashScreen);
                     }
                   }
                 });

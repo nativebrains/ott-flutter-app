@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/features/purchase/models/ItemPlanModel.dart';
 import 'package:islamforever/features/purchase/providers/PurchaseProvider.dart';
+import 'package:islamforever/features/purchase/screens/PaymentMethodScreen.dart';
 import 'package:islamforever/utils/extras.dart';
 import 'package:provider/provider.dart';
 
@@ -262,6 +263,9 @@ class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
         Navigator.pushNamed(
           context,
           RouteConstantName.paymentMethodScreen,
+          arguments: PaymentmethodScreenArguments(
+            itemPlanModel: itemPlanModel,
+          ),
         );
       }
     }

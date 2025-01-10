@@ -1,152 +1,195 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/constants/error_message.dart';
+import 'package:islamforever/features/purchase/models/ItemPlanModel.dart';
+import 'package:islamforever/features/purchase/providers/PurchaseProvider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/routes_names.dart';
+import '../../../core/loader_widget/loader_widget.dart';
+import '../../../widgets/custom/custom_dialog_notify.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_rich_text.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../account/providers/AccountProvider.dart';
 import '../widgets/CouponDialog.dart';
 
+class PaymentmethodScreenArguments {
+  final ItemPlanModel itemPlanModel;
+
+  PaymentmethodScreenArguments({
+    required this.itemPlanModel,
+  });
+}
+
 class Paymentmethodscreen extends StatefulWidget {
-  const Paymentmethodscreen({super.key});
+  final PaymentmethodScreenArguments paymentmethodScreenArguments;
+  const Paymentmethodscreen({
+    super.key,
+    required this.paymentmethodScreenArguments,
+  });
 
   @override
   State<Paymentmethodscreen> createState() => _PaymentmethodscreenState();
 }
 
 class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
+  late AccountProvider accountProvider;
+  late PurchaseProvider purchaseProvider;
+
   int _selectedPlan = 0; // Selected radio button index
   int _selectedPaymentOptions = -1; // Selected radio button index
 
   @override
+  void initState() {
+    super.initState();
+    accountProvider = Provider.of<AccountProvider>(context, listen: false);
+    purchaseProvider = Provider.of<PurchaseProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await accountProvider.fetchProfileDetails();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    purchaseProvider = Provider.of<PurchaseProvider>(context);
+    ItemPlanModel itemPlanModel =
+        widget.paymentmethodScreenArguments.itemPlanModel;
     return Scaffold(
       backgroundColor: ColorCode.bgColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Close Button (Top-Right Corner)
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0, right: 8),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.white,
-                      size: 40.0,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: _buildPlanOption(
-                  index: 0,
-                  price: "10.00",
-                  duration: "USD / For 7 Day(s)",
-                  planName: "Basic Plan",
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-
-              getMemberShipCard(),
-              SizedBox(height: 24.0),
-              // Title
-              InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => CouponDialog(),
-                  );
-                },
-                child: CustomText(
-                  text: "I have coupon code",
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.pink,
-                ),
-              ),
-
-              SizedBox(height: 24.0),
-
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 16.sp),
-                decoration: BoxDecoration(
-                  color: ColorCode.cardInfoBg,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: CustomText(
-                      text: "Payment Options",
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-
-              Container(
-                  color: ColorCode.cardInfoBg,
-                  margin: EdgeInsets.symmetric(horizontal: 16.sp),
-                  child: Column(
-                    children: [
-                      Divider(
-                        height: 1.sp,
-                        color: Colors.grey.withOpacity(0.3),
-                      ),
-                      SizedBox(height: 16.0),
-                      _buildPaymentOption(
-                        index: 0,
-                        name: "Stripe",
-                      ),
-                      SizedBox(height: 30.sp),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: CustomElevatedButton(
-                          label: 'PROCEED',
+        child: Stack(
+          children: [
+            if (!accountProvider.isLoading)
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Close Button (Top-Right Corner)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0, right: 8),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Colors.white,
+                            size: 40.0,
+                          ),
                           onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              RouteConstantName.paymentScreen,
-                            );
+                            Navigator.of(context).pop();
                           },
-                          textColor: ColorCode.whiteColor,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          padding: EdgeInsets.all(16.0),
-                          elevation: 3.sp,
                         ),
                       ),
-                      SizedBox(height: 30.sp)
-                    ],
-                  )),
+                    ),
 
-              // Radio Button Options
-            ],
-          ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: _buildPlanOption(
+                        index: 0,
+                        price: itemPlanModel.planPrice ?? "",
+                        duration:
+                            "${itemPlanModel.planCurrencyCode} / For ${itemPlanModel.planDuration}",
+                        planName: itemPlanModel.planName ?? "",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    getMemberShipCard(itemPlanModel),
+                    SizedBox(height: 24.0),
+                    // Title
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => CouponDialog(),
+                        );
+                      },
+                      child: CustomText(
+                        text: "I have coupon code",
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.pink,
+                      ),
+                    ),
+
+                    SizedBox(height: 24.0),
+
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(horizontal: 16.sp),
+                      decoration: BoxDecoration(
+                        color: ColorCode.cardInfoBg,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.sp),
+                          child: CustomText(
+                            text: "Payment Options",
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                        color: ColorCode.cardInfoBg,
+                        margin: EdgeInsets.symmetric(horizontal: 16.sp),
+                        child: Column(
+                          children: [
+                            Divider(
+                              height: 1.sp,
+                              color: Colors.grey.withOpacity(0.3),
+                            ),
+                            SizedBox(height: 16.0),
+                            _buildPaymentOption(
+                              index: 0,
+                              name: "Stripe",
+                            ),
+                            SizedBox(height: 30.sp),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: CustomElevatedButton(
+                                label: 'PROCEED',
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RouteConstantName.paymentScreen,
+                                  );
+                                },
+                                textColor: ColorCode.whiteColor,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                padding: EdgeInsets.all(16.0),
+                                elevation: 3.sp,
+                              ),
+                            ),
+                            SizedBox(height: 30.sp)
+                          ],
+                        )),
+
+                    // Radio Button Options
+                  ],
+                ),
+              ),
+            if (accountProvider.isLoading) const LoaderWidget(),
+          ],
         ),
       ),
     );
   }
 
-  Widget getMemberShipCard() {
+  Widget getMemberShipCard(ItemPlanModel itemPlanModel) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.sp),
       width: double.infinity,
@@ -189,29 +232,31 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                 width: 24.sp,
               ),
               CustomText(
-                text: "You have selected :-",
+                text: "You have selected :- ",
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 16.sp,
+                fontSize: 14.sp,
               ),
-              Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 12.sp, vertical: 6.sp),
-                decoration: BoxDecoration(
-                  color: ColorCode.cardInfoHighlight,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: CustomText(
-                  text: "Basic Plan",
-                  color: ColorCode.whiteColor,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18.sp,
+              Flexible(
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.sp, vertical: 6.sp),
+                  decoration: BoxDecoration(
+                    color: ColorCode.cardInfoHighlight,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: CustomText(
+                    text: itemPlanModel.planName ?? "",
+                    color: ColorCode.whiteColor,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.sp,
+                  ),
                 ),
               )
             ],
           ),
           SizedBox(
-            height: 8.sp,
+            height: 20.sp,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -226,25 +271,38 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                     children: [
                       CustomRichText(
                         leadingText: "You are logged in as ",
-                        actionText: "awaismansha1998@gmail.com",
-                        fontSize: 15.sp,
-                        leadingTextColor: ColorCode.whiteColor,
-                        actionTextColor: Colors.pink,
-                        isActionUnderlined: true,
-                        onActionTap: () {
-                          // Handle action tap
-                        },
-                      ),
-                      CustomRichText(
-                        leadingText:
-                            ". if you want to user a different account for this subscription,",
-                        actionText: "Logout Now.",
+                        actionText:
+                            accountProvider.itemDashBoardModel?.userEmail ?? "",
                         fontSize: 15.sp,
                         leadingTextColor: ColorCode.whiteColor,
                         actionTextColor: Colors.pink,
                         isActionUnderlined: false,
                         onActionTap: () {
                           // Handle action tap
+                        },
+                      ),
+                      CustomRichText(
+                        leadingText:
+                            ". if you want to user a different account for this subscription, ",
+                        actionText: "Logout Now.",
+                        fontSize: 15.sp,
+                        leadingTextColor: ColorCode.whiteColor,
+                        actionTextColor: Colors.pink,
+                        isActionUnderlined: true,
+                        onActionTap: () {
+                          _showLogoutDialog(context, (isLogout) async {
+                            if (isLogout) {
+                              bool isSuccess = await accountProvider.logout();
+                              if (isSuccess) {
+                                showCustomToast(
+                                    context, "Logout Successfully!");
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                                Navigator.pushReplacementNamed(
+                                    context, RouteConstantName.splashScreen);
+                              }
+                            }
+                          });
                         },
                       ),
                     ],
@@ -254,7 +312,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
             ),
           ),
           SizedBox(
-            height: 16.sp,
+            height: 30.sp,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -275,6 +333,23 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context, Function(bool) callback) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (BuildContext context) {
+        return CustomNotifyDialog(
+          title: "Are you sure you want to Logout?",
+          buttonText: "Confirm",
+          onButtonPressed: () async {
+            Navigator.of(context).pop(); // For closing the dialog
+            callback(true);
+          },
+        );
+      },
     );
   }
 
