@@ -1,9 +1,11 @@
 class ItemPlanModel {
-  String? planId;
+  int? planId;
   String? planName;
   String? planDuration;
   String? planPrice;
   String? planCurrencyCode;
+  int? planDeviceLimit;
+  int? adsOnOff;
 
   ItemPlanModel({
     this.planId,
@@ -11,6 +13,8 @@ class ItemPlanModel {
     this.planDuration,
     this.planPrice,
     this.planCurrencyCode,
+    this.planDeviceLimit,
+    this.adsOnOff,
   });
 
   factory ItemPlanModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +24,8 @@ class ItemPlanModel {
       planDuration: json['plan_duration'],
       planPrice: json['plan_price'],
       planCurrencyCode: json['currency_code'],
+      planDeviceLimit: json['plan_device_limit'],
+      adsOnOff: json['ads_on_off'],
     );
   }
 

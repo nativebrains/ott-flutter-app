@@ -28,7 +28,9 @@ class _AccountscreenState extends State<Accountscreen> {
     super.initState();
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     if (AccountProvider.isLoggedIn) {
-      accountProvider.fetchDashboardAccountDetails();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        accountProvider.fetchDashboardAccountDetails();
+      });
     }
   }
 

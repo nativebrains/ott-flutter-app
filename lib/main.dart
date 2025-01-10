@@ -13,6 +13,7 @@ import 'package:islamforever/features/authentication/providers/AuthenticationPro
 import 'package:islamforever/features/common/providers/CommonProvider.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
+import 'package:islamforever/features/purchase/providers/PurchaseProvider.dart';
 import 'package:islamforever/features/settings/providers/NotificationPermissionHandler.dart';
 import 'package:islamforever/features/settings/providers/SettingsProvider.dart';
 import 'package:islamforever/firebase_options.dart';
@@ -73,6 +74,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AccountProvider>(
           create: (ctx) => AccountProvider(),
+        ),
+        ChangeNotifierProvider<PurchaseProvider>(
+          create: (ctx) => PurchaseProvider(),
         ),
       ],
       child: ScreenUtilInit(

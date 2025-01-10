@@ -41,7 +41,10 @@ class _ProfilescreenState extends State<Profilescreen> {
   void initState() {
     super.initState();
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
-    fetchProfileDetails();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchProfileDetails();
+    });
   }
 
   void fetchProfileDetails() async {
