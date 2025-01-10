@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -162,7 +163,12 @@ class AccountProvider extends ChangeNotifier {
   }
 
   Future<bool> updateUserProfile(
-      String username, String email, String password, String phone) async {
+    String username,
+    String email,
+    String password,
+    String phone,
+    File? image,
+  ) async {
     bool isSuccess = false;
     _isLoading = true;
     notifyListeners();
@@ -177,6 +183,7 @@ class AccountProvider extends ChangeNotifier {
           'phone': phone,
         }),
         isImage: true,
+        user_image: image,
       );
 
       if (response.status == 200) {

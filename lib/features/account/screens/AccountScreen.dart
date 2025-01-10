@@ -107,7 +107,6 @@ class _AccountscreenState extends State<Accountscreen> {
               "assets/images/profile_bg.png",
               width: double.infinity,
               fit: BoxFit.cover,
-              height: 150.sp,
             ),
             Padding(
               padding: EdgeInsets.only(top: 110.sp),
@@ -120,8 +119,9 @@ class _AccountscreenState extends State<Accountscreen> {
                       imageUrl:
                           accountProvider.itemDashBoardModel?.userImage ?? "",
                       fit: BoxFit.cover,
-                      width: 75.sp,
-                      height: 75.sp,
+                      width: 80.sp,
+                      height: 80.sp,
+                      borderRadius: 50,
                     ),
                     SizedBox(height: 8.sp),
                     CustomText(

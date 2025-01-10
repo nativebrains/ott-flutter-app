@@ -87,7 +87,7 @@ class ApiService {
           'data': base64Data,
           if (page != null) 'page': page,
           if (isImage && user_image != null)
-            'user_image': user_image
+            'user_image': await MultipartFile.fromFile(user_image.path)
           else
             'user_image': "",
         }),

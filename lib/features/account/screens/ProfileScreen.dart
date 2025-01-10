@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:islamforever/extensions/custom_extensions.dart';
 import 'package:islamforever/features/account/models/ItemDashboardModel.dart';
 import 'package:islamforever/features/settings/screens/AboutScreen.dart';
@@ -31,6 +34,9 @@ class _ProfilescreenState extends State<Profilescreen> {
   final _userPasswordController = TextEditingController();
   final _userPhoneController = TextEditingController();
 
+  XFile? _selectedImage; // Store the picked image
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +51,31 @@ class _ProfilescreenState extends State<Profilescreen> {
       _userNameController.text = itemDashBoardModel!.userName.toString();
       _userEmailController.text = itemDashBoardModel.userEmail.toString();
       _userPhoneController.text = itemDashBoardModel.userPhone.toString();
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      // Storing selected Image
+      setState(() {
+        _selectedImage = image;
+      });
+
+      showCustomToast(
+        context,
+        "Image Picked",
+        backgroudnColor: Colors.green,
+      );
+    } else {
+      showCustomToast(
+        context,
+        "No Image Selected",
+        backgroudnColor: Colors.yellow,
+        duration: Duration(seconds: 3),
+        textColor: Colors.black,
+      );
     }
   }
 
@@ -121,16 +152,44 @@ class _ProfilescreenState extends State<Profilescreen> {
               "assets/images/profile_bg.png",
               width: double.infinity,
               fit: BoxFit.cover,
-              height: 150.sp,
             ),
             Padding(
               padding: EdgeInsets.only(top: 110.sp),
               child: Center(
-                child: RoundedNetworkImage(
-                  imageUrl: accountProvider.itemDashBoardModel?.userImage ?? "",
-                  fit: BoxFit.cover,
-                  width: 75.sp,
-                  height: 75.sp,
+                child: InkWell(
+                  onTap: _pickImage,
+                  child: SizedBox(
+                    width: 80.sp,
+                    height: 80.sp,
+                    child: Stack(
+                      children: [
+                        // Display the selected image or the network image
+                        _selectedImage != null
+                            ? CircleAvatar(
+                                radius: 50,
+                                backgroundImage: FileImage(
+                                  File(_selectedImage!.path),
+                                ),
+                              )
+                            : RoundedNetworkImage(
+                                imageUrl: accountProvider
+                                        .itemDashBoardModel?.userImage ??
+                                    "",
+                                fit: BoxFit.cover,
+                                width: 80.sp,
+                                height: 80.sp,
+                                borderRadius: 50,
+                              ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Icon(
+                            Icons.add_photo_alternate,
+                            color: ColorCode.themeOrangePinkEnd,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -317,7 +376,12 @@ class _ProfilescreenState extends State<Profilescreen> {
     }
 
     bool isSuccess = await accountProvider.updateUserProfile(
-        userName, userEmail, userPassword, userPhone);
+      userName,
+      userEmail,
+      userPassword,
+      userPhone,
+      _selectedImage != null ? File(_selectedImage!.path) : null,
+    );
 
     showCustomToast(context, AccountProvider.statusMessage,
         backgroudnColor: isSuccess ? Colors.green : Colors.red);
