@@ -1,4 +1,7 @@
+import 'package:islamforever/features/purchase/models/ItemTransactionModel.dart';
+
 class ItemDashBoardModel {
+  int? userId;
   String? userName;
   String? userEmail;
   String? userImage;
@@ -8,8 +11,10 @@ class ItemDashBoardModel {
   String? lastInvoiceDate;
   String? lastInvoicePlan;
   String? lastInvoiceAmount;
+  List<ItemTransactionModel> transactionsList;
 
   ItemDashBoardModel({
+    this.userId,
     this.userName,
     this.userEmail,
     this.userImage,
@@ -19,10 +24,12 @@ class ItemDashBoardModel {
     this.lastInvoicePlan,
     this.lastInvoiceAmount,
     this.userPhone,
+    this.transactionsList = const [],
   });
 
   factory ItemDashBoardModel.fromJson(Map<String, dynamic> json) {
     return ItemDashBoardModel(
+      userId: json['user_id'],
       userName: json['name'],
       userEmail: json['email'],
       userImage: json['user_image'],
@@ -32,6 +39,9 @@ class ItemDashBoardModel {
       lastInvoiceDate: json['last_invoice_date'],
       lastInvoicePlan: json['last_invoice_plan'],
       lastInvoiceAmount: json['last_invoice_amount'],
+      transactionsList: (json['transactions_list'] as List)
+          .map((transaction) => ItemTransactionModel.fromJson(transaction))
+          .toList(),
     );
   }
 
