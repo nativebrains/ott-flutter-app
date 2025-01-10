@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:islamforever/features/purchase/models/ItemPaymentSetting.dart';
 import 'package:islamforever/features/purchase/models/ItemPlanModel.dart';
 
 import '../../../constants/ApiEndpoints.dart';
@@ -14,6 +15,7 @@ class PurchaseProvider extends ChangeNotifier {
   static String? _statusMessage;
   static get statusMessage => _statusMessage;
   List<ItemPlanModel> plansList = [];
+  List<ItemPaymentSetting> paymentGatewaysList = [];
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -89,5 +91,35 @@ class PurchaseProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     return isSuccess;
+  }
+
+  Future<List<ItemPaymentSetting>> fetchPaymentGateways() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.PAYMENT_SETTING_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+        }),
+      );
+
+      if (response.status == 200) {
+        var dataList = response.data;
+        paymentGatewaysList = dataList
+            .map<ItemPaymentSetting>(
+                (item) => ItemPaymentSetting.fromJson(item))
+            .toList();
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    _isLoading = false;
+    notifyListeners();
+
+    return paymentGatewaysList;
   }
 }

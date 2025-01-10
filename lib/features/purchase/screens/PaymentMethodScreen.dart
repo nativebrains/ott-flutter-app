@@ -38,6 +38,8 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
   late AccountProvider accountProvider;
   late PurchaseProvider purchaseProvider;
 
+  bool _isloading = false;
+
   int _selectedPlan = 0; // Selected radio button index
   int _selectedPaymentOptions = -1; // Selected radio button index
 
@@ -47,7 +49,14 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     purchaseProvider = Provider.of<PurchaseProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _isloading = true;
+      });
       await accountProvider.fetchProfileDetails();
+      await purchaseProvider.fetchPaymentGateways();
+      setState(() {
+        _isloading = false;
+      });
     });
   }
 
@@ -61,7 +70,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            if (!accountProvider.isLoading)
+            if (!_isloading)
               SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -182,7 +191,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                   ],
                 ),
               ),
-            if (accountProvider.isLoading) const LoaderWidget(),
+            if (_isloading) const LoaderWidget(),
           ],
         ),
       ),
