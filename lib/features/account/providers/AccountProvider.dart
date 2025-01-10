@@ -137,4 +137,26 @@ class AccountProvider extends ChangeNotifier {
     notifyListeners();
     return isLogoutSuccess;
   }
+
+  Future<ItemDashBoardModel?> fetchProfileDetails() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.PROFILE_URL,
+        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+      );
+
+      if (response.status == 200) {
+        var dataList = response.data;
+        itemDashBoardModel = ItemDashBoardModel.fromJson(dataList[0]);
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+    _isLoading = false;
+    notifyListeners();
+    return itemDashBoardModel;
+  }
 }

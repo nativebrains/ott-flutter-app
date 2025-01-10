@@ -2,6 +2,7 @@ class ItemDashBoardModel {
   String? userName;
   String? userEmail;
   String? userImage;
+  String? userPhone;
   String? currentPlan;
   String? expiresOn;
   String? lastInvoiceDate;
@@ -17,6 +18,7 @@ class ItemDashBoardModel {
     this.lastInvoiceDate,
     this.lastInvoicePlan,
     this.lastInvoiceAmount,
+    this.userPhone,
   });
 
   factory ItemDashBoardModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class ItemDashBoardModel {
       userName: json['name'],
       userEmail: json['email'],
       userImage: json['user_image'],
+      userPhone: json['phone'],
       currentPlan: json['current_plan'],
       expiresOn: json['expires_on'],
       lastInvoiceDate: json['last_invoice_date'],
