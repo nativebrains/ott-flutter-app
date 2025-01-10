@@ -93,7 +93,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
         mediaItemDetails =
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         if (genericDetailsResponseModel?.seasons != null) {
-          if (genericDetailsResponseModel?.seasons?.isNotEmpty != null) {
+          if (genericDetailsResponseModel?.seasons!.isNotEmpty == true) {
             setState(() {
               _episodesLoading = true;
             });
@@ -941,7 +941,20 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 ),
             ],
           ),
-        )
+        ),
+        if (genericDetailsResponseModel?.seasons != null &&
+            genericDetailsResponseModel?.seasons!.isEmpty == true)
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+              child: CustomText(
+                text: 'No Seasons Found!',
+                fontSize: 16.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -1003,6 +1016,18 @@ class _DetailsscreenState extends State<Detailsscreen> {
         if (itemEpisodeModel != null &&
             itemEpisodeModel!.isEmpty &&
             !_episodesLoading)
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+              child: CustomText(
+                text: 'No Episodes Found!',
+                fontSize: 16.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        if (itemEpisodeModel == null && !_episodesLoading)
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Center(
