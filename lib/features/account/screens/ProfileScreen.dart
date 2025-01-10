@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:islamforever/extensions/custom_extensions.dart';
+import 'package:islamforever/features/account/models/ItemDashboardModel.dart';
 import 'package:islamforever/features/settings/screens/AboutScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
+import '../../../constants/error_message.dart';
 import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
@@ -22,13 +26,25 @@ class Profilescreen extends StatefulWidget {
 
 class _ProfilescreenState extends State<Profilescreen> {
   late AccountProvider accountProvider;
+  final _userNameController = TextEditingController();
+  final _userEmailController = TextEditingController();
+  final _userPasswordController = TextEditingController();
+  final _userPhoneController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
+    fetchProfileDetails();
+  }
+
+  void fetchProfileDetails() async {
     if (AccountProvider.isLoggedIn) {
-      accountProvider.fetchProfileDetails();
+      ItemDashBoardModel? itemDashBoardModel =
+          await accountProvider.fetchProfileDetails();
+      _userNameController.text = itemDashBoardModel!.userName.toString();
+      _userEmailController.text = itemDashBoardModel.userEmail.toString();
+      _userPhoneController.text = itemDashBoardModel.userPhone.toString();
     }
   }
 
@@ -133,6 +149,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           ),
         ),
         CustomTextField(
+          controller: _userNameController,
           hintText: accountProvider.itemDashBoardModel?.userName ?? "",
           hintTextColor: Colors.white,
           initialValue: accountProvider.itemDashBoardModel?.userName ?? "",
@@ -162,6 +179,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           ),
         ),
         CustomTextField(
+          controller: _userEmailController,
           hintText: accountProvider.itemDashBoardModel?.userEmail ?? "",
           hintTextColor: Colors.white,
           initialValue: accountProvider.itemDashBoardModel?.userEmail ?? "",
@@ -191,6 +209,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           ),
         ),
         CustomTextField(
+          controller: _userPasswordController,
           hintText: 'Password',
           hintTextColor: Colors.white,
           initialValue: "", // Set the initial value
@@ -223,6 +242,7 @@ class _ProfilescreenState extends State<Profilescreen> {
           ),
         ),
         CustomTextField(
+          controller: _userPhoneController,
           hintText: accountProvider.itemDashBoardModel?.userPhone ?? "",
           hintTextColor: Colors.white,
           initialValue: accountProvider.itemDashBoardModel?.userPhone ?? "",
@@ -247,7 +267,9 @@ class _ProfilescreenState extends State<Profilescreen> {
           child: CustomElevatedButton(
             label: 'Save Profile',
             onPressed: () {
-              Navigator.of(context).pop();
+              _updateUserProfile(() {
+                Navigator.of(context).pop();
+              });
             },
             textColor: ColorCode.whiteColor,
             fontSize: 20.sp,
@@ -261,5 +283,46 @@ class _ProfilescreenState extends State<Profilescreen> {
         ),
       ],
     );
+  }
+
+  void _updateUserProfile(Function callback) async {
+    String userName = _userNameController.text;
+    String userEmail = _userEmailController.text;
+    String userPassword = _userPasswordController.text;
+    String userPhone = _userPhoneController.text;
+
+    if (userName.isEmpty) {
+      showCustomToast(context, "Username is missing",
+          backgroudnColor: Colors.red);
+      return;
+    }
+
+    if (userEmail.isEmpty) {
+      showCustomToast(context, "Email is Missing");
+      return;
+    }
+    if (!userEmail.isValidEmail()) {
+      showCustomToast(context, "Email not Valid");
+      return;
+    }
+    if (userPassword.isEmpty ||
+        (userPassword.isNotEmpty && userPassword.length <= 5)) {
+      showCustomToast(context, "Password is invalid",
+          backgroudnColor: Colors.red);
+      return;
+    }
+    if (userPhone.isEmpty) {
+      showCustomToast(context, "Phone is Missing");
+      return;
+    }
+
+    bool isSuccess = await accountProvider.updateUserProfile(
+        userName, userEmail, userPassword, userPhone);
+
+    showCustomToast(context, AccountProvider.statusMessage,
+        backgroudnColor: isSuccess ? Colors.green : Colors.red);
+    if (isSuccess) {
+      fetchProfileDetails();
+    }
   }
 }

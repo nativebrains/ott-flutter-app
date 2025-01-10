@@ -12,6 +12,7 @@ import '../models/LoginUserModel.dart';
 class AccountProvider extends ChangeNotifier {
   static ApiService apiService = ApiService();
   static String? _statusMessage;
+  static get statusMessage => _statusMessage;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -158,5 +159,38 @@ class AccountProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     return itemDashBoardModel;
+  }
+
+  Future<bool> updateUserProfile(
+      String username, String email, String password, String phone) async {
+    bool isSuccess = false;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.EDIT_PROFILE_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'name': username,
+          'email': email,
+          'password': password,
+          'phone': phone,
+        }),
+        isImage: true,
+      );
+
+      if (response.status == 200) {
+        var dataList = response.data[0];
+        isSuccess = true;
+        _statusMessage = dataList[Constants.MSG];
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    _isLoading = false;
+    notifyListeners();
+    return isSuccess;
   }
 }

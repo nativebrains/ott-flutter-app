@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,8 @@ class ApiService {
     }
   }
 
-  Future<ApiResponseModel> post(String path, dynamic data, {int? page}) async {
+  Future<ApiResponseModel> post(String path, dynamic data,
+      {int? page, File? user_image, bool isImage = false}) async {
     try {
       Map<String, dynamic> jsonData;
       // Handle different types of data
@@ -81,8 +83,14 @@ class ApiService {
       // Send the POST request
       final response = await _dio.post(
         path,
-        data: FormData.fromMap(
-            {'data': base64Data, if (page != null) 'page': page}),
+        data: FormData.fromMap({
+          'data': base64Data,
+          if (page != null) 'page': page,
+          if (isImage && user_image != null)
+            'user_image': user_image
+          else
+            'user_image': "",
+        }),
       );
 
       return ApiResponseModel.fromJson(response.data, response.statusCode);
