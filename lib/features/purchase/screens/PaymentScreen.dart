@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/features/purchase/models/ItemPaymentSetting.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../models/ItemPlanModel.dart';
+
+class PaymentScreenArguments {
+  final ItemPaymentSetting itemPaymentSetting;
+  final ItemPlanModel itemPlanModel;
+
+  PaymentScreenArguments({
+    required this.itemPaymentSetting,
+    required this.itemPlanModel,
+  });
+}
 
 class Paymentscreen extends StatefulWidget {
-  const Paymentscreen({super.key});
+  final PaymentScreenArguments paymentScreenArguments;
+  const Paymentscreen({
+    super.key,
+    required this.paymentScreenArguments,
+  });
 
   @override
   State<Paymentscreen> createState() => _PaymentscreenState();
@@ -61,9 +77,10 @@ class _PaymentscreenState extends State<Paymentscreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomElevatedButton(
-                      label: 'Pay :10.00 USD via Stripe',
+                      label:
+                          'Pay :${widget.paymentScreenArguments.itemPlanModel.planPrice} ${widget.paymentScreenArguments.itemPlanModel.planCurrencyCode} via ${widget.paymentScreenArguments.itemPaymentSetting.gatewayName}',
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        // Navigator.of(context).pop();
                       },
                       textColor: ColorCode.whiteColor,
                       hideGradient: true,

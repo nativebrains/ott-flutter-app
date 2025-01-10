@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/error_message.dart';
 import 'package:islamforever/features/purchase/models/ItemPlanModel.dart';
 import 'package:islamforever/features/purchase/providers/PurchaseProvider.dart';
+import 'package:islamforever/features/purchase/screens/PaymentScreen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
@@ -160,9 +161,15 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                               color: Colors.grey.withOpacity(0.3),
                             ),
                             SizedBox(height: 16.0),
-                            _buildPaymentOption(
-                              index: 0,
-                              name: "Stripe",
+                            ...List.generate(
+                              purchaseProvider.paymentGatewaysList.length,
+                              (index) => _buildPaymentOption(
+                                index: index,
+                                name: purchaseProvider
+                                        .paymentGatewaysList[index]
+                                        .gatewayName ??
+                                    "",
+                              ),
                             ),
                             SizedBox(height: 30.sp),
                             Padding(
@@ -171,10 +178,21 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                               child: CustomElevatedButton(
                                 label: 'PROCEED',
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouteConstantName.paymentScreen,
-                                  );
+                                  if (_selectedPaymentOptions == -1) {
+                                    showCustomToast(
+                                        context, "No Gateway Selected");
+                                  } else {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouteConstantName.paymentScreen,
+                                      arguments: PaymentScreenArguments(
+                                        itemPaymentSetting: purchaseProvider
+                                                .paymentGatewaysList[
+                                            _selectedPaymentOptions],
+                                        itemPlanModel: itemPlanModel,
+                                      ),
+                                    );
+                                  }
                                 },
                                 textColor: ColorCode.whiteColor,
                                 fontSize: 20.sp,

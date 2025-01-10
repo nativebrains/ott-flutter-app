@@ -171,8 +171,11 @@ class RouterGenerator {
         );
 
       case RouteConstantName.paymentScreen:
+        final args = settings.arguments as PaymentScreenArguments;
         return MaterialPageRoute(
-          builder: (context) => const Paymentscreen(),
+          builder: (context) => Paymentscreen(
+            paymentScreenArguments: args,
+          ),
           settings: const RouteSettings(
             name: RouteConstantName.paymentScreen,
           ),
