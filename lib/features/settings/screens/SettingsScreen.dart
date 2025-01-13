@@ -78,6 +78,11 @@ class _SettingsscreenState extends State<Settingsscreen> {
               getItem("More App", onItemClickCallback: () async {
                 await openMoreApps();
               }),
+              getItem("Contact Support", onItemClickCallback: () {
+                Navigator.pushNamed(context, RouteConstantName.webviewScreen,
+                    arguments: const WebviewScreen(
+                        webviewType: WebviewType.CONTACT_SUPPORT));
+              }),
             ],
           ),
         ),

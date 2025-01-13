@@ -10,7 +10,7 @@ import '../../../widgets/custom/custom_text.dart';
 import '../../settings/models/AboutAppModel.dart';
 import '../../settings/providers/SettingsProvider.dart';
 
-enum WebviewType { PRIVACY, TERMS }
+enum WebviewType { PRIVACY, TERMS, CONTACT_SUPPORT }
 
 class WebviewScreen extends StatefulWidget {
   final WebviewType webviewType;
@@ -22,6 +22,8 @@ class WebviewScreen extends StatefulWidget {
 }
 
 class _WebviewScreenState extends State<WebviewScreen> {
+  late WebViewController controller;
+
   late SettingsProvider settingsProvider;
   late AboutAppModel? aboutAppModel;
   bool _isLoading = true; // State variable to track loading
@@ -30,7 +32,24 @@ class _WebviewScreenState extends State<WebviewScreen> {
   void initState() {
     super.initState();
     settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
-    _fetchData();
+    if (widget.webviewType != WebviewType.CONTACT_SUPPORT) {
+      _fetchData();
+    } else {
+      _setupWebView();
+    }
+  }
+
+  void _setupWebView() {
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (url) => setState(() => _isLoading = true),
+          onPageFinished: (url) => setState(() => _isLoading = false),
+        ),
+      )
+      ..loadRequest(Uri.parse(getUrl()));
   }
 
   Future<void> _fetchData({bool refresh = false}) async {
@@ -51,68 +70,10 @@ class _WebviewScreenState extends State<WebviewScreen> {
       backgroundColor: ColorCode.bgColor,
       body: Stack(
         children: [
-          CustomScrollView(
-            slivers: [
-              // SliverAppBar with snapping and floating behavior
-              SliverAppBar(
-                automaticallyImplyLeading: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.pink],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                ),
-                title: Text(
-                  getTitle(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                centerTitle: false,
-                floating: true,
-                snap: true,
-                expandedHeight: 55.0, // Set height for expanded AppBar
-              ),
-              // SliverList for your content
-              SliverPadding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 24.sp, vertical: 20.sp),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    _isLoading
-                        ? []
-                        : [
-                            CustomText(
-                              text: parse(widget.webviewType ==
-                                          WebviewType.PRIVACY
-                                      ? aboutAppModel?.appHtmlPrivacy.toString()
-                                      : aboutAppModel?.appTerms.toString())
-                                  .body!
-                                  .text,
-                              fontSize: 14.sp,
-                              textAlign: TextAlign.start,
-                              color: ColorCode.whiteColor,
-                              maxLines: 100,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            SizedBox(height: 50.sp),
-                          ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          if (widget.webviewType != WebviewType.CONTACT_SUPPORT)
+            loadNormalApiData()
+          else
+            loadWebViewData(),
 
           // Loading indicator
           if (_isLoading)
@@ -131,7 +92,9 @@ class _WebviewScreenState extends State<WebviewScreen> {
       case WebviewType.PRIVACY:
         return "Privacy Policy";
       case WebviewType.TERMS:
-        return "Terms";
+        return "Terms And Conditions";
+      case WebviewType.CONTACT_SUPPORT:
+        return "Contact Support";
       default:
         return "";
     }
@@ -139,12 +102,88 @@ class _WebviewScreenState extends State<WebviewScreen> {
 
   String getUrl() {
     switch (widget.webviewType) {
-      case WebviewType.PRIVACY:
-        return "https://paybag-react.paybag.co/privacy-policy?app=1";
-      case WebviewType.TERMS:
-        return "https://paybag-react.paybag.co/terms-conditions?app=1";
+      case WebviewType.CONTACT_SUPPORT:
+        return "https://dawateislamiott.tawk.help/";
       default:
         return "";
     }
+  }
+
+  Widget loadNormalApiData() {
+    return CustomScrollView(
+      slivers: [
+        // SliverAppBar with snapping and floating behavior
+        SliverAppBar(
+          automaticallyImplyLeading: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.orange, Colors.pink],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          title: Text(
+            getTitle(),
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          centerTitle: false,
+          floating: true,
+          snap: true,
+          expandedHeight: 55.0, // Set height for expanded AppBar
+        ),
+        // SliverList for your content
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 20.sp),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              _isLoading
+                  ? []
+                  : [
+                      CustomText(
+                        text: parse(widget.webviewType == WebviewType.PRIVACY
+                                ? aboutAppModel?.appHtmlPrivacy.toString()
+                                : aboutAppModel?.appTerms.toString())
+                            .body!
+                            .text,
+                        fontSize: 14.sp,
+                        textAlign: TextAlign.start,
+                        color: ColorCode.whiteColor,
+                        maxLines: 100,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      SizedBox(height: 50.sp),
+                    ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget loadWebViewData() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: kToolbarHeight,
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: WebViewWidget(
+          controller: controller,
+        ),
+      ),
+    );
   }
 }
