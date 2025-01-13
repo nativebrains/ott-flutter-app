@@ -173,15 +173,25 @@ class _WebviewScreenState extends State<WebviewScreen> {
   }
 
   Widget loadWebViewData() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: kToolbarHeight,
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.orange, Colors.pink],
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+        ),
       ),
-      child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: WebViewWidget(
-          controller: controller,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: kToolbarHeight,
+        ),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.white,
+          child: WebViewWidget(
+            controller: controller,
+          ),
         ),
       ),
     );
