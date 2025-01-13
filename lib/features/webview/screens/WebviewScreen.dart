@@ -10,7 +10,7 @@ import '../../../widgets/custom/custom_text.dart';
 import '../../settings/models/AboutAppModel.dart';
 import '../../settings/providers/SettingsProvider.dart';
 
-enum WebviewType { PRIVACY, TERMS, CONTACT_SUPPORT }
+enum WebviewType { PRIVACY, TERMS, CONTACT_SUPPORT, CHAT_SUPPORT }
 
 class WebviewScreen extends StatefulWidget {
   final WebviewType webviewType;
@@ -32,7 +32,8 @@ class _WebviewScreenState extends State<WebviewScreen> {
   void initState() {
     super.initState();
     settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
-    if (widget.webviewType != WebviewType.CONTACT_SUPPORT) {
+    if (widget.webviewType == WebviewType.PRIVACY ||
+        widget.webviewType == WebviewType.TERMS) {
       _fetchData();
     } else {
       _setupWebView();
@@ -70,7 +71,8 @@ class _WebviewScreenState extends State<WebviewScreen> {
       backgroundColor: ColorCode.bgColor,
       body: Stack(
         children: [
-          if (widget.webviewType != WebviewType.CONTACT_SUPPORT)
+          if (widget.webviewType == WebviewType.PRIVACY ||
+              widget.webviewType == WebviewType.TERMS)
             loadNormalApiData()
           else
             loadWebViewData(),
@@ -104,6 +106,8 @@ class _WebviewScreenState extends State<WebviewScreen> {
     switch (widget.webviewType) {
       case WebviewType.CONTACT_SUPPORT:
         return "https://dawateislamiott.tawk.help/";
+      case WebviewType.CHAT_SUPPORT:
+        return "https://tawk.to/chat/673788e82480f5b4f59eb7c5/1icoetjku";
       default:
         return "";
     }

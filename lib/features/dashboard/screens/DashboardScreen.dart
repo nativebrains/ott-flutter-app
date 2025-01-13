@@ -22,6 +22,7 @@ import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../common/enums/MediaContentType.dart';
+import '../../webview/screens/WebviewScreen.dart';
 import '../models/HomeDataModel.dart';
 
 class Dashboardscreen extends StatefulWidget {
@@ -196,6 +197,20 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
         ),
         bottomNavigationBar: getBottomMenu(_selectedIndex),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, RouteConstantName.webviewScreen,
+                arguments:
+                    const WebviewScreen(webviewType: WebviewType.CHAT_SUPPORT));
+          },
+          tooltip: 'Chat',
+          backgroundColor: Colors.orange, // Set the background color
+          child: Padding(
+            padding: const EdgeInsets.all(8.0), // Add a margin around the icon
+            child: Icon(Icons.chat,
+                color: Colors.white), // Set the icon and its color
+          ),
+        ),
       ),
     );
   }
@@ -214,9 +229,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
         break;
       case 3:
         accountProvider.fetchDashboardAccountDetails(refresh: true);
-        break;
-      case 4:
-        // await fetchSettingsData(refresh: true);
         break;
     }
     completer.complete();
