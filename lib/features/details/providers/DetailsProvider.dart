@@ -207,4 +207,37 @@ class DetailsProvider extends ChangeNotifier {
     notifyListeners();
     return isSuccess;
   }
+
+  Future<bool> submitReviewRating(
+    int rating,
+    String review,
+    int? id,
+    String? type,
+  ) async {
+    bool isSuccess = false;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.CONTENT_ADD_REVIEW_URL,
+        jsonEncode({
+          'review': review,
+          'rating': rating,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'module_id': id,
+          'type': type,
+        }),
+      );
+
+      if (response.status == 200) {
+        final jsonData = response.data;
+        _statusMessage = jsonData[0]['msg'];
+        isSuccess = true;
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return isSuccess;
+  }
 }

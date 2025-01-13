@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html/parser.dart';
@@ -19,6 +20,8 @@ import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
+import 'package:islamforever/features/settings/screens/AboutScreen.dart';
+import 'package:islamforever/utils/extensions_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -26,6 +29,8 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../constants/error_message.dart';
 import '../../../constants/routes_names.dart';
 import '../../../utils/share_utils.dart';
+import '../../../widgets/custom/custom_elevated_button.dart';
+import '../../../widgets/custom/custom_rate_experience_dialog.dart';
 import '../../../widgets/custom/custom_text.dart';
 
 class DetailsScreenArguments {
@@ -139,6 +144,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     getTopSection(),
                     SizedBox(height: 8.sp),
                     getDescriptionSection(),
+                    if (DetailsProvider.isLoggedIn) getAddReviewSection(),
                     SizedBox(height: 8.sp),
                     Divider(height: 1.sp, color: Colors.grey.withOpacity(0.3)),
                     if (mediaItemDetails?.mediaContentType ==
@@ -260,15 +266,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: CustomText(
-            text: mediaItemDetails?.title ?? "",
-            color: Colors.white,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        getTitleAndRatingReviews(),
         if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
           SizedBox(
             height: 12.sp,
@@ -450,7 +448,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
         if (mediaItemDetails?.description != null &&
             mediaItemDetails?.description != "")
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
             child: CustomText(
               text: parse(mediaItemDetails?.description.toString()).body!.text,
               color: Colors.grey.shade700,
@@ -1048,6 +1048,108 @@ class _DetailsscreenState extends State<Detailsscreen> {
             )),
           )
       ],
+    );
+  }
+
+  Widget getTitleAndRatingReviews() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: CustomText(
+              text: mediaItemDetails?.title ?? "",
+              color: Colors.white,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            RatingBar(
+              initialRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 28.sp,
+              ignoreGestures: true,
+              ratingWidget: RatingWidget(
+                full: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
+                half: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
+                empty: Icon(Icons.star_rounded, color: Colors.grey.shade400),
+              ),
+              onRatingUpdate: (rating) {
+                print(rating);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: CustomText(
+                text: "4.0 Stars | 3 Reviews",
+                color: Colors.white,
+                fontSize: 11.sp,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget getAddReviewSection() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
+      child: CustomElevatedButton(
+        label: 'Add Review',
+        onPressed: () {
+          _showRateExpereinceDialog(context);
+        },
+        textColor: ColorCode.whiteColor,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.bold,
+        padding: EdgeInsets.all(12.0),
+        elevation: 3.sp,
+        leadingIcon: Icon(
+          Icons.chat,
+          color: Colors.white,
+        ),
+        width: context.screenWidth / 2,
+      ),
+    );
+  }
+
+  void _showRateExpereinceDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (BuildContext context) {
+        return CustomRateExperienceDialog(
+          title: "Write your review",
+          buttonText: "Submit",
+          onButtonPressed: (rating, review) {
+            uploadUserReview(rating, review);
+            Navigator.of(context).pop(); // For closing the dialog
+          },
+        );
+      },
+    );
+  }
+
+  void uploadUserReview(int rating, String review) async {
+    final isSuccess = await detailsProvider.submitReviewRating(rating, review,
+        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.name);
+
+    showCustomToast(
+      context,
+      DetailsProvider.getStatusMessage.toString(),
+      backgroudnColor: isSuccess ? Colors.green : Colors.red,
+      duration: Duration(seconds: 3),
+      textColor: Colors.white,
     );
   }
 }

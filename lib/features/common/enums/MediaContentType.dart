@@ -2,8 +2,7 @@ enum MediaContentType {
   movies,
   tvShows,
   sports,
-  liveTv,
-  ;
+  liveTv;
 
   String get displayName {
     switch (this) {
