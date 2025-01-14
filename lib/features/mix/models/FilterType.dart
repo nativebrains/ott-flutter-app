@@ -8,6 +8,7 @@ class FilterType {
   static const int SHOW = 2;
   static const int TV = 3;
   static const int SPORT = 4;
+  static const int PODCAST = 5;
 
   static const String TY_LANGUAGE = "1";
   static const String TY_GENRE = "2";
@@ -105,6 +106,24 @@ class FilterType {
       ),
       FilterType(
         filterTypeSec: TV,
+        filterType: TY_ORDER_TYPE,
+        filterTypeName: ORDER_TYPE,
+        filterTypeParameterName: PR_ORDER,
+      ),
+      FilterType(
+        filterTypeSec: PODCAST,
+        filterType: TY_LANGUAGE,
+        filterTypeName: LANGUAGE,
+        filterTypeParameterName: PR_LANGUAGE,
+      ),
+      FilterType(
+        filterTypeSec: PODCAST,
+        filterType: TY_GENRE,
+        filterTypeName: GENRE,
+        filterTypeParameterName: PR_GENRE,
+      ),
+      FilterType(
+        filterTypeSec: PODCAST,
         filterType: TY_ORDER_TYPE,
         filterTypeName: ORDER_TYPE,
         filterTypeParameterName: PR_ORDER,

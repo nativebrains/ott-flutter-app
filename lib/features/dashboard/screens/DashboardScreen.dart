@@ -197,18 +197,31 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
         ),
         bottomNavigationBar: getBottomMenu(_selectedIndex),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, RouteConstantName.webviewScreen,
-                arguments:
-                    const WebviewScreen(webviewType: WebviewType.CHAT_SUPPORT));
-          },
-          tooltip: 'Chat',
-          backgroundColor: Colors.orange, // Set the background color
-          child: Padding(
-            padding: const EdgeInsets.all(8.0), // Add a margin around the icon
-            child: Icon(Icons.chat,
-                color: Colors.white), // Set the icon and its color
+        floatingActionButton: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [Colors.orange, Colors.pink],
+              begin: Alignment.topLeft,
+              end: Alignment.topRight,
+            ),
+          ),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.pushNamed(context, RouteConstantName.webviewScreen,
+                  arguments: const WebviewScreen(
+                      webviewType: WebviewType.CHAT_SUPPORT));
+            },
+            tooltip: 'Chat',
+            backgroundColor:
+                Colors.transparent, // Set the background color to transparent
+            elevation: 0,
+            child: Padding(
+              padding:
+                  const EdgeInsets.all(8.0), // Add a margin around the icon
+              child: Icon(Icons.chat,
+                  color: Colors.white), // Set the icon and its color
+            ),
           ),
         ),
       ),
@@ -518,6 +531,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       builder: (BuildContext context) {
         return Customfilterbottomsheet(
           onFilterSelected: (data) {
+            print(data);
             dashboardProvider.setFilterDataAndRefresh(data);
             onTap();
           },
