@@ -90,12 +90,12 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               scaffoldBackgroundColor: ColorCode.scaffoldBackgroundColor,
-              primaryColor: ColorCode.mainColor,
+              primaryColor: ColorCode.greenStartColor,
               canvasColor: ColorCode.scaffoldBackgroundColor,
               appBarTheme: AppBarTheme(
-                color: ColorCode.mainColor,
+                color: ColorCode.greenStartColor,
               ),
-              secondaryHeaderColor: ColorCode.mainColor,
+              secondaryHeaderColor: ColorCode.greenStartColor,
               textTheme: GoogleFonts.poppinsTextTheme(
                 Theme.of(context).textTheme,
               ),

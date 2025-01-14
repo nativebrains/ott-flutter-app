@@ -186,7 +186,7 @@ class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
                   : ColorCode.planNormal,
               borderRadius: BorderRadius.circular(8.0),
               border: _selectedPlan == index
-                  ? Border.all(color: Colors.pink, width: 2.0)
+                  ? Border.all(color: Colors.greenAccent, width: 2.0)
                   : null,
             ),
             child: Row(
@@ -196,7 +196,9 @@ class _SubscriptionplanscreenState extends State<Subscriptionplanscreen> {
                   _selectedPlan == index
                       ? Icons.radio_button_checked
                       : Icons.radio_button_unchecked,
-                  color: _selectedPlan == index ? Colors.pink : Colors.white,
+                  color: _selectedPlan == index
+                      ? Colors.greenAccent
+                      : Colors.white,
                 ),
                 SizedBox(width: 16.0),
 

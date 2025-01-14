@@ -122,7 +122,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                         text: "I have coupon code",
                         fontSize: 16.sp,
                         fontWeight: FontWeight.normal,
-                        color: Colors.pink,
+                        color: Colors.greenAccent,
                       ),
                     ),
 
@@ -302,7 +302,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                             accountProvider.itemDashBoardModel?.userEmail ?? "",
                         fontSize: 15.sp,
                         leadingTextColor: ColorCode.whiteColor,
-                        actionTextColor: Colors.pink,
+                        actionTextColor: Colors.greenAccent,
                         isActionUnderlined: false,
                         onActionTap: () {
                           // Handle action tap
@@ -314,7 +314,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                         actionText: "Logout Now.",
                         fontSize: 15.sp,
                         leadingTextColor: ColorCode.whiteColor,
-                        actionTextColor: Colors.pink,
+                        actionTextColor: Colors.greenAccent,
                         isActionUnderlined: true,
                         onActionTap: () {
                           _showLogoutDialog(context, (isLogout) async {
@@ -403,7 +403,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                   : ColorCode.planNormal,
               borderRadius: BorderRadius.circular(8.0),
               border: _selectedPlan == index
-                  ? Border.all(color: Colors.pink, width: 2.0)
+                  ? Border.all(color: Colors.greenAccent, width: 2.0)
                   : null,
             ),
             child: Row(
@@ -413,7 +413,9 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
                   _selectedPlan == index
                       ? Icons.radio_button_checked
                       : Icons.radio_button_unchecked,
-                  color: _selectedPlan == index ? Colors.pink : Colors.white,
+                  color: _selectedPlan == index
+                      ? Colors.greenAccent
+                      : Colors.white,
                 ),
                 SizedBox(width: 16.0),
 
@@ -481,7 +483,7 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
               : ColorCode.planNormal,
           borderRadius: BorderRadius.circular(8.0),
           border: _selectedPaymentOptions == index
-              ? Border.all(color: Colors.pink, width: 2.0)
+              ? Border.all(color: Colors.greenAccent, width: 2.0)
               : null,
         ),
         child: Row(
@@ -491,8 +493,9 @@ class _PaymentmethodscreenState extends State<Paymentmethodscreen> {
               _selectedPaymentOptions == index
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked,
-              color:
-                  _selectedPaymentOptions == index ? Colors.pink : Colors.white,
+              color: _selectedPaymentOptions == index
+                  ? Colors.greenAccent
+                  : Colors.white,
             ),
             SizedBox(width: 16.0),
 

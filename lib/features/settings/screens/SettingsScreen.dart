@@ -234,7 +234,7 @@ class _SettingsscreenState extends State<Settingsscreen> {
                 hasSwitch
                     ? Switch(
                         value: switchValue,
-                        activeColor: Colors.pink,
+                        activeColor: Colors.greenAccent,
                         onChanged: switchCallback,
                       )
                     : Container(

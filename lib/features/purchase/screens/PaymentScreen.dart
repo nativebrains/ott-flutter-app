@@ -48,7 +48,7 @@ class _PaymentscreenState extends State<Paymentscreen> {
             flexibleSpace: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.orange, Colors.pink],
+                  colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -83,7 +83,6 @@ class _PaymentscreenState extends State<Paymentscreen> {
                         // Navigator.of(context).pop();
                       },
                       textColor: ColorCode.whiteColor,
-                      hideGradient: true,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.normal,
                       padding: EdgeInsets.all(12.0),

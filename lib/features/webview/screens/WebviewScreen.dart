@@ -81,7 +81,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
           if (_isLoading)
             Center(
               child: CircularProgressIndicator(
-                color: ColorCode.mainColor,
+                color: ColorCode.greenStartColor,
               ),
             ),
         ],
@@ -128,7 +128,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.orange, Colors.pink],
+                colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -180,7 +180,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.orange, Colors.pink],
+          colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
           begin: Alignment.topLeft,
           end: Alignment.topRight,
         ),
