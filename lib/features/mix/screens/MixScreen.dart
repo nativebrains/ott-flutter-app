@@ -7,6 +7,7 @@ import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/dashboard/providers/DashboardProvider.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
+import 'package:islamforever/features/mix/models/ItemPodcastModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,9 @@ class _MixscreenState extends State<Mixscreen> {
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(builder: (context, provider, child) {
       var isMovieCase = DashboardProvider.selectedMixScreenContentType ==
-          MediaContentType.movies;
+              MediaContentType.movies ||
+          DashboardProvider.selectedMixScreenContentType ==
+              MediaContentType.podcast;
 
       List<dynamic> itemsList = _getItemsList(provider);
 
@@ -97,6 +100,8 @@ class _MixscreenState extends State<Mixscreen> {
         return provider.itemsMixSportList;
       case MediaContentType.liveTv:
         return provider.itemsMixLiveTvList;
+      case MediaContentType.podcast:
+        return provider.itemsPodcastList;
       default:
         return [];
     }
@@ -113,6 +118,7 @@ class _MixscreenState extends State<Mixscreen> {
   }
 
   List<Widget> _mapItemsToWidgets(List<dynamic> itemsList) {
+    print(itemsList.length);
     return itemsList.map((item) {
       if (item is ItemMovieModel) {
         return Customverticalcard(
@@ -147,6 +153,14 @@ class _MixscreenState extends State<Mixscreen> {
           url: item.tvImage ?? "",
           id: item.tvId,
           title: item.tvName,
+          mediaContentType: item.mediaContentType,
+        );
+      } else if (item is ItemPodcastModel) {
+        return Customverticalcard(
+          isPremium: item.isPremium ?? false,
+          url: item.audioPoster ?? "",
+          id: item.audioId,
+          title: item.audioTitle,
           mediaContentType: item.mediaContentType,
         );
       } else {

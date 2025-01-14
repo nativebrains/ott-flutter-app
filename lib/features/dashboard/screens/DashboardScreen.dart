@@ -446,6 +446,12 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 onTap();
                 Navigator.of(context).pop();
               }),
+              getCustomTile("assets/images/ic_podcast.png", "Podcast", () {
+                dashboardProvider
+                    .setSelectedMixScreenContentType(MediaContentType.podcast);
+                onTap();
+                Navigator.of(context).pop();
+              }),
               SizedBox(height: 6.sp),
               InkWell(
                 onTap: () {
@@ -485,6 +491,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
         imageUrl,
         width: 28,
         height: 28,
+        color: Colors.white,
       ),
       title: CustomText(
         text: title,

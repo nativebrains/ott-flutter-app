@@ -14,6 +14,7 @@ import '../../../constants/constants.dart';
 import '../../../core/services/ApiService.dart';
 import '../../../core/services/shared_preference.dart';
 import '../../mix/models/FilterDataModel.dart';
+import '../../mix/models/ItemPodcastModel.dart';
 import '../../mix/models/ItemShowModel.dart';
 import '../models/HomeDataModel.dart';
 
@@ -44,6 +45,8 @@ class DashboardProvider extends ChangeNotifier {
   int mixSportPageIndex = 1;
   List<ItemLiveTVModel> itemsMixLiveTvList = [];
   int mixLiveTvPageIndex = 1;
+  List<ItemPodcastModel> itemsPodcastList = [];
+  int podcastPageIndex = 1;
 
   LoginUserModel? get loginUserModel => SharedPrefs.getLoginUserData();
 
@@ -169,7 +172,7 @@ class DashboardProvider extends ChangeNotifier {
 
     try {
       final response = await apiService.post(
-          ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL,
+        ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL,
         jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
       );
 
@@ -221,6 +224,12 @@ class DashboardProvider extends ChangeNotifier {
           mixLiveTvPageIndex = 1;
         }
         fetchMixLiveTvData();
+      case MediaContentType.podcast:
+        if (reset) {
+          itemsPodcastList = [];
+          podcastPageIndex = 1;
+        }
+        fetchPodcastData();
         break;
     }
   }
@@ -375,10 +384,44 @@ class DashboardProvider extends ChangeNotifier {
     return itemsMixLiveTvList;
   }
 
+  Future<List<ItemPodcastModel>> fetchPodcastData() async {
+    _isMixScreenLoading = true;
+    notifyListeners();
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.PODCAST_FILTER_URL,
+        jsonEncode(
+          {
+            'lang_id': _filterData['lang_id'] ?? '',
+            'genre_id': _filterData['genre_id'] ?? '',
+            'filter': _filterData['filter'] ?? 'new',
+          },
+        ),
+        page: podcastPageIndex,
+      );
+
+      if (response.status == 200) {
+        for (var item in response.data['podcast']) {
+          ItemPodcastModel objItem = ItemPodcastModel.fromJson(item);
+          itemsPodcastList.add(objItem);
+        }
+        _hasMorePodcast = response.load_more;
+        podcastPageIndex++;
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchPodcastData";
+    }
+    _isMixScreenLoading = false;
+    notifyListeners();
+    return itemsPodcastList;
+  }
+
   bool _hasMoreMovies = true;
   bool _hasMoreShows = true;
   bool _hasMoreSports = true;
   bool _hasMoreLiveTv = true;
+  bool _hasMorePodcast = true;
 
   bool hasMoreData() {
     switch (_selectedMixScreenContentType) {
@@ -390,6 +433,8 @@ class DashboardProvider extends ChangeNotifier {
         return _hasMoreSports;
       case MediaContentType.liveTv:
         return _hasMoreLiveTv;
+      case MediaContentType.podcast:
+        return _hasMorePodcast;
       default:
         return false;
     }
