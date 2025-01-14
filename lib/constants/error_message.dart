@@ -69,7 +69,7 @@ SnackBar customErrorSnackBar({required String msg, Duration? duration}) {
           ),
           child: const Icon(
             Icons.error,
-            color: Colors.orange,
+            color: Colors.greenAccent,
             size: 30,
           ),
         ),
@@ -88,12 +88,12 @@ SnackBar customErrorSnackBar({required String msg, Duration? duration}) {
         ),
       ],
     ),
-    backgroundColor: Colors.orange,
+    backgroundColor: Colors.greenAccent,
   );
 }
 
 void showCustomToast(BuildContext mcontext, String msg,
-    {Color backgroudnColor = const Color(0xFFFE8706),
+    {Color backgroudnColor = const Color(0xFF2eb98e),
     Color textColor = Colors.white,
     Duration duration = const Duration(seconds: 5)}) {
   showToast(msg,
