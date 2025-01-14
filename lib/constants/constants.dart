@@ -94,6 +94,7 @@ class Constants {
   static const String SPORT_ACCESS = "sport_access";
   static const String RELATED_SPORT_ARRAY_NAME = "related_sports";
   static const String RELATED_TV_ARRAY_NAME = "related_live_tv";
+  static const String RELATED_PODCAST_NAME = "related_podcast";
 
   static const String TV_ID = "tv_id";
   static const String TV_TITLE = "tv_title";

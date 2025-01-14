@@ -2,6 +2,7 @@ import 'package:islamforever/constants/constants.dart';
 import 'package:islamforever/features/details/models/ActorModel.dart';
 import 'package:islamforever/features/mix/models/FilterDataModel.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
+import 'package:islamforever/features/mix/models/ItemPodcastModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
@@ -83,6 +84,25 @@ class GenericDetailsResponseModel {
       item: ItemLiveTVModel.fromJson(json),
       itemRelated: (json[Constants.RELATED_TV_ARRAY_NAME] as List)
           .map((e) => ItemLiveTVModel.fromJson(e))
+          .toList(),
+    );
+  }
+
+  factory GenericDetailsResponseModel.fromPodcastJson(
+      Map<String, dynamic> json) {
+    return GenericDetailsResponseModel(
+      item: ItemPodcastModel.fromJson(json),
+      itemRelated: (json[Constants.RELATED_PODCAST_NAME] as List)
+          .map((e) => ItemPodcastModel.fromJson(e))
+          .toList(),
+      actors: (json[Constants.ACTOR_ARRAY] as List)
+          .map((e) => ActorModel.fromJson(e))
+          .toList(),
+      directors: (json[Constants.DIRECTOR_ARRAY] as List)
+          .map((e) => ActorModel.fromJson(e)) // This line was incomplete
+          .toList(),
+      genres: (json[Constants.GENRE_LIST] as List)
+          .map((e) => GenreModel.fromJson(e))
           .toList(),
     );
   }

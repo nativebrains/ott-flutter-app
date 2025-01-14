@@ -28,6 +28,7 @@ class ApiEndpoints {
   static const String MOVIE_DETAILS_URL = '${API_URL}movies_details';
   static const String SPORT_DETAILS_URL = '${API_URL}sports_details';
   static const String TV_DETAILS_URL = '${API_URL}livetv_details';
+  static const String PODCAST_DETAILS_URL = '${API_URL}podcast_details';
   static const String SHOW_DETAILS_URL = '${API_URL}show_details';
   static const String EPISODE_LIST_URL = '${API_URL}episodes';
   static const String PLAN_LIST_URL = '${API_URL}subscription_plan';

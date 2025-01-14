@@ -1,6 +1,7 @@
 import 'package:islamforever/features/common/enums/MediaContentType.dart';
 import 'package:islamforever/features/details/models/GenericDetailsResponseModel.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
+import 'package:islamforever/features/mix/models/ItemPodcastModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 
@@ -131,6 +132,27 @@ class MediaItemDetails {
         server1Url: liveTv.tvUrl,
         server2Url: liveTv.tvUrl2,
         server3Url: liveTv.tvUrl3,
+      );
+    } else if (responseModel.item is ItemPodcastModel) {
+      ItemPodcastModel podcast = responseModel.item as ItemPodcastModel;
+      return MediaItemDetails(
+        id: podcast.audioId,
+        title: podcast.audioTitle,
+        image: podcast.audioImage,
+        description: podcast.description,
+        rating: podcast.contentRating,
+        releaseDate: podcast.releaseDate,
+        duration: podcast.audioDuration,
+        contentRating: podcast.contentRating,
+        views: podcast.views,
+        language: podcast.languageName,
+        inWatchList: podcast.inWatchlist,
+        upcoming: podcast.upcoming,
+        downloadEnable: podcast.downloadEnable,
+        isPremium: podcast.isPremium,
+        mediaContentType: MediaContentType.podcast,
+        poster: podcast.audioPoster,
+        shareLink: podcast.shareUrl,
       );
     } else {
       return MediaItemDetails();

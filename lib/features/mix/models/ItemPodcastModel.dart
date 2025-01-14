@@ -15,7 +15,7 @@ class ItemPodcastModel {
   String? releaseDate;
   String? audioType;
   String? audioUrl;
-  String? downloadEnable;
+  bool? downloadEnable;
   String? downloadUrl;
   int? langId;
   String? languageName;
@@ -26,7 +26,7 @@ class ItemPodcastModel {
   List<ActorModel>? actorList;
   List<ActorModel>? directorList;
   bool? inWatchlist;
-  String? upcoming;
+  bool? upcoming;
   bool isPremium = false;
   List<dynamic>? relatedPodcast;
   final MediaContentType mediaContentType = MediaContentType.podcast;
@@ -73,7 +73,7 @@ class ItemPodcastModel {
       releaseDate: json['release_date'],
       audioType: json['audio_type'],
       audioUrl: json['audio_url'],
-      downloadEnable: json['download_enable'],
+      downloadEnable: json['download_enable'] == "true",
       downloadUrl: json['download_url'],
       langId: json['lang_id'],
       languageName: json['language_name'],
@@ -96,7 +96,7 @@ class ItemPodcastModel {
               .toList()
           : null,
       inWatchlist: json['in_watchlist'],
-      upcoming: json['upcoming'],
+      upcoming: json['upcoming'] == "true",
       relatedPodcast: json['related_podcast'],
     );
   }

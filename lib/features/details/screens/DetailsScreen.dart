@@ -17,6 +17,7 @@ import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
 import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
+import 'package:islamforever/features/mix/models/ItemPodcastModel.dart';
 import 'package:islamforever/features/mix/models/ItemSeasonModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
@@ -123,12 +124,15 @@ class _DetailsscreenState extends State<Detailsscreen> {
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
       case MediaContentType.podcast:
-        //TODO: later
+        genericDetailsResponseModel = await detailsProvider
+            .fetchPodCastDetails(widget.detailsScreenArguments.id);
+        mediaItemDetails =
+            MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
     }
 
-    await detailsProvider.fetchMediaReviewsDetails(
-        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
+    // await detailsProvider.fetchMediaReviewsDetails(
+    //     mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
 
     setState(() {
       _normalLoading = false;
@@ -164,6 +168,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
                     if ([
                       MediaContentType.movies,
                       MediaContentType.tvShows,
+                      MediaContentType.podcast
                     ].contains(mediaItemDetails?.mediaContentType)) ...[
                       SizedBox(height: 24.sp),
                       getActors(),
@@ -858,6 +863,22 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   mediaContentType:
                       (items[index] as ItemSportModel).mediaContentType,
                   showTitle: true,
+                ),
+              ),
+            ),
+          if (mediaItemDetails?.mediaContentType == MediaContentType.podcast)
+            ...List.generate(
+              items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Customverticalcard(
+                  url: (items[index] as ItemPodcastModel).audioPoster ?? "",
+                  isPremium:
+                      (items[index] as ItemPodcastModel).isPremium ?? false,
+                  id: (items[index] as ItemPodcastModel).audioId,
+                  title: (items[index] as ItemPodcastModel).audioTitle,
+                  mediaContentType:
+                      (items[index] as ItemPodcastModel).mediaContentType,
                 ),
               ),
             ),
