@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:islamforever/constants/constants.dart';
 import 'package:islamforever/features/details/models/ActorDetailsModel.dart';
+import 'package:islamforever/features/details/models/ReviewModel.dart';
 import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
 
@@ -239,5 +240,32 @@ class DetailsProvider extends ChangeNotifier {
 
     notifyListeners();
     return isSuccess;
+  }
+
+  Future<List<ReviewModel>?> fetchMediaReviewsDetails(
+      int? id, String? type) async {
+    List<ReviewModel>? itemReviewsList;
+    try {
+      final response = await apiService.post(
+        ApiEndpoints.CONTENT_GET_ALL_REVIEW_URL,
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'module_id': id,
+          'type': type,
+        }),
+      );
+
+      if (response.status == 200) {
+        itemReviewsList = (response.data as List)
+            .map((e) => ReviewModel.fromJson(e))
+            .toList();
+      }
+    } catch (e) {
+      print("Error: $e");
+      _statusMessage = "Server Error in fetchDashboardData";
+    }
+
+    notifyListeners();
+    return itemReviewsList;
   }
 }

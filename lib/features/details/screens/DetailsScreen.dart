@@ -122,7 +122,14 @@ class _DetailsscreenState extends State<Detailsscreen> {
         mediaItemDetails =
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
         break;
+      case MediaContentType.podcast:
+        //TODO: later
+        break;
     }
+
+    await detailsProvider.fetchMediaReviewsDetails(
+        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
+
     setState(() {
       _normalLoading = false;
       _isLoading = false;
@@ -1103,22 +1110,24 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getAddReviewSection() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
-      child: CustomElevatedButton(
-        label: 'Add Review',
-        onPressed: () {
-          _showRateExpereinceDialog(context);
-        },
-        textColor: ColorCode.whiteColor,
-        fontSize: 14.sp,
-        fontWeight: FontWeight.bold,
-        padding: EdgeInsets.all(12.0),
-        elevation: 3.sp,
-        leadingIcon: Icon(
-          Icons.chat,
-          color: Colors.white,
+      padding: const EdgeInsets.only(left: 20.0, bottom: 12.0, top: 12),
+      child: SizedBox(
+        width: 170.sp, // Set a specific width
+        child: CustomElevatedButton(
+          label: 'Add Review',
+          onPressed: () {
+            _showRateExpereinceDialog(context);
+          },
+          textColor: ColorCode.whiteColor,
+          fontSize: 13.sp,
+          fontWeight: FontWeight.bold,
+          padding: EdgeInsets.all(8.0),
+          elevation: 3.sp,
+          leadingIcon: Icon(
+            Icons.chat,
+            color: Colors.white,
+          ),
         ),
-        width: context.screenWidth / 2,
       ),
     );
   }
