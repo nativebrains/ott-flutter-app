@@ -324,7 +324,8 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(16),
-                          backgroundColor: Colors.pink, // Filled button color
+                          backgroundColor:
+                              Colors.greenAccent, // Filled button color
                           foregroundColor: Colors.white, // White text
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -332,7 +333,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
                         ),
                         child: CustomText(
                           text: 'Apply Filters',
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -355,7 +356,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
           onChanged: (bool? value) {
             onChanged(value!);
           },
-          activeColor: Colors.pink,
+          activeColor: Colors.greenAccent,
         ),
         Flexible(
           child: CustomText(
@@ -378,7 +379,7 @@ class _CustomfilterbottomsheetState extends State<Customfilterbottomsheet> {
           value: title,
           groupValue: selectedValue,
           onChanged: onChanged,
-          activeColor: Colors.pink,
+          activeColor: Colors.greenAccent,
         ),
         Flexible(
           child: CustomText(

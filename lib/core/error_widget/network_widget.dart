@@ -26,7 +26,7 @@ class NetWorkErrorWidget extends StatelessWidget {
           "\n$error",
           style: TextStyle(
             fontSize: 18.sp,
-            color: Colors.pink,
+            color: Colors.greenAccent,
           ),
         ),
         SizedBox(

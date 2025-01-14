@@ -103,7 +103,10 @@ class _ProfilescreenState extends State<Profilescreen> {
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.pink],
+                      colors: [
+                        ColorCode.greenStartColor,
+                        ColorCode.greenEndColor
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -187,7 +190,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                           alignment: Alignment.bottomCenter,
                           child: Icon(
                             Icons.add_photo_alternate,
-                            color: ColorCode.themeOrangePinkEnd,
+                            color: ColorCode.greenStartColor,
                           ),
                         ),
                       ],

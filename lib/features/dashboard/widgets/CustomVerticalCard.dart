@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
 import '../../../constants/routes_names.dart';
 import '../../../widgets/extra/rounded_network_image.dart';
@@ -65,8 +66,8 @@ class Customverticalcard extends StatelessWidget {
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: [
-                            Colors.orange,
-                            Colors.pink,
+                            ColorCode.greenStartColor,
+                            ColorCode.greenEndColor
                           ],
                         ),
                       ),

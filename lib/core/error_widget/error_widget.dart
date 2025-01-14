@@ -24,7 +24,7 @@ class CustomError extends StatelessWidget {
                 : 'Server Error',
             textAlign: TextAlign.center,
             style: const TextStyle(
-              color: kDebugMode ? Colors.pink : Colors.black,
+              color: kDebugMode ? Colors.greenAccent : Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 21,
             ),

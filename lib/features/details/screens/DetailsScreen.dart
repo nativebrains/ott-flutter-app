@@ -251,8 +251,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                         colors: [
-                          Colors.orange,
-                          Colors.pink,
+                          ColorCode.greenStartColor,
+                          ColorCode.greenEndColor
                         ],
                       ),
                     ),
@@ -295,8 +295,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
               'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
               colors: const [
-                Colors.orange,
-                Colors.pink,
+                ColorCode.greenStartColor,
+                ColorCode.greenEndColor
               ],
             ),
           ),
@@ -417,8 +417,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
                     colors: [
-                      Colors.orange,
-                      Colors.pink,
+                      ColorCode.greenStartColor,
+                      ColorCode.greenEndColor
                     ],
                   ),
                 ),
@@ -485,7 +485,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             width: 10,
             height: 10,
             decoration: BoxDecoration(
-              color: Colors.pink,
+              color: Colors.greenAccent,
               shape: BoxShape.circle,
             ),
           ),
@@ -598,7 +598,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       margin: EdgeInsets.only(right: 12.sp),
       decoration: BoxDecoration(
-        color: Colors.pink,
+        color: Colors.greenAccent,
         borderRadius: BorderRadius.circular(10),
       ),
       child: CustomText(
@@ -624,10 +624,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
               height: 20,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                  colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -676,10 +673,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
               height: 20,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                  colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -774,10 +768,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
           height: 20,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Colors.orange,
-                Colors.pink,
-              ],
+              colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -899,10 +890,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
               height: 20,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                  colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -951,7 +939,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
                             borderRadius: BorderRadius.circular(50),
                             gradient: LinearGradient(
                               colors: _selectedSeasonIndex == index
-                                  ? [Colors.orange, Colors.pink]
+                                  ? [
+                                      ColorCode.greenStartColor,
+                                      ColorCode.greenEndColor
+                                    ]
                                   : [
                                       ColorCode.cardInfoBg,
                                       ColorCode.cardInfoBg
@@ -999,10 +990,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
               height: 20,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                  colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -1072,7 +1060,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             padding: const EdgeInsets.all(12.0),
             child: Center(
                 child: CircularProgressIndicator(
-              color: ColorCode.themeOrangePinkStart,
+              color: ColorCode.greenStartColor,
             )),
           )
       ],

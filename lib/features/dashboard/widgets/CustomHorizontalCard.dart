@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/widgets/extra/rounded_network_image.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
 import '../../../constants/routes_names.dart';
 import '../../common/enums/MediaContentType.dart';
@@ -73,8 +74,8 @@ class Customhorizontalcard extends StatelessWidget {
                             shape: BoxShape.circle,
                             gradient: LinearGradient(
                               colors: [
-                                Colors.orange,
-                                Colors.pink,
+                                ColorCode.greenStartColor,
+                                ColorCode.greenEndColor
                               ],
                             ),
                           ),

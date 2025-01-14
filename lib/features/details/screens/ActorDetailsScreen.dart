@@ -86,7 +86,10 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
               flexibleSpace: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.orange, Colors.pink],
+                    colors: [
+                      ColorCode.greenStartColor,
+                      ColorCode.greenEndColor
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

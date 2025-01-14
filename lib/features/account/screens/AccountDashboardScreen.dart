@@ -55,7 +55,10 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.pink],
+                      colors: [
+                        ColorCode.greenStartColor,
+                        ColorCode.greenEndColor
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -609,7 +612,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                     SizedBox(width: 24.sp),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.pink, width: 2),
+                        border: Border.all(color: Colors.greenAccent, width: 2),
                         shape: BoxShape.circle,
                       ),
                       child: RoundedNetworkImage(

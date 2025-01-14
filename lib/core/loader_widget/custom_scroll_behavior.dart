@@ -8,7 +8,7 @@ class CustomScrollBehavior extends ScrollBehavior {
     if (axisDirection == AxisDirection.down ||
         axisDirection == AxisDirection.up) {
       return GlowingOverscrollIndicator(
-        color: Colors.pink,
+        color: Colors.greenAccent,
         axisDirection: axisDirection,
         child: child,
       );
