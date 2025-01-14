@@ -67,7 +67,10 @@ class _SearchscreenState extends State<Searchscreen> {
               flexibleSpace: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.orange, Colors.pink],
+                    colors: [
+                      ColorCode.greenStartColor,
+                      ColorCode.greenEndColor
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -90,14 +93,16 @@ class _SearchscreenState extends State<Searchscreen> {
         }, // SliverList for your content
         body: Stack(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (searchResults.isEmpty && !_isLoading)
-                  getNoItemsFound()
-                else
-                  getItemsList(),
-              ],
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (searchResults.isEmpty && !_isLoading)
+                    getNoItemsFound()
+                  else
+                    getItemsList(),
+                ],
+              ),
             ),
             if (_isLoading) const LoaderWidget(),
           ],

@@ -25,7 +25,7 @@ class LoaderWidget extends StatelessWidget {
           ),
         Center(
           child: LoadingAnimationWidget.hexagonDots(
-            color: ColorCode.themeOrangePinkStart,
+            color: ColorCode.greenStartColor,
             size: 70.sp,
           ),
         )

@@ -131,7 +131,10 @@ class _SeeallscreenState extends State<Seeallscreen> {
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.pink],
+                      colors: [
+                        ColorCode.greenStartColor,
+                        ColorCode.greenEndColor
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),

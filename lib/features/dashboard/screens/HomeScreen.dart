@@ -111,8 +111,8 @@ class _HomescreenState extends State<Homescreen> {
                     style:
                         TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
                     colors: [
-                      Colors.orange,
-                      Colors.pink,
+                      ColorCode.greenStartColor,
+                      ColorCode.greenEndColor
                     ],
                   ),
                 ),
@@ -169,8 +169,8 @@ class _HomescreenState extends State<Homescreen> {
                     style:
                         TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w900),
                     colors: [
-                      Colors.orange,
-                      Colors.pink,
+                      ColorCode.greenStartColor,
+                      ColorCode.greenEndColor
                     ],
                   ),
                 ),

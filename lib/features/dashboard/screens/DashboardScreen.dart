@@ -98,7 +98,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 2,
-            backgroundColor: ColorCode.themeOrangePinkStart,
+            backgroundColor: ColorCode.greenStartColor,
             textColor: Colors.white,
             fontSize: 15.sp,
           );
@@ -122,7 +122,10 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.orange, Colors.pink],
+                      colors: [
+                        ColorCode.greenStartColor,
+                        ColorCode.greenEndColor
+                      ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -191,7 +194,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           },
           body: RefreshIndicator(
             color: ColorCode.whiteColor,
-            backgroundColor: Colors.orange,
+            backgroundColor: Colors.greenAccent,
             onRefresh: _refreshData,
             child: _screens[_selectedIndex],
           ),
@@ -201,7 +204,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
-              colors: [Colors.orange, Colors.pink],
+              colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
               begin: Alignment.topLeft,
               end: Alignment.topRight,
             ),
@@ -288,11 +291,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                   image: const AssetImage('assets/images/ic_home.png'),
                   width: 28,
                   height: 28,
-                  color: _selectedIndex == 0 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 0 ? Colors.greenAccent : Colors.grey,
                 ),
                 CustomText(
                   text: 'Home',
-                  color: _selectedIndex == 0 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 0 ? Colors.greenAccent : Colors.grey,
                   fontSize: 14.sp,
                 ),
               ],
@@ -311,11 +314,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                   image: const AssetImage('assets/images/ic_watchlist.png'),
                   width: 28,
                   height: 28,
-                  color: _selectedIndex == 1 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 1 ? Colors.greenAccent : Colors.grey,
                 ),
                 CustomText(
                   text: 'Watchlist',
-                  color: _selectedIndex == 1 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 1 ? Colors.greenAccent : Colors.grey,
                   fontSize: 14.sp,
                 ),
               ],
@@ -333,10 +336,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.pink,
-                  ],
+                  colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                 ),
               ),
               child: Padding(
@@ -362,11 +362,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 Icon(
                   Icons.account_circle_rounded,
                   size: 28,
-                  color: _selectedIndex == 3 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 3 ? Colors.greenAccent : Colors.grey,
                 ),
                 CustomText(
                   text: 'Account',
-                  color: _selectedIndex == 3 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 3 ? Colors.greenAccent : Colors.grey,
                   fontSize: 14.sp,
                 ),
               ],
@@ -384,11 +384,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 Icon(
                   Icons.settings_outlined,
                   size: 28,
-                  color: _selectedIndex == 4 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 4 ? Colors.greenAccent : Colors.grey,
                 ),
                 CustomText(
                   text: 'Settings',
-                  color: _selectedIndex == 4 ? Colors.pink : Colors.grey,
+                  color: _selectedIndex == 4 ? Colors.greenAccent : Colors.grey,
                   fontSize: 14.sp,
                 ),
               ],
@@ -475,8 +475,8 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
                       colors: [
-                        Colors.orange,
-                        Colors.pink,
+                        ColorCode.greenStartColor,
+                        ColorCode.greenEndColor
                       ],
                     ),
                   ),
