@@ -50,7 +50,7 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.orange, Colors.pink],
+                colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -70,7 +70,7 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
               Navigator.of(context).pop();
             },
           ),
-          centerTitle: true,
+          centerTitle: false,
         ),
       ),
       body: Stack(

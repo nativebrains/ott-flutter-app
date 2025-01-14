@@ -80,7 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       obscureText: _obscureText,
       onChanged: widget.onChanged,
       textInputAction: widget.textInputAction,
-      cursorColor: Colors.pink,
+      cursorColor: Colors.greenAccent,
       focusNode: _focusNode,
       minLines: widget.minLines,
       textAlign: widget.textAlign ?? TextAlign.left, // Align text to the right
@@ -105,7 +105,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 builder: (BuildContext context) {
                   return IconTheme(
                     data: IconThemeData(
-                        color: _focusNode.hasFocus ? Colors.pink : Colors.grey),
+                        color: _focusNode.hasFocus
+                            ? Colors.greenAccent
+                            : Colors.grey),
                     child: widget.prefixIcon!,
                   );
                 },
@@ -115,7 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ? IconButton(
                 icon: Icon(
                   _obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: _focusNode.hasFocus ? Colors.pink : Colors.grey,
+                  color: _focusNode.hasFocus ? Colors.greenAccent : Colors.grey,
                 ),
                 onPressed: () {
                   setState(() {
