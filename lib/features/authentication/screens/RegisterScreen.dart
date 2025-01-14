@@ -197,7 +197,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                             height: 22,
                             decoration: BoxDecoration(
                               color: _selectedPrivacyAndTerms
-                                  ? Colors.pink
+                                  ? Colors.greenAccent
                                   : Colors.transparent,
                               border: Border.all(
                                 color: Colors.white,
@@ -230,7 +230,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                                 actionText: "Terms",
                                 fontSize: 15.sp,
                                 leadingTextColor: ColorCode.whiteColor,
-                                actionTextColor: Colors.pink,
+                                actionTextColor: Colors.greenAccent,
                                 isActionUnderlined: true,
                                 onActionTap: () {
                                   Navigator.pushNamed(
@@ -244,7 +244,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                                 actionText: "Privacy Policy",
                                 fontSize: 15.sp,
                                 leadingTextColor: ColorCode.whiteColor,
-                                actionTextColor: Colors.pink,
+                                actionTextColor: Colors.greenAccent,
                                 isActionUnderlined: true,
                                 onActionTap: () {
                                   Navigator.pushNamed(
@@ -300,9 +300,9 @@ class _RegisterscreenState extends State<Registerscreen> {
                           'Login',
                           style: TextStyle(
                               fontSize: 16.sp, fontWeight: FontWeight.bold),
-                          colors: [
-                            Colors.orange,
-                            Colors.pink,
+                          colors: const [
+                            ColorCode.greenStartColor,
+                            ColorCode.greenEndColor
                           ],
                         ),
                       ),
@@ -318,8 +318,8 @@ class _RegisterscreenState extends State<Registerscreen> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Colors.orange,
-                            Colors.pink
+                            ColorCode.greenStartColor,
+                            ColorCode.greenEndColor
                           ], // Start and end colors of the gradient
                           begin: Alignment.centerLeft, // Start of the gradient
                           end: Alignment.centerRight, // End of the gradient

@@ -27,7 +27,7 @@ class CustomRadioButtonToggle extends StatelessWidget {
             height: 22,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: value ? Colors.pink : Colors.white,
+              color: value ? Colors.greenAccent : Colors.white,
               border: Border.all(
                 color: Colors.white,
                 width: 2,
@@ -40,7 +40,7 @@ class CustomRadioButtonToggle extends StatelessWidget {
                       height: 12,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.pink,
+                        color: Colors.greenAccent,
                       ),
                     ),
                   )

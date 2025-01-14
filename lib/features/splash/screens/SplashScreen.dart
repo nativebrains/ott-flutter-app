@@ -67,10 +67,14 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Padding(
                 padding: EdgeInsets.only(right: 6.sp),
-                child: Image.asset(
-                  AssetImages.dawateIslamiWhiteLogo,
-                  width: 160.sp,
-                  height: 160.sp,
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(20.sp), // Adjust the corner radius
+                  child: Image.asset(
+                    AssetImages.dawateIslamiWhiteLogo,
+                    width: 160.sp,
+                    height: 160.sp,
+                  ),
                 ),
               ),
               SizedBox(height: 24.sp),
@@ -82,15 +86,15 @@ class _SplashScreenState extends State<SplashScreen> {
                   fontSize: 38.sp,
                 ),
                 colors: [
-                  Colors.orange,
-                  Colors.pink,
+                  ColorCode.greenStartColor,
+                  ColorCode.greenStartColor,
                 ],
               ),
               CustomText(
                 text: "Islam For Ever",
-                fontSize: 20.sp,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
+                color: ColorCode.greenStartColor,
               ),
               SizedBox(height: 70),
             ],

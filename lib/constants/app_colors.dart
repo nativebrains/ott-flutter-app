@@ -110,4 +110,7 @@ class ColorCode {
   static const Color rippleColor = Color(0xB3FFFFFF);
 
   static const Color inputBgColor = Color(0xFF363d51);
+
+  static const Color greenStartColor = Color(0xFF2eb98e);
+  static const Color greenEndColor = Color(0xFF2a785d);
 }

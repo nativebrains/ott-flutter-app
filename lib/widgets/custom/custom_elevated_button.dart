@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradient_elevated_button/gradient_elevated_button.dart';
 
+import '../../constants/app_colors.dart';
+
 class CustomElevatedButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
@@ -24,14 +26,14 @@ class CustomElevatedButton extends StatelessWidget {
     required this.onPressed,
     this.width, // Initialize the width property
     this.textColor = Colors.white,
-    this.backgroundColor = Colors.pink,
+    this.backgroundColor = Colors.greenAccent,
     this.fontSize = 16.0,
     this.fontWeight = FontWeight.normal,
     this.padding = const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
     this.margin = const EdgeInsets.all(0.0),
     this.elevation = 2.0,
     this.borderRadius = 8.0,
-    this.borderColor = Colors.pink,
+    this.borderColor = Colors.greenAccent,
     this.borderWidth = 0.0,
     this.leadingIcon, // Initialize the leadingIcon property
     this.hideGradient = false,
@@ -48,7 +50,7 @@ class CustomElevatedButton extends StatelessWidget {
           gradient: LinearGradient(
             colors: hideGradient
                 ? [backgroundColor, backgroundColor]
-                : [Colors.orange, Colors.pink],
+                : [ColorCode.greenStartColor, ColorCode.greenEndColor],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
