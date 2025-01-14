@@ -72,7 +72,7 @@ class ApiEndpoints {
   static const String SHOW_FILTER_URL = '${API_URL}shows_filter';
   static const String SPORT_FILTER_URL = '${API_URL}sports_filter';
   static const String TV_FILTER_URL = '${API_URL}livetv_filter';
-  static const String PODCAST_FILTER_URL = '${API_URL}podcast';
+  static const String PODCAST_FILTER_URL = '${API_URL}podcast_filter';
 
   static const String CONTENT_ADD_REVIEW_URL = '${API_URL}add-review';
   static const String CONTENT_GET_ALL_REVIEW_URL = '${API_URL}get-reviews';

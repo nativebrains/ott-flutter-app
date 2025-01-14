@@ -401,7 +401,7 @@ class DashboardProvider extends ChangeNotifier {
       );
 
       if (response.status == 200) {
-        for (var item in response.data['podcast']) {
+        for (var item in response.data) {
           ItemPodcastModel objItem = ItemPodcastModel.fromJson(item);
           itemsPodcastList.add(objItem);
         }

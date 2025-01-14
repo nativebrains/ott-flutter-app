@@ -60,7 +60,7 @@ class Customverticalcard extends StatelessWidget {
               right: 0,
               child: isPremium // Replace with your boolean variable
                   ? Container(
-                      margin: EdgeInsets.all(6.sp),
+                      margin: EdgeInsets.all(8.sp),
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
