@@ -65,10 +65,15 @@ class RoundedNetworkImage extends StatelessWidget {
                           color: Colors.grey[300],
                         ),
                       )
-                    : Image.asset(
-                        AssetImages.dawateIslamiLogo,
-                        width: 80.sp,
-                        height: 80.sp,
+                    : Opacity(
+                        opacity:
+                            0.5, // Adjust this value to change the transparency level (0.0 - 1.0)
+                        child: Image.asset(
+                          AssetImages.dawateIslamiLogo,
+                          width: width,
+                          height: height,
+                          fit: fit,
+                        ),
                       );
               },
               loadingBuilder: (BuildContext context, Widget child,

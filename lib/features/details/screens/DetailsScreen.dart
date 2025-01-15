@@ -35,6 +35,7 @@ import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_rate_experience_dialog.dart';
 import '../../../widgets/custom/custom_review_dialog.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../../widgets/extra/rounded_network_image.dart';
 import '../models/ReviewModel.dart';
 
 class DetailsScreenArguments {
@@ -151,6 +152,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return Scaffold(
       backgroundColor: ColorCode.bgColor,
       body: SafeArea(
+        top: false, // Remove the top padding
         child: Stack(
           children: [
             if (!_isLoading)
@@ -197,15 +199,15 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getTopSection() {
     return SizedBox(
-      height: 240.sp,
+      height: 300.sp,
       child: Stack(
         children: [
           // Background image
-          Image.network(
-            mediaItemDetails?.image ?? "",
+          RoundedNetworkImage(
+            imageUrl: mediaItemDetails?.image ?? "",
             fit: BoxFit.cover,
             width: double.infinity, // Set the width to infinity
-            height: 235.sp,
+            height: 295.sp,
           ),
 
           // Gradient overlay
@@ -229,8 +231,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
           // Back icon
           Positioned(
-            top: 5,
-            left: 5,
+            top: 35,
+            left: 10,
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
