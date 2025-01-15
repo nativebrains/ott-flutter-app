@@ -33,6 +33,7 @@ import '../../../constants/routes_names.dart';
 import '../../../utils/share_utils.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_rate_experience_dialog.dart';
+import '../../../widgets/custom/custom_review_dialog.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../models/ReviewModel.dart';
 
@@ -67,7 +68,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   bool _episodesLoading = false;
   late GenericDetailsResponseModel? genericDetailsResponseModel;
   late MediaItemDetails? mediaItemDetails;
-  List<ReviewModel>? reviewsList = [];
+  List<ReviewModel> reviewsList = [];
   bool _isLoading = false;
   bool _normalLoading = false;
   @override
@@ -135,7 +136,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
     }
 
     reviewsList = await detailsProvider.fetchMediaReviewsDetails(
-        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
+            mediaItemDetails?.id,
+            mediaItemDetails?.mediaContentType.actualValue) ??
+        [];
 
     setState(() {
       _normalLoading = false;
@@ -1089,21 +1092,27 @@ class _DetailsscreenState extends State<Detailsscreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            RatingBar(
-              initialRating: calculateAverageRating(reviewsList),
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: 5,
-              itemSize: 28.sp,
-              ignoreGestures: true,
-              ratingWidget: RatingWidget(
-                full: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
-                half: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
-                empty: Icon(Icons.star_rounded, color: Colors.grey.shade400),
-              ),
-              onRatingUpdate: (rating) {
-                print(rating);
+            InkWell(
+              onTap: () {
+                if (reviewsList.isNotEmpty)
+                  _showReviewDialog(context, reviewsList);
               },
+              child: RatingBar(
+                initialRating: calculateAverageRating(reviewsList),
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemSize: 28.sp,
+                ignoreGestures: true,
+                ratingWidget: RatingWidget(
+                  full: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
+                  half: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
+                  empty: Icon(Icons.star_rounded, color: Colors.grey.shade400),
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 4.0),
@@ -1118,6 +1127,16 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ],
         ),
       ],
+    );
+  }
+
+  void _showReviewDialog(BuildContext context, List<ReviewModel> reviewsList) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (BuildContext context) {
+        return CustomReviewDialog(reviewsList);
+      },
     );
   }
 

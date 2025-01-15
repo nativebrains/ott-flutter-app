@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamforever/widgets/custom/custom_review_item.dart';
 import 'package:islamforever/widgets/custom/custom_text.dart';
 
 import '../../constants/app_colors.dart';
+import '../../features/details/models/ReviewModel.dart';
 
 class CustomReviewDialog extends StatelessWidget {
-  final List<String> reviewRatingList;
+  final List<ReviewModel> reviewRatingList;
 
   CustomReviewDialog(
     this.reviewRatingList,
@@ -44,14 +46,17 @@ class CustomReviewDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.sp),
-                child: CustomText(
-                  text: "Review",
-                  fontSize: 21.sp,
-                  textAlign: TextAlign.left,
-                  color: ColorCode.blackColor,
-                  fontWeight: FontWeight.bold,
+              Center(
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.sp),
+                  child: CustomText(
+                    text: "Reviews",
+                    fontSize: 21.sp,
+                    textAlign: TextAlign.center,
+                    color: ColorCode.blackColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               ..._buildReviewList(),
@@ -67,10 +72,8 @@ class CustomReviewDialog extends StatelessWidget {
 
     for (var i = 0; i < reviewRatingList.length; i++) {
       widgets.add(Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 6.sp),
-        child: Container(
-          child: Text(reviewRatingList[i]),
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 6.sp, vertical: 6.sp),
+        child: CustomReviewItem(reviewRatingModel: reviewRatingList[i]),
       ));
 
       if (i < reviewRatingList.length - 1) {

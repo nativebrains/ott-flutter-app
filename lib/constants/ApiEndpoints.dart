@@ -3,7 +3,7 @@ class ApiEndpoints {
   static const String SERVER_URL = "https://ott-app.nb-stage.one";
 
   // Base URLs
-  static const String IMAGE_PATH = '$SERVER_URL/images/';
+  static const String IMAGE_PATH = '$SERVER_URL/upload/';
   static const String API_URL = '/api/v1/';
 
   // Array Name
