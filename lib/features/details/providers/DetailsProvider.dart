@@ -253,8 +253,8 @@ class DetailsProvider extends ChangeNotifier {
       );
 
       if (response.status == 200) {
-        final jsonData = response.data;
-        _statusMessage = jsonData[0]['msg'];
+        final jsonData = response.message;
+        _statusMessage = jsonData;
         isSuccess = true;
       }
     } catch (e) {

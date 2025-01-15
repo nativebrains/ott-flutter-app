@@ -5,14 +5,17 @@ class ApiResponseModel {
   final String? currency_code;
   final dynamic data;
   final dynamic reviews;
+  final String? message;
 
-  ApiResponseModel(
-      {required this.status,
-      this.data,
-      this.currency_code,
-      this.load_more = false,
-      this.user_plan_status = false,
-      this.reviews});
+  ApiResponseModel({
+    required this.status,
+    this.data,
+    this.currency_code,
+    this.load_more = false,
+    this.user_plan_status = false,
+    this.reviews,
+    this.message,
+  });
 
   factory ApiResponseModel.fromJson(
     Map<String, dynamic> json,
@@ -25,6 +28,7 @@ class ApiResponseModel {
       user_plan_status: json['user_plan_status'] ?? false,
       data: json['VIDEO_STREAMING_APP'], // `data` can be dynamic
       reviews: json['reviews'],
+      message: json['message'],
     );
   }
 }

@@ -1164,7 +1164,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   void uploadUserReview(int rating, String review) async {
     final isSuccess = await detailsProvider.submitReviewRating(rating, review,
-        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.name);
+        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
 
     showCustomToast(
       context,
