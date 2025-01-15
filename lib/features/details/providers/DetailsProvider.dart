@@ -280,9 +280,10 @@ class DetailsProvider extends ChangeNotifier {
       );
 
       if (response.status == 200) {
-        itemReviewsList = (response.data as List)
+        itemReviewsList = (response.reviews as List)
             .map((e) => ReviewModel.fromJson(e))
             .toList();
+        print(itemReviewsList.length);
       }
     } catch (e) {
       print("Error: $e");

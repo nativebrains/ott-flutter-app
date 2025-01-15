@@ -23,6 +23,7 @@ import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:islamforever/features/settings/screens/AboutScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
+import 'package:islamforever/utils/extras.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -33,6 +34,7 @@ import '../../../utils/share_utils.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_rate_experience_dialog.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../models/ReviewModel.dart';
 
 class DetailsScreenArguments {
   final String id;
@@ -65,6 +67,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   bool _episodesLoading = false;
   late GenericDetailsResponseModel? genericDetailsResponseModel;
   late MediaItemDetails? mediaItemDetails;
+  List<ReviewModel>? reviewsList = [];
   bool _isLoading = false;
   bool _normalLoading = false;
   @override
@@ -131,8 +134,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
         break;
     }
 
-    // await detailsProvider.fetchMediaReviewsDetails(
-    //     mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
+    reviewsList = await detailsProvider.fetchMediaReviewsDetails(
+        mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
 
     setState(() {
       _normalLoading = false;
@@ -1087,7 +1090,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             RatingBar(
-              initialRating: 1,
+              initialRating: calculateAverageRating(reviewsList),
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
@@ -1105,7 +1108,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
             Padding(
               padding: const EdgeInsets.only(right: 4.0),
               child: CustomText(
-                text: "4.0 Stars | 3 Reviews",
+                text:
+                    "${calculateAverageRating(reviewsList)} Stars | ${formatReviewCount(reviewsList)}",
                 color: Colors.white,
                 fontSize: 11.sp,
                 fontWeight: FontWeight.normal,

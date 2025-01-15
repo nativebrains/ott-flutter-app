@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../features/details/models/ReviewModel.dart';
+
 String camelCase(String input) {
   // Replace underscores with spaces
   String textWithSpaces = input.replaceAll('_', ' ');
@@ -157,4 +159,32 @@ bool isAndroid() {
 
 bool isIOS() {
   return Platform.isIOS;
+}
+
+double calculateAverageRating(List<ReviewModel>? reviewsList) {
+  if (reviewsList == null || reviewsList.isEmpty) {
+    return 0.0;
+  }
+
+  double totalRating = 0;
+  for (ReviewModel review in reviewsList) {
+    totalRating += review.rating ?? 0; // Add 0 if review.rating is null
+  }
+
+  return totalRating / reviewsList.length;
+}
+
+String formatReviewCount(List<ReviewModel>? reviewsList) {
+  if (reviewsList == null || reviewsList.isEmpty) {
+    return 'No Reviews';
+  }
+
+  int count = reviewsList.length;
+  if (count < 1000) {
+    return '$count Reviews';
+  } else if (count < 1000000) {
+    return '${(count / 1000).toStringAsFixed(1)}K Reviews';
+  } else {
+    return '${(count / 1000000).toStringAsFixed(1)}M Reviews';
+  }
 }
