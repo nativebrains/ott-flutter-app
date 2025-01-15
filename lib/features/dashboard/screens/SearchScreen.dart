@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
+import 'package:islamforever/features/mix/models/ItemPodcastModel.dart';
 import 'package:islamforever/features/mix/models/ItemShowModel.dart';
 import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class _SearchscreenState extends State<Searchscreen> {
   List<Widget> moviesList = [];
   List<Widget> sportsList = [];
   List<Widget> liveTvList = [];
+  List<Widget> podcastList = [];
   var _isLoading = false;
 
   @override
@@ -250,6 +252,35 @@ class _SearchscreenState extends State<Searchscreen> {
     );
   }
 
+  Widget getPodcastList(List<Widget> podcastList) {
+    if (podcastList.isEmpty) return Container();
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 12.sp),
+          Text(
+            "Podcast",
+            style: GoogleFonts.poppins(
+              color: ColorCode.whiteColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 18.sp,
+            ),
+          ),
+          SizedBox(height: 12.sp),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: podcastList,
+            ),
+          ),
+          SizedBox(height: 12.sp),
+        ],
+      ),
+    );
+  }
+
   Widget getItemsList() {
     for (var item in searchResults) {
       if (item is ItemShowModel) {
@@ -307,6 +338,19 @@ class _SearchscreenState extends State<Searchscreen> {
             ),
           ),
         );
+      } else if (item is ItemPodcastModel) {
+        podcastList.add(
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Customverticalcard(
+              isPremium: item.isPremium ?? false,
+              url: item.audioPoster ?? "",
+              id: item.audioId,
+              title: item.audioTitle,
+              mediaContentType: item.mediaContentType,
+            ),
+          ),
+        );
       }
     }
 
@@ -317,6 +361,7 @@ class _SearchscreenState extends State<Searchscreen> {
         getMoviesList(moviesList),
         getSportsList(sportsList),
         getLiveTvList(liveTvList),
+        getPodcastList(podcastList),
       ],
     );
   }
