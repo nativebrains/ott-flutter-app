@@ -106,10 +106,10 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
       player: YoutubePlayer(
         controller: _youtubeController,
         showVideoProgressIndicator: true,
-        progressIndicatorColor: Colors.greenAccent,
+        progressIndicatorColor: Colors.amber,
         progressColors: const ProgressBarColors(
-          playedColor: Colors.greenAccent,
-          handleColor: Colors.greenAccent,
+          playedColor: Colors.amber,
+          handleColor: Colors.amberAccent,
         ),
         bottomActions: [
           SizedBox(
