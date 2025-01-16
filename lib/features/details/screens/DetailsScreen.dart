@@ -14,6 +14,7 @@ import 'package:islamforever/features/details/models/GenericDetailsResponseModel
 import 'package:islamforever/features/details/models/MediaItemDetails.dart';
 import 'package:islamforever/features/details/providers/DetailsProvider.dart';
 import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
+import 'package:islamforever/features/details/screens/VideroPlayerScreen.dart';
 import 'package:islamforever/features/mix/models/ItemEpisodeModel.dart';
 import 'package:islamforever/features/mix/models/ItemLiveTvModel.dart';
 import 'package:islamforever/features/mix/models/ItemMovieModel.dart';
@@ -37,6 +38,7 @@ import '../../../widgets/custom/custom_review_dialog.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../../widgets/extra/rounded_network_image.dart';
 import '../models/ReviewModel.dart';
+import '../utils/PlayerUtils.dart';
 
 class DetailsScreenArguments {
   final String id;
@@ -511,7 +513,32 @@ class _DetailsscreenState extends State<Detailsscreen> {
   Widget getTrailerWidget() {
     return InkWell(
       onTap: () {
-        // TODO: link to trailer
+        String streamUrl = mediaItemDetails?.trailer ?? "";
+        print(streamUrl);
+        if (streamUrl.isEmpty) return;
+        VideoPlayerType videoPlayerType;
+        String? videoId;
+
+        if (PlayerUtil.isYoutubeUrl(streamUrl)) {
+          videoPlayerType = VideoPlayerType.Youtube;
+          videoId = PlayerUtil.getVideoIdFromYoutubeUrl(streamUrl);
+        } else if (PlayerUtil.isVimeoUrl(streamUrl)) {
+          videoPlayerType = VideoPlayerType.Vimeo;
+          videoId = PlayerUtil.getVideoIdFromVimeoUrl(streamUrl);
+        } else {
+          videoPlayerType = VideoPlayerType.Exo;
+        }
+
+        Navigator.pushNamed(
+          context,
+          RouteConstantName.videoPlayerScreen,
+          arguments: VideoPlayerScreenArguments(
+            id: mediaItemDetails?.id,
+            mediaContentType: mediaItemDetails!.mediaContentType,
+            videoPlayerType: videoPlayerType,
+            videoId: videoId,
+          ),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

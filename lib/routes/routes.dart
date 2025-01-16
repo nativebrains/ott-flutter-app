@@ -12,6 +12,7 @@ import 'package:islamforever/features/dashboard/screens/HomeScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SeeAllScreen.dart';
 import 'package:islamforever/features/details/screens/ActorDetailsScreen.dart';
 import 'package:islamforever/features/details/screens/DetailsScreen.dart';
+import 'package:islamforever/features/details/screens/VideroPlayerScreen.dart';
 import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/dashboard/screens/SearchScreen.dart';
 import 'package:islamforever/features/purchase/screens/PaymentMethodScreen.dart';
@@ -208,6 +209,16 @@ class RouterGenerator {
           ),
           settings: const RouteSettings(
             name: RouteConstantName.actorDetailsScreen,
+          ),
+        );
+      case RouteConstantName.videoPlayerScreen:
+        final args = settings.arguments as VideoPlayerScreenArguments;
+        return MaterialPageRoute(
+          builder: (context) => VideoPlayerScreen(
+            videoPlayerScreenArguments: args,
+          ),
+          settings: const RouteSettings(
+            name: RouteConstantName.videoPlayerScreen,
           ),
         );
       default:
