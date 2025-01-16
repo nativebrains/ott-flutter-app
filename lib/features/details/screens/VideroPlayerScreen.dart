@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamforever/constants/app_colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../core/loader_widget/loader_widget.dart';
@@ -72,6 +73,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorCode.bgColor,
       body: SafeArea(
         child: Stack(
           children: [
