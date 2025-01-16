@@ -7,13 +7,15 @@ class PlayerUtil {
 
   static bool isVimeoUrl(String? vimeoUrl) {
     if (vimeoUrl == null || vimeoUrl.isEmpty) return false;
-    String pattern = r"^(https?://)?((w){3}.)?vimeo?(\\.com)?/.+";
-    return RegExp(pattern).hasMatch(vimeoUrl);
+    String pattern = r"^https?:\/\/(?:www\.|player\.)?vimeo\.com\/.*$";
+    return RegExp(pattern, caseSensitive: false).hasMatch(vimeoUrl);
   }
 
   static String getVideoIdFromVimeoUrl(String? videoUrl) {
     if (videoUrl == null || videoUrl.trim().length <= 0) return "";
-    return videoUrl.substring(videoUrl.lastIndexOf("/") + 1);
+    Uri parsedUrl = Uri.parse(videoUrl);
+    List<String> pathSegments = parsedUrl.pathSegments;
+    return pathSegments.last;
   }
 
   static String getVideoIdFromYoutubeUrl(String? videoUrl) {

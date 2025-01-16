@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:vimeo_video_player/vimeo_video_player.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../core/loader_widget/loader_widget.dart';
 import '../../common/enums/MediaContentType.dart';
@@ -40,6 +42,9 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   late YoutubePlayerController _youtubeController;
   late DetailsProvider detailsProvider;
   bool _isLoading = false;
+
+  InAppWebViewController? webViewController;
+
   @override
   void initState() {
     super.initState();
@@ -74,6 +79,9 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
               if (widget.videoPlayerScreenArguments.videoPlayerType ==
                   VideoPlayerType.Youtube)
                 _getYoutubePlayer(),
+            if (widget.videoPlayerScreenArguments.videoPlayerType ==
+                VideoPlayerType.Vimeo)
+              _getVimeoPlayer(),
             if (_isLoading) const LoaderWidget(),
           ],
         ),
@@ -84,7 +92,32 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   @override
   void dispose() {
     _youtubeController.dispose();
+    webViewController?.dispose();
     super.dispose();
+  }
+
+  _getVimeoPlayer() {
+    return VimeoVideoPlayer(
+      videoId: widget.videoPlayerScreenArguments.videoId.toString(),
+      isAutoPlay: true,
+      isLooping: true,
+      isMuted: false,
+      showControls: true,
+      showTitle: true,
+      onInAppWebViewCreated: (controller) {
+        webViewController = controller;
+      },
+      onInAppWebViewLoadStart: (controller, url) {
+        setState(() {
+          _isLoading = true;
+        });
+      },
+      onInAppWebViewLoadStop: (controller, url) {
+        setState(() {
+          _isLoading = false;
+        });
+      },
+    );
   }
 
   void prepareYoutubeController() {
