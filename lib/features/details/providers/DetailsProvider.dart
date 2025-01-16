@@ -35,7 +35,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.MOVIE_DETAILS_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'movie_id': movieId,
         }),
       );
@@ -60,7 +60,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.SHOW_DETAILS_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'show_id': showId,
         }),
       );
@@ -85,7 +85,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.SPORT_DETAILS_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'sport_id': showId,
         }),
       );
@@ -110,7 +110,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.TV_DETAILS_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'tv_id': tvId,
         }),
       );
@@ -136,7 +136,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.PODCAST_DETAILS_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'audio_id': audioId,
         }),
       );
@@ -185,7 +185,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.EPISODE_LIST_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'season_id': id,
         }),
       );
@@ -215,7 +215,7 @@ class DetailsProvider extends ChangeNotifier {
         jsonEncode({
           'post_id': id,
           'post_type': shortDisplayName,
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
         }),
       );
 
@@ -246,7 +246,7 @@ class DetailsProvider extends ChangeNotifier {
         jsonEncode({
           'review': review,
           'rating': rating,
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'module_id': id,
           'type': type,
         }),
@@ -273,7 +273,7 @@ class DetailsProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.CONTENT_GET_ALL_REVIEW_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'module_id': id,
           'type': type,
         }),

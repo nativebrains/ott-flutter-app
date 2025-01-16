@@ -36,7 +36,7 @@ class AccountProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.LOGOUT_URL,
         jsonEncode({
-          'user_id': loginUserModel?.userId ?? 0,
+          'user_id': loginUserModel?.userId ?? "",
           'user_session_name': loginUserModel?.userSessionName ?? "",
         }),
       );
@@ -83,7 +83,8 @@ class AccountProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.DASH_BOARD_URL,
-        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+        jsonEncode(
+            {'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : ""}),
       );
 
       if (response.status == 200) {
@@ -113,7 +114,7 @@ class AccountProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.DELETE_USER_URL,
         jsonEncode({
-          'user_id': loginUserModel?.userId ?? 0,
+          'user_id': loginUserModel?.userId ?? "",
           'user_session_name': loginUserModel?.userSessionName ?? "",
         }),
       );
@@ -146,7 +147,8 @@ class AccountProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.PROFILE_URL,
-        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+        jsonEncode(
+            {'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : ""}),
       );
 
       if (response.status == 200) {
@@ -176,7 +178,7 @@ class AccountProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.EDIT_PROFILE_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'name': username,
           'email': email,
           'password': password,

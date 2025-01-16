@@ -561,6 +561,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   Widget getAddToMyListWidget() {
     return InkWell(
       onTap: () async {
+        if (!DetailsProvider.isLoggedIn) return;
         setState(() {
           _normalLoading = true;
         });
@@ -612,7 +613,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
       child: CustomText(
         text: 'Server $index',
         fontSize: 14.sp,
-        color: Colors.white,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

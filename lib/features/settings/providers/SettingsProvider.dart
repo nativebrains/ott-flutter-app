@@ -15,7 +15,7 @@ class SettingsProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.APP_DETAIL_URL,
-        jsonEncode({'user_id': 0}),
+        jsonEncode({'user_id': ""}),
       );
 
       if (response.status == 200) {

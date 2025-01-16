@@ -34,7 +34,7 @@ class PurchaseProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.PLAN_LIST_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
         }),
       );
 
@@ -68,7 +68,7 @@ class PurchaseProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.TRANSACTION_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
           'plan_id': planId,
           'payment_id': paymentId,
           'payment_gateway': paymentGateway,
@@ -101,7 +101,7 @@ class PurchaseProvider extends ChangeNotifier {
       final response = await apiService.post(
         ApiEndpoints.PAYMENT_SETTING_URL,
         jsonEncode({
-          'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0,
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
         }),
       );
 

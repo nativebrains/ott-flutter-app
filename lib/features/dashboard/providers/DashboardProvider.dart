@@ -97,7 +97,9 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.HOME_URL,
-        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
+        }),
       );
 
       if (response.status == 200) {
@@ -173,7 +175,9 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.MY_WATCHLIST_WATCHLIST_URL,
-        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
+        }),
       );
 
       if (response.status == 200) {
@@ -456,7 +460,9 @@ class DashboardProvider extends ChangeNotifier {
     try {
       final response = await apiService.post(
         ApiEndpoints.FILTER_LIST_URL,
-        jsonEncode({'user_id': isLoggedIn ? (loginUserModel?.userId ?? 0) : 0}),
+        jsonEncode({
+          'user_id': isLoggedIn ? (loginUserModel?.userId ?? "") : "",
+        }),
       );
 
       if (response.status == 200) {

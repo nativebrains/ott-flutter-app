@@ -35,8 +35,8 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
                 padding: const EdgeInsets.all(5.0),
                 child: RoundedNetworkImage(
                   imageUrl: imageUrl,
-                  width: 57.sp,
-                  height: 57.sp,
+                  width: 45.sp,
+                  height: 45.sp,
                   borderRadius: 50.sp,
                 ),
               ),
@@ -49,8 +49,8 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: widget.reviewRatingModel.user?.name ?? "",
-                      fontSize: 18.sp,
+                      text: widget.reviewRatingModel.user?.name ?? "Unknown",
+                      fontSize: 16.sp,
                       textAlign: TextAlign.start,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
-                  itemSize: 20.sp,
+                  itemSize: 16.sp,
                   ignoreGestures: true,
                   ratingWidget: RatingWidget(
                     full:
@@ -93,7 +93,7 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
             alignment: Alignment.topLeft,
             child: CustomText(
               text: widget.reviewRatingModel.review ?? "",
-              fontSize: 14.sp,
+              fontSize: 13.sp,
               textAlign: TextAlign.start,
               color: ColorCode.greyLightTextColor,
             ),

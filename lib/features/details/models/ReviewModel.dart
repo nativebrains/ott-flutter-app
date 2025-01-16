@@ -34,7 +34,7 @@ class ReviewModel {
       moduleId: json['module_id'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      user: UserModel.fromJson(json['user']),
+      user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
     );
   }
 }
