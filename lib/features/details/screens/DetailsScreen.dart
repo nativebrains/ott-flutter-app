@@ -255,7 +255,36 @@ class _DetailsscreenState extends State<Detailsscreen> {
             child: Center(
               child: AvatarGlow(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
+                    if (streamUrl.isEmpty) return;
+                    VideoPlayerType videoPlayerType;
+                    String? videoId;
+
+                    if (PlayerUtil.isYoutubeUrl(streamUrl)) {
+                      videoPlayerType = VideoPlayerType.Youtube;
+                      videoId = PlayerUtil.getVideoIdFromYoutubeUrl(streamUrl);
+                    } else if (PlayerUtil.isVimeoUrl(streamUrl)) {
+                      videoPlayerType = VideoPlayerType.Vimeo;
+                      videoId = PlayerUtil.getVideoIdFromVimeoUrl(streamUrl);
+                    } else if (PlayerUtil.isEmbedCode(streamUrl)) {
+                      videoPlayerType = VideoPlayerType.Embed;
+                    } else {
+                      videoPlayerType = VideoPlayerType.Exo;
+                    }
+
+                    Navigator.pushNamed(
+                      context,
+                      RouteConstantName.videoPlayerScreen,
+                      arguments: VideoPlayerScreenArguments(
+                        id: mediaItemDetails?.id,
+                        mediaContentType: mediaItemDetails!.mediaContentType,
+                        videoPlayerType: videoPlayerType,
+                        videoId: videoId,
+                        streamUrl: streamUrl,
+                      ),
+                    );
+                  },
                   child: Container(
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,

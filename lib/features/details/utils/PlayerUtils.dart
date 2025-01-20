@@ -12,7 +12,7 @@ class PlayerUtil {
   }
 
   static bool isEmbedCode(String? url) {
-    return url != null && url.contains('<iframe');
+    return url != null && (url.contains('<iframe') || url.contains('embed'));
   }
 
   static String getVideoIdFromVimeoUrl(String? videoUrl) {

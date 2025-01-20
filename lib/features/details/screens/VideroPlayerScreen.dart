@@ -60,6 +60,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     print("======");
     print(widget.videoPlayerScreenArguments.videoPlayerType);
     print(widget.videoPlayerScreenArguments.videoId);
+    print(widget.videoPlayerScreenArguments.streamUrl);
     print("======");
     startPlayer();
   }
@@ -235,7 +236,44 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   }
 
   String getHtml() {
-    return """
+    final streamUrl = widget.videoPlayerScreenArguments.streamUrl;
+
+    // Check if the streamUrl is a direct embed URL or plain text
+    final isEmbedUrl =
+        streamUrl!.startsWith('http') && streamUrl.contains('embed');
+
+    if (isEmbedUrl) {
+      // Case for embed URL
+      return """
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <style type="text/css">
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* Ensure black background for video */
+          }
+          iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+          }
+        </style>
+      </head>
+      <body>
+        <iframe 
+          src="$streamUrl" 
+          frameborder="0" 
+          allowfullscreen 
+          allow="autoplay; encrypted-media; picture-in-picture">
+        </iframe>
+      </body>
+    </html>
+    """;
+    } else {
+      // Case for plain HTML content
+      return """
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -257,10 +295,11 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
         </style>
       </head>
       <body>
-        ${widget.videoPlayerScreenArguments.streamUrl}
+        $streamUrl
       </body>
     </html>
-  """;
+    """;
+    }
   }
 
   _getEmbededPlayer() {

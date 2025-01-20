@@ -26,6 +26,7 @@ class MediaItemDetails {
   bool? downloadEnable;
   bool? isPremium;
   MediaContentType mediaContentType;
+  String? mediaPlayUrl;
   String? shareLink;
   bool? isDownload;
   String? server1Url;
@@ -46,6 +47,7 @@ class MediaItemDetails {
     this.trailer,
     this.inWatchList,
     this.upcoming,
+    this.mediaPlayUrl,
     this.downloadEnable,
     this.isPremium,
     this.mediaContentType = MediaContentType.movies,
@@ -67,6 +69,7 @@ class MediaItemDetails {
         title: movie.movieName,
         image: movie.movieImage,
         description: movie.movieDescription,
+        mediaPlayUrl: movie.movieUrl,
         rating: movie.movieRating,
         releaseDate: movie.movieDate,
         duration: movie.movieDuration,
