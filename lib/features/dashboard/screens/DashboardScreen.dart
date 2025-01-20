@@ -447,12 +447,12 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 onTap();
                 Navigator.of(context).pop();
               }),
-              getCustomTile("assets/images/ic_sport.png", "Sports", () {
-                dashboardProvider
-                    .setSelectedMixScreenContentType(MediaContentType.sports);
-                onTap();
-                Navigator.of(context).pop();
-              }),
+              // getCustomTile("assets/images/ic_sport.png", "Sports", () {
+              //   dashboardProvider
+              //       .setSelectedMixScreenContentType(MediaContentType.sports);
+              //   onTap();
+              //   Navigator.of(context).pop();
+              // }),
               getCustomTile("assets/images/ic_live_tv.png", "Live TV", () {
                 dashboardProvider
                     .setSelectedMixScreenContentType(MediaContentType.liveTv);
