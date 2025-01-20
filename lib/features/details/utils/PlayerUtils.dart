@@ -1,3 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:islamforever/features/common/enums/MediaContentType.dart';
+import 'package:islamforever/features/details/models/MediaItemDetails.dart';
+
+import '../../../constants/routes_names.dart';
+import '../screens/VideroPlayerScreen.dart';
+
 class PlayerUtil {
   static bool isYoutubeUrl(String? url) {
     if (url == null || url.isEmpty) return false;
@@ -44,5 +51,42 @@ class PlayerUtil {
     } else {
       return null;
     }
+  }
+
+  static void navigateToVideoPlayerScreen(
+    BuildContext context,
+    String? url,
+    int? id,
+    MediaContentType mediaContentType,
+  ) {
+    String streamUrl = url ?? "";
+    if (streamUrl.isEmpty) return;
+
+    VideoPlayerType videoPlayerType;
+    String? videoId;
+
+    if (PlayerUtil.isYoutubeUrl(streamUrl)) {
+      videoPlayerType = VideoPlayerType.Youtube;
+      videoId = PlayerUtil.getVideoIdFromYoutubeUrl(streamUrl);
+    } else if (PlayerUtil.isVimeoUrl(streamUrl)) {
+      videoPlayerType = VideoPlayerType.Vimeo;
+      videoId = PlayerUtil.getVideoIdFromVimeoUrl(streamUrl);
+    } else if (PlayerUtil.isEmbedCode(streamUrl)) {
+      videoPlayerType = VideoPlayerType.Embed;
+    } else {
+      videoPlayerType = VideoPlayerType.Exo;
+    }
+
+    Navigator.pushNamed(
+      context,
+      RouteConstantName.videoPlayerScreen,
+      arguments: VideoPlayerScreenArguments(
+        id: id,
+        mediaContentType: mediaContentType,
+        videoPlayerType: videoPlayerType,
+        videoId: videoId,
+        streamUrl: streamUrl,
+      ),
+    );
   }
 }

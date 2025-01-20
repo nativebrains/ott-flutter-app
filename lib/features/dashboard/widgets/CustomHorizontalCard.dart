@@ -8,6 +8,7 @@ import '../../../constants/assets_images.dart';
 import '../../../constants/routes_names.dart';
 import '../../common/enums/MediaContentType.dart';
 import '../../details/screens/DetailsScreen.dart';
+import '../../details/utils/PlayerUtils.dart';
 
 class Customhorizontalcard extends StatelessWidget {
   final int? id;
@@ -20,6 +21,9 @@ class Customhorizontalcard extends StatelessWidget {
   final String? episodeId;
   final bool? episodeRedirect;
   final bool shouldRedirect;
+  final bool shoulPlay;
+  final String? playUrl;
+
   const Customhorizontalcard({
     super.key,
     required this.isPremium,
@@ -32,12 +36,19 @@ class Customhorizontalcard extends StatelessWidget {
     this.episodeId,
     this.episodeRedirect,
     this.shouldRedirect = true,
+    this.shoulPlay = false,
+    this.playUrl,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        if (shoulPlay) {
+          String streamUrl = playUrl ?? "";
+          PlayerUtil.navigateToVideoPlayerScreen(
+              context, streamUrl, id, mediaContentType);
+        }
         if (shouldRedirect)
           Navigator.pushNamed(
             context,

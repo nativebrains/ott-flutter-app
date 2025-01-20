@@ -238,21 +238,48 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   String getHtml() {
     final streamUrl = widget.videoPlayerScreenArguments.streamUrl;
 
-    // Check if the streamUrl is a direct embed URL or plain text
-    final isEmbedUrl =
-        streamUrl!.startsWith('http') && streamUrl.contains('embed');
+    // Check if the input is an iframe tag or a simple URL
+    final isIframe = streamUrl!.trim().startsWith('<iframe');
 
-    if (isEmbedUrl) {
-      // Case for embed URL
+    if (isIframe) {
+      // Return the iframe as-is
       return """
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <style type="text/css">
+        <style>
           body {
             margin: 0;
             padding: 0;
-            background-color: #000; /* Ensure black background for video */
+            background-color: #000;
+          }
+          iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+          }
+        </style>
+      </head>
+      <body>
+        $streamUrl
+      </body>
+    </html>
+    """;
+    } else {
+      // Assume it's a plain URL and construct the iframe dynamically
+      final autoplayUrl = streamUrl.contains('autoplay=')
+          ? streamUrl
+          : '$streamUrl${streamUrl.contains('?') ? '&' : '?'}autoplay=1&mute=1';
+
+      return """
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
           }
           iframe {
             width: 100%;
@@ -263,39 +290,11 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
       </head>
       <body>
         <iframe 
-          src="$streamUrl" 
+          src="$autoplayUrl" 
           frameborder="0" 
-          allowfullscreen 
-          allow="autoplay; encrypted-media; picture-in-picture">
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+          allowfullscreen>
         </iframe>
-      </body>
-    </html>
-    """;
-    } else {
-      // Case for plain HTML content
-      return """
-    <html>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <style type="text/css">
-          body {
-            color: #525252;
-            margin: 0;
-            padding: 0;
-          }
-          iframe {
-            width: 100%;
-            height: 100vh;
-            border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            object-fit: contain; /* Add this rule */
-          }
-        </style>
-      </head>
-      <body>
-        $streamUrl
       </body>
     </html>
     """;

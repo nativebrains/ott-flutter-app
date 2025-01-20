@@ -257,33 +257,12 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 child: InkWell(
                   onTap: () {
                     String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
-                    if (streamUrl.isEmpty) return;
-                    VideoPlayerType videoPlayerType;
-                    String? videoId;
 
-                    if (PlayerUtil.isYoutubeUrl(streamUrl)) {
-                      videoPlayerType = VideoPlayerType.Youtube;
-                      videoId = PlayerUtil.getVideoIdFromYoutubeUrl(streamUrl);
-                    } else if (PlayerUtil.isVimeoUrl(streamUrl)) {
-                      videoPlayerType = VideoPlayerType.Vimeo;
-                      videoId = PlayerUtil.getVideoIdFromVimeoUrl(streamUrl);
-                    } else if (PlayerUtil.isEmbedCode(streamUrl)) {
-                      videoPlayerType = VideoPlayerType.Embed;
-                    } else {
-                      videoPlayerType = VideoPlayerType.Exo;
-                    }
-
-                    Navigator.pushNamed(
-                      context,
-                      RouteConstantName.videoPlayerScreen,
-                      arguments: VideoPlayerScreenArguments(
-                        id: mediaItemDetails?.id,
-                        mediaContentType: mediaItemDetails!.mediaContentType,
-                        videoPlayerType: videoPlayerType,
-                        videoId: videoId,
-                        streamUrl: streamUrl,
-                      ),
-                    );
+                    PlayerUtil.navigateToVideoPlayerScreen(
+                        context,
+                        streamUrl,
+                        mediaItemDetails!.id,
+                        mediaItemDetails!.mediaContentType);
                   },
                   child: Container(
                     decoration: const BoxDecoration(
@@ -543,33 +522,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return InkWell(
       onTap: () {
         String streamUrl = mediaItemDetails?.trailer ?? "";
-        if (streamUrl.isEmpty) return;
-        VideoPlayerType videoPlayerType;
-        String? videoId;
-
-        if (PlayerUtil.isYoutubeUrl(streamUrl)) {
-          videoPlayerType = VideoPlayerType.Youtube;
-          videoId = PlayerUtil.getVideoIdFromYoutubeUrl(streamUrl);
-        } else if (PlayerUtil.isVimeoUrl(streamUrl)) {
-          videoPlayerType = VideoPlayerType.Vimeo;
-          videoId = PlayerUtil.getVideoIdFromVimeoUrl(streamUrl);
-        } else if (PlayerUtil.isEmbedCode(streamUrl)) {
-          videoPlayerType = VideoPlayerType.Embed;
-        } else {
-          videoPlayerType = VideoPlayerType.Exo;
-        }
-
-        Navigator.pushNamed(
-          context,
-          RouteConstantName.videoPlayerScreen,
-          arguments: VideoPlayerScreenArguments(
-            id: mediaItemDetails?.id,
-            mediaContentType: mediaItemDetails!.mediaContentType,
-            videoPlayerType: videoPlayerType,
-            videoId: videoId,
-            streamUrl: streamUrl,
-          ),
-        );
+        PlayerUtil.navigateToVideoPlayerScreen(context, streamUrl,
+            mediaItemDetails!.id, mediaItemDetails!.mediaContentType);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1091,7 +1045,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
                         title: itemEpisodeModel![index].episodeName,
                         id: itemEpisodeModel![index].episodeId,
                         mediaContentType: MediaContentType.tvShows,
+                        shoulPlay: true,
                         shouldRedirect: false,
+                        playUrl: itemEpisodeModel![index].episodeUrl ?? "",
                       )),
                 ),
             ],
