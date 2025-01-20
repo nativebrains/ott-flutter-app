@@ -514,7 +514,6 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return InkWell(
       onTap: () {
         String streamUrl = mediaItemDetails?.trailer ?? "";
-        print(streamUrl);
         if (streamUrl.isEmpty) return;
         VideoPlayerType videoPlayerType;
         String? videoId;
@@ -525,6 +524,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
         } else if (PlayerUtil.isVimeoUrl(streamUrl)) {
           videoPlayerType = VideoPlayerType.Vimeo;
           videoId = PlayerUtil.getVideoIdFromVimeoUrl(streamUrl);
+        } else if (PlayerUtil.isEmbedCode(streamUrl)) {
+          videoPlayerType = VideoPlayerType.Embed;
         } else {
           videoPlayerType = VideoPlayerType.Exo;
         }

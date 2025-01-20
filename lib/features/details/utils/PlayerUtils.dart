@@ -11,6 +11,10 @@ class PlayerUtil {
     return RegExp(pattern, caseSensitive: false).hasMatch(vimeoUrl);
   }
 
+  static bool isEmbedCode(String? url) {
+    return url != null && url.contains('<iframe');
+  }
+
   static String getVideoIdFromVimeoUrl(String? videoUrl) {
     if (videoUrl == null || videoUrl.trim().length <= 0) return "";
     Uri parsedUrl = Uri.parse(videoUrl);
@@ -27,5 +31,18 @@ class PlayerUtil {
 
     if (match != null) return match.group(7) ?? "";
     return "";
+  }
+
+  static String? getVideoIdFromEmbedCode(String url) {
+    final regex = RegExp(r'src="([^"]+)"');
+    final match = regex.firstMatch(url);
+    final srcUrl = match?.group(1);
+    if (srcUrl != null && srcUrl.contains('youtube.com')) {
+      return getVideoIdFromYoutubeUrl(srcUrl);
+    } else if (srcUrl != null && srcUrl.contains('vimeo.com')) {
+      return getVideoIdFromVimeoUrl(srcUrl);
+    } else {
+      return null;
+    }
   }
 }

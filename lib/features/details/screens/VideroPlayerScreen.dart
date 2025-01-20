@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:video_player/video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -51,6 +52,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   InAppWebViewController? webViewController;
   VideoPlayerController? _videoPlayerController;
   ChewieController? chewieController;
+  WebViewController? _embedWebViewController;
 
   @override
   void initState() {
@@ -75,6 +77,10 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
         VideoPlayerType.Exo) {
       await prepareExoController();
     }
+    if (widget.videoPlayerScreenArguments.videoPlayerType ==
+        VideoPlayerType.Embed) {
+      await prepareEmbedController();
+    }
 
     setState(() {
       _isLoading = false;
@@ -98,6 +104,9 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
             if (widget.videoPlayerScreenArguments.videoPlayerType ==
                 VideoPlayerType.Exo)
               _getExoPlayer(),
+            if (widget.videoPlayerScreenArguments.videoPlayerType ==
+                VideoPlayerType.Embed)
+              _getEmbededPlayer(),
             if (_isLoading) const LoaderWidget(),
           ],
         ),
@@ -111,7 +120,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     webViewController?.dispose();
     chewieController?.dispose();
     _videoPlayerController?.dispose();
-
+    _embedWebViewController?.clearCache();
     super.dispose();
   }
 
@@ -206,6 +215,65 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     if (chewieController != null) {
       return Center(
         child: Chewie(controller: chewieController!),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Future<void> prepareEmbedController() async {
+    _embedWebViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(ColorCode.bgColor)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (url) => setState(() => _isLoading = true),
+          onPageFinished: (url) => setState(() => _isLoading = false),
+        ),
+      )
+      ..loadHtmlString(getHtml());
+  }
+
+  String getHtml() {
+    return """
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <style type="text/css">
+          body {
+            color: #525252;
+            margin: 0;
+            padding: 0;
+          }
+          iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: contain; /* Add this rule */
+          }
+        </style>
+      </head>
+      <body>
+        ${widget.videoPlayerScreenArguments.streamUrl}
+      </body>
+    </html>
+  """;
+  }
+
+  _getEmbededPlayer() {
+    if (_embedWebViewController != null) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: ColorCode.bgColor,
+        child: Center(
+          child: WebViewWidget(
+            controller: _embedWebViewController!,
+          ),
+        ),
       );
     } else {
       return Container();
