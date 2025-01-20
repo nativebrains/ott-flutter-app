@@ -69,19 +69,11 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
 
     if (widget.videoPlayerScreenArguments.videoPlayerType ==
         VideoPlayerType.Youtube) {
-      prepareYoutubeController();
+      await prepareYoutubeController();
     }
     if (widget.videoPlayerScreenArguments.videoPlayerType ==
         VideoPlayerType.Exo) {
-      _videoPlayerController = VideoPlayerController.networkUrl(
-          Uri.parse(widget.videoPlayerScreenArguments.streamUrl.toString()));
-      await _videoPlayerController!.initialize();
-      chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController!,
-        aspectRatio: 3 / 2,
-        autoPlay: true,
-        looping: true,
-      );
+      await prepareExoController();
     }
 
     setState(() {
@@ -104,11 +96,8 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
                 VideoPlayerType.Vimeo)
               _getVimeoPlayer(),
             if (widget.videoPlayerScreenArguments.videoPlayerType ==
-                    VideoPlayerType.Exo &&
-                chewieController != null)
-              Center(
-                child: Chewie(controller: chewieController!),
-              ),
+                VideoPlayerType.Exo)
+              _getExoPlayer(),
             if (_isLoading) const LoaderWidget(),
           ],
         ),
@@ -150,7 +139,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     );
   }
 
-  void prepareYoutubeController() {
+  Future<void> prepareYoutubeController() async {
     _youtubeController = YoutubePlayerController(
       initialVideoId: widget.videoPlayerScreenArguments.videoId.toString(),
       flags: const YoutubePlayerFlags(
@@ -199,5 +188,27 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
         );
       },
     );
+  }
+
+  Future<void> prepareExoController() async {
+    _videoPlayerController = VideoPlayerController.networkUrl(
+        Uri.parse(widget.videoPlayerScreenArguments.streamUrl.toString()));
+    await _videoPlayerController!.initialize();
+    chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController!,
+      aspectRatio: 3 / 2,
+      autoPlay: true,
+      looping: true,
+    );
+  }
+
+  _getExoPlayer() {
+    if (chewieController != null) {
+      return Center(
+        child: Chewie(controller: chewieController!),
+      );
+    } else {
+      return Container();
+    }
   }
 }
