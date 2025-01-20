@@ -101,6 +101,7 @@ class MediaItemDetails {
         poster: tvShow.showImage,
       );
     } else if (responseModel.item is ItemSportModel) {
+      // Not handle for not data
       ItemSportModel sports = responseModel.item as ItemSportModel;
       return MediaItemDetails(
         id: sports.sportId,
@@ -135,6 +136,7 @@ class MediaItemDetails {
         server1Url: liveTv.tvUrl,
         server2Url: liveTv.tvUrl2,
         server3Url: liveTv.tvUrl3,
+        mediaPlayUrl: liveTv.tvUrl,
       );
     } else if (responseModel.item is ItemPodcastModel) {
       ItemPodcastModel podcast = responseModel.item as ItemPodcastModel;
@@ -156,6 +158,7 @@ class MediaItemDetails {
         mediaContentType: MediaContentType.podcast,
         poster: podcast.audioPoster,
         shareLink: podcast.shareUrl,
+        mediaPlayUrl: podcast.audioUrl,
       );
     } else {
       return MediaItemDetails();

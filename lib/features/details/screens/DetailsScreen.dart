@@ -475,6 +475,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
               ],
             ),
           ),
+        SizedBox(
+          height: 12.sp,
+        ),
         if (mediaItemDetails?.description != null &&
             mediaItemDetails?.description != "")
           Padding(
