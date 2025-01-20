@@ -15,6 +15,7 @@ enum VideoPlayerType {
   Youtube,
   Vimeo,
   Exo,
+  Embed,
 }
 
 class VideoPlayerScreenArguments {
@@ -43,10 +44,10 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideroplayerscreenState extends State<VideoPlayerScreen> {
-  late YoutubePlayerController _youtubeController;
   late DetailsProvider detailsProvider;
   bool _isLoading = false;
 
+  YoutubePlayerController? _youtubeController;
   InAppWebViewController? webViewController;
   VideoPlayerController? _videoPlayerController;
   ChewieController? chewieController;
@@ -117,10 +118,11 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
 
   @override
   void dispose() {
-    _youtubeController.dispose();
+    _youtubeController?.dispose();
     webViewController?.dispose();
-    _videoPlayerController?.dispose();
     chewieController?.dispose();
+    _videoPlayerController?.dispose();
+
     super.dispose();
   }
 
@@ -165,7 +167,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   _getYoutubePlayer() {
     return YoutubePlayerBuilder(
       player: YoutubePlayer(
-        controller: _youtubeController,
+        controller: _youtubeController!,
         showVideoProgressIndicator: true,
         progressIndicatorColor: Colors.amber,
         progressColors: const ProgressBarColors(
