@@ -1,6 +1,8 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -20,12 +22,14 @@ class VideoPlayerScreenArguments {
   final MediaContentType mediaContentType;
   final VideoPlayerType videoPlayerType;
   final String? videoId;
+  final String? streamUrl;
 
   VideoPlayerScreenArguments({
     required this.id,
     required this.mediaContentType,
     required this.videoPlayerType,
     required this.videoId,
+    this.streamUrl,
   });
 }
 
@@ -44,12 +48,16 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   bool _isLoading = false;
 
   InAppWebViewController? webViewController;
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? chewieController;
 
   @override
   void initState() {
     super.initState();
+    print("======");
     print(widget.videoPlayerScreenArguments.videoPlayerType);
     print(widget.videoPlayerScreenArguments.videoId);
+    print("======");
     startPlayer();
   }
 
@@ -61,6 +69,18 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     if (widget.videoPlayerScreenArguments.videoPlayerType ==
         VideoPlayerType.Youtube) {
       prepareYoutubeController();
+    }
+    if (widget.videoPlayerScreenArguments.videoPlayerType ==
+        VideoPlayerType.Exo) {
+      _videoPlayerController = VideoPlayerController.networkUrl(
+          Uri.parse(widget.videoPlayerScreenArguments.streamUrl.toString()));
+      await _videoPlayerController!.initialize();
+      chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        aspectRatio: 3 / 2,
+        autoPlay: true,
+        looping: true,
+      );
     }
 
     setState(() {
@@ -82,6 +102,12 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
             if (widget.videoPlayerScreenArguments.videoPlayerType ==
                 VideoPlayerType.Vimeo)
               _getVimeoPlayer(),
+            if (widget.videoPlayerScreenArguments.videoPlayerType ==
+                    VideoPlayerType.Exo &&
+                chewieController != null)
+              Center(
+                child: Chewie(controller: chewieController!),
+              ),
             if (_isLoading) const LoaderWidget(),
           ],
         ),
@@ -93,6 +119,8 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   void dispose() {
     _youtubeController.dispose();
     webViewController?.dispose();
+    _videoPlayerController?.dispose();
+    chewieController?.dispose();
     super.dispose();
   }
 

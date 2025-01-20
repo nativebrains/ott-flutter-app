@@ -537,6 +537,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             mediaContentType: mediaItemDetails!.mediaContentType,
             videoPlayerType: videoPlayerType,
             videoId: videoId,
+            streamUrl: streamUrl,
           ),
         );
       },
