@@ -18,6 +18,7 @@ import 'package:islamforever/features/settings/providers/NotificationPermissionH
 import 'package:islamforever/features/settings/providers/SettingsProvider.dart';
 import 'package:islamforever/firebase_options.dart';
 import 'package:islamforever/routes/routes.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'core/services/shared_preference.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  OneSignal.initialize(dotenv.env['ONESIGNAL_APP_ID'].toString());
   ErrorWidget.builder = (FlutterErrorDetails details) => CustomError(
         errorDetails: details,
       );

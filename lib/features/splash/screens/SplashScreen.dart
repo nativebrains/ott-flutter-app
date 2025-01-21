@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -33,6 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigateToJourney() async {
     await settingsProvider.fetchAboutData(refresh: true);
     await Future.delayed(const Duration(seconds: 1), () {
+      OneSignal.Notifications.requestPermission(true);
+
       bool? isLoggedIn = SharedPrefs.getBool(Constants.IS_LOGGED_ID);
       bool? rememberMe = SharedPrefs.getBool(Constants.REMEMBER_ME);
 
