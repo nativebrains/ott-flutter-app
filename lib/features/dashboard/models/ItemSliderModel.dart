@@ -3,7 +3,7 @@ import '../../common/enums/MediaContentType.dart';
 class ItemSliderModel {
   final String? sliderTitle;
   final String? sliderType;
-  final int? sliderPostId;
+  final String? sliderPostId;
   final String? sliderImage;
   final String? videoAccess;
   final String? langCatName;
