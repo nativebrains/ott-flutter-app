@@ -13,7 +13,9 @@ import 'package:islamforever/features/mix/screens/MixScreen.dart';
 import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
 import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
+import 'package:islamforever/utils/extras.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/assets_images.dart';
@@ -22,6 +24,8 @@ import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/custom/custom_elevated_button.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../common/enums/MediaContentType.dart';
+import '../../settings/models/AboutAppModel.dart';
+import '../../settings/providers/SettingsProvider.dart';
 import '../../webview/screens/WebviewScreen.dart';
 import '../models/HomeDataModel.dart';
 
@@ -35,6 +39,8 @@ class Dashboardscreen extends StatefulWidget {
 class _DashboardscreenState extends State<Dashboardscreen> {
   late DashboardProvider dashboardProvider;
   late AccountProvider accountProvider;
+  late SettingsProvider settingsProvider;
+  late AboutAppModel? aboutAppModel;
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -56,7 +62,16 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     super.initState();
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
+    settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
+    fetchAboutAppDetails();
     dashboardProvider.fetchDashboardHomeData();
+  }
+
+  void fetchAboutAppDetails({bool refresh = false}) async {
+    aboutAppModel = await settingsProvider.fetchAboutData(refresh: refresh);
+    if (aboutAppModel?.appUpdateHideShow == true) {
+      _showUpdateDialog(context);
+    }
   }
 
   void _onItemTapped(int index) {
@@ -233,6 +248,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   Future<void> _refreshData() {
     Completer<void> completer = Completer<void>();
+    fetchAboutAppDetails(refresh: true);
     switch (_selectedIndex) {
       case 0:
         dashboardProvider.fetchDashboardHomeData(refresh: true);
@@ -537,6 +553,59 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           },
           filterTypeSec: DashboardProvider.selectedMixScreenContentType,
           filterData: dashboardProvider.getfilterData,
+        );
+      },
+    );
+  }
+
+  void _showUpdateDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: ColorCode.whiteColor,
+          title: CustomText(
+            text: 'Update Available',
+            fontSize: 22.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          content: CustomText(
+            text: aboutAppModel?.appUpdateDescription.toString() ?? "",
+            fontSize: 14.sp,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text('Update Now'),
+                  onPressed: () async {
+                    await goToRelativeAppStore(context);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                if (aboutAppModel?.appUpdateCancelOption == true)
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+              ],
+            ),
+          ],
         );
       },
     );

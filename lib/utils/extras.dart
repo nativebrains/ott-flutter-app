@@ -3,7 +3,9 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../features/details/models/ReviewModel.dart';
 
@@ -186,5 +188,56 @@ String formatReviewCount(List<ReviewModel>? reviewsList) {
     return '${(count / 1000).toStringAsFixed(1)}K Reviews';
   } else {
     return '${(count / 1000000).toStringAsFixed(1)}M Reviews';
+  }
+}
+
+Future<void> goToRelativeAppStore(BuildContext context) async {
+  try {
+    // Get the package name of the app
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String packageName = packageInfo.packageName;
+
+    // Construct URLs
+    final String playStoreUrl =
+        'https://play.google.com/store/apps/details?id=$packageName';
+    final String playStoreAppUrl = 'market://details?id=$packageName';
+    final String appStoreUrl =
+        'https://apps.apple.com/app/idYOUR_APP_ID'; // Replace `YOUR_APP_ID` with your App Store ID
+
+    if (Platform.isAndroid) {
+      // Android-specific logic
+      final Uri appUri = Uri.parse(playStoreAppUrl);
+      if (await canLaunchUrl(appUri)) {
+        await launchUrl(appUri);
+      } else {
+        final Uri webUri = Uri.parse(playStoreUrl);
+        if (await canLaunchUrl(webUri)) {
+          await launchUrl(webUri, mode: LaunchMode.externalApplication);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Unable to open the Play Store.')),
+          );
+        }
+      }
+    } else if (Platform.isIOS) {
+      // iOS-specific logic
+      final Uri appUri = Uri.parse(appStoreUrl);
+      if (await canLaunchUrl(appUri)) {
+        await launchUrl(appUri, mode: LaunchMode.externalApplication);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Unable to open the App Store.')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unsupported platform.')),
+      );
+    }
+  } catch (e) {
+    // Handle errors gracefully
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('An error occurred: $e')),
+    );
   }
 }

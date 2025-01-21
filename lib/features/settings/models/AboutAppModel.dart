@@ -2,6 +2,11 @@ import 'package:islamforever/constants/constants.dart';
 
 class AboutAppModel {
   String? appName;
+  bool? appUpdateHideShow;
+  String? appUpdateVersionCode;
+  String? appUpdateDescription;
+  String? appUpdateLink;
+  bool? appUpdateCancelOption;
   String? appLogo;
   String? appVersion;
   String? appAuthor;
@@ -23,6 +28,11 @@ class AboutAppModel {
     required this.appDescription,
     required this.appHtmlPrivacy,
     required this.appTerms,
+    this.appUpdateCancelOption,
+    this.appUpdateDescription,
+    this.appUpdateHideShow,
+    this.appUpdateLink,
+    this.appUpdateVersionCode,
   });
 
   factory AboutAppModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +47,11 @@ class AboutAppModel {
       appDescription: json[Constants.APP_DESC],
       appHtmlPrivacy: json[Constants.APP_PRIVACY_POLICY],
       appTerms: json[Constants.APP_TERMS],
+      appUpdateCancelOption: json["app_update_cancel_option"] == "true",
+      appUpdateDescription: json['app_update_desc'],
+      appUpdateHideShow: json['app_update_hide_show'] == "true",
+      appUpdateVersionCode: json['app_update_version_code'],
+      appUpdateLink: json['app_update_link'],
     );
   }
 }

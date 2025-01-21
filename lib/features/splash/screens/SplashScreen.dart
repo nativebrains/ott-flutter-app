@@ -12,6 +12,7 @@ import '../../../constants/constants.dart';
 import '../../../constants/routes_names.dart';
 import '../../../core/services/shared_preference.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../settings/providers/SettingsProvider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,15 +22,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late SettingsProvider settingsProvider;
   @override
   void initState() {
-    // TODO: implement initState
+    settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
     _navigateToJourney();
     super.initState();
   }
 
   _navigateToJourney() async {
-    await Future.delayed(const Duration(seconds: 3), () {
+    await settingsProvider.fetchAboutData(refresh: true);
+    await Future.delayed(const Duration(seconds: 1), () {
       bool? isLoggedIn = SharedPrefs.getBool(Constants.IS_LOGGED_ID);
       bool? rememberMe = SharedPrefs.getBool(Constants.REMEMBER_ME);
 
