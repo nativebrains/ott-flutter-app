@@ -206,7 +206,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
         children: [
           // Background image
           RoundedNetworkImage(
-            imageUrl: mediaItemDetails?.image ?? "",
+            imageUrl: mediaItemDetails?.image ?? mediaItemDetails?.poster ?? "",
             fit: BoxFit.cover,
             width: double.infinity, // Set the width to infinity
             height: 295.sp,
@@ -257,12 +257,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 child: InkWell(
                   onTap: () {
                     String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
-
                     PlayerUtil.navigateToVideoPlayerScreen(
-                        context,
-                        streamUrl,
-                        mediaItemDetails!.id,
-                        mediaItemDetails!.mediaContentType);
+                      context,
+                      streamUrl,
+                      mediaItemDetails!.id,
+                      mediaItemDetails!.mediaContentType,
+                      mediaItemDetails?.image ?? mediaItemDetails?.poster ?? "",
+                    );
                   },
                   child: Container(
                     decoration: const BoxDecoration(
@@ -526,8 +527,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
     return InkWell(
       onTap: () {
         String streamUrl = mediaItemDetails?.trailer ?? "";
-        PlayerUtil.navigateToVideoPlayerScreen(context, streamUrl,
-            mediaItemDetails!.id, mediaItemDetails!.mediaContentType);
+        PlayerUtil.navigateToVideoPlayerScreen(
+          context,
+          streamUrl,
+          mediaItemDetails!.id,
+          mediaItemDetails!.mediaContentType,
+          mediaItemDetails?.image ?? mediaItemDetails?.poster ?? "",
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

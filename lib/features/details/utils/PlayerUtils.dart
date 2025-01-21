@@ -58,6 +58,7 @@ class PlayerUtil {
     String? url,
     int? id,
     MediaContentType mediaContentType,
+    String? imageUrl,
   ) {
     String streamUrl = url ?? "";
     if (streamUrl.isEmpty) return;
@@ -86,6 +87,7 @@ class PlayerUtil {
         videoPlayerType: videoPlayerType,
         videoId: videoId,
         streamUrl: streamUrl,
+        imageUrl: imageUrl,
       ),
     );
   }

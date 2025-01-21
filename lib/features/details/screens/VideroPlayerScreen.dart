@@ -9,6 +9,7 @@ import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../core/loader_widget/loader_widget.dart';
+import '../../../widgets/extra/rounded_network_image.dart';
 import '../../common/enums/MediaContentType.dart';
 import '../providers/DetailsProvider.dart';
 
@@ -25,6 +26,7 @@ class VideoPlayerScreenArguments {
   final VideoPlayerType videoPlayerType;
   final String? videoId;
   final String? streamUrl;
+  final String? imageUrl;
 
   VideoPlayerScreenArguments({
     required this.id,
@@ -32,6 +34,7 @@ class VideoPlayerScreenArguments {
     required this.videoPlayerType,
     required this.videoId,
     this.streamUrl,
+    this.imageUrl,
   });
 }
 
@@ -95,6 +98,14 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
       body: SafeArea(
         child: Stack(
           children: [
+            Center(
+              child: RoundedNetworkImage(
+                imageUrl: widget.videoPlayerScreenArguments.imageUrl ?? "",
+                fit: BoxFit.cover,
+                width: double.infinity, // Set the width to infinity
+                height: 200.sp,
+              ),
+            ),
             if (!_isLoading)
               if (widget.videoPlayerScreenArguments.videoPlayerType ==
                   VideoPlayerType.Youtube)
@@ -303,14 +314,9 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
 
   _getEmbededPlayer() {
     if (_embedWebViewController != null) {
-      return Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: ColorCode.bgColor,
-        child: Center(
-          child: WebViewWidget(
-            controller: _embedWebViewController!,
-          ),
+      return Center(
+        child: WebViewWidget(
+          controller: _embedWebViewController!,
         ),
       );
     } else {

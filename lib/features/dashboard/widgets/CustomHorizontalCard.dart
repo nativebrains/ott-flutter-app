@@ -47,7 +47,12 @@ class Customhorizontalcard extends StatelessWidget {
         if (shoulPlay) {
           String streamUrl = playUrl ?? "";
           PlayerUtil.navigateToVideoPlayerScreen(
-              context, streamUrl, id, mediaContentType);
+            context,
+            streamUrl,
+            id,
+            mediaContentType,
+            url,
+          );
         }
         if (shouldRedirect)
           Navigator.pushNamed(
