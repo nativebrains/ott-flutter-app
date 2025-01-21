@@ -72,12 +72,12 @@ class _SettingsscreenState extends State<Settingsscreen> {
               getItem("Rate App", onItemClickCallback: () async {
                 await rateApp(context);
               }),
-              getItem("Share App", onItemClickCallback: () async {
-                await shareApp();
-              }),
-              getItem("More App", onItemClickCallback: () async {
-                await openMoreApps();
-              }),
+              // getItem("Share App", onItemClickCallback: () async {
+              //   await shareApp();
+              // }),
+              // getItem("More App", onItemClickCallback: () async {
+              //   await openMoreApps();
+              // }),
               getItem("Contact Support", onItemClickCallback: () {
                 Navigator.pushNamed(context, RouteConstantName.webviewScreen,
                     arguments: const WebviewScreen(

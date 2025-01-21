@@ -29,7 +29,7 @@ enum MediaContentType {
       case MediaContentType.tvShows:
         return 'TV Shows';
       case MediaContentType.sports:
-        return 'Sports';
+        return 'Browse';
       case MediaContentType.liveTv:
         return 'Live TV';
       case MediaContentType.podcast:
@@ -46,7 +46,7 @@ enum MediaContentType {
       case MediaContentType.tvShows:
         return 'Shows'; // this is changed
       case MediaContentType.sports:
-        return 'Sports';
+        return 'Browse';
       case MediaContentType.liveTv:
         return 'LiveTV';
       case MediaContentType.podcast:

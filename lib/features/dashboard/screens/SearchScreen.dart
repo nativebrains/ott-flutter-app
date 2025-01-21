@@ -203,7 +203,7 @@ class _SearchscreenState extends State<Searchscreen> {
         children: [
           SizedBox(height: 12.sp),
           Text(
-            "Sports",
+            "Browse",
             style: GoogleFonts.poppins(
               color: ColorCode.whiteColor,
               fontWeight: FontWeight.w600,

@@ -29,14 +29,14 @@ class _CustombannerState extends State<Custombanner> {
           .map(
             (item) => InkWell(
               onTap: () {
-                // Navigator.pushNamed(
-                //   context,
-                //   RouteConstantName.detailsScreen,
-                //   arguments: DetailsScreenArguments(
-                //     id: item.sliderPostId.toString(),
-                //     mediaContentType: item.mediaContentType,
-                //   ),
-                // );
+                Navigator.pushNamed(
+                  context,
+                  RouteConstantName.detailsScreen,
+                  arguments: DetailsScreenArguments(
+                    id: item.sliderPostId.toString(),
+                    mediaContentType: item.mediaContentType,
+                  ),
+                );
               },
               child: Container(
                 margin: EdgeInsets.all(5.0),

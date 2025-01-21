@@ -301,23 +301,23 @@ class _DetailsscreenState extends State<Detailsscreen> {
           SizedBox(
             height: 12.sp,
           ),
-        if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 12.0),
-            decoration: BoxDecoration(
-              color: ColorCode.cardInfoHeader,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: GradientText(
-              'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
-              colors: const [
-                ColorCode.greenStartColor,
-                ColorCode.greenEndColor
-              ],
-            ),
-          ),
+        // if (mediaItemDetails?.mediaContentType == MediaContentType.movies)
+        //   Container(
+        //     margin: const EdgeInsets.symmetric(horizontal: 12.0),
+        //     decoration: BoxDecoration(
+        //       color: ColorCode.cardInfoHeader,
+        //       borderRadius: BorderRadius.circular(50),
+        //     ),
+        //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        //     child: GradientText(
+        //       'IMDB ${mediaItemDetails?.rating ?? "0.0"}',
+        //       style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w900),
+        //       colors: const [
+        //         ColorCode.greenStartColor,
+        //         ColorCode.greenEndColor
+        //       ],
+        //     ),
+        //   ),
         SizedBox(
           height: 12.sp,
         ),
@@ -428,28 +428,29 @@ class _DetailsscreenState extends State<Detailsscreen> {
               getDownloadBtnWidget(),
             ],
             Expanded(child: Container()),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      ColorCode.greenStartColor,
-                      ColorCode.greenEndColor
-                    ],
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(10.sp),
-                  child: Icon(
-                    Icons.cast,
-                    size: 24.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {},
+            //   child: Container(
+            //     decoration: const BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       gradient: LinearGradient(
+            //         colors: [
+            //           ColorCode.greenStartColor,
+            //           ColorCode.greenEndColor
+            //         ],
+            //       ),
+            //     ),
+            //     child: Padding(
+            //       padding: EdgeInsets.all(10.sp),
+            //       child: Icon(
+            //         Icons.cast,
+            //         size: 24.sp,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+
             SizedBox(width: 28.sp),
           ],
         ),
@@ -457,24 +458,24 @@ class _DetailsscreenState extends State<Detailsscreen> {
           height: 12.sp,
         ),
         // No Need for Movies
-        if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                SizedBox(width: 20.sp),
-                if (mediaItemDetails?.server1Url != null &&
-                    mediaItemDetails?.server1Url != "")
-                  _buildServerItem(1),
-                if (mediaItemDetails?.server2Url != null &&
-                    mediaItemDetails?.server2Url != "")
-                  _buildServerItem(2),
-                if (mediaItemDetails?.server3Url != null &&
-                    mediaItemDetails?.server3Url != "")
-                  _buildServerItem(3)
-              ],
-            ),
-          ),
+        // if (mediaItemDetails?.mediaContentType == MediaContentType.liveTv)
+        //   SingleChildScrollView(
+        //     scrollDirection: Axis.horizontal,
+        //     child: Row(
+        //       children: [
+        //         SizedBox(width: 20.sp),
+        //         if (mediaItemDetails?.server1Url != null &&
+        //             mediaItemDetails?.server1Url != "")
+        //           _buildServerItem(1),
+        //         if (mediaItemDetails?.server2Url != null &&
+        //             mediaItemDetails?.server2Url != "")
+        //           _buildServerItem(2),
+        //         if (mediaItemDetails?.server3Url != null &&
+        //             mediaItemDetails?.server3Url != "")
+        //           _buildServerItem(3)
+        //       ],
+        //     ),
+        //   ),
         SizedBox(
           height: 12.sp,
         ),
@@ -657,7 +658,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             ),
             SizedBox(width: 12.sp),
             CustomText(
-              text: 'Actors',
+              text: 'Performer',
               fontSize: 16.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -706,7 +707,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             ),
             SizedBox(width: 12.sp),
             CustomText(
-              text: 'Directors',
+              text: 'Team',
               fontSize: 16.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600,

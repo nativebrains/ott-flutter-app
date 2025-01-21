@@ -1,6 +1,6 @@
 class ApiEndpoints {
   // Server URL
-  static const String SERVER_URL = "https://ott-app.nb-stage.one";
+  static const String SERVER_URL = "https://islamforever.com";
 
   // Base URLs
   static const String IMAGE_PATH = '$SERVER_URL/upload/';
