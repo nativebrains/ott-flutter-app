@@ -32,7 +32,7 @@ class ItemShowModel {
       showImage: json['show_poster'],
       showDescription: json['show_info'],
       showLanguage: json['show_lang'],
-      showRating: json['imdb_rating'],
+      // showRating: json['imdb_rating'],
       showContentRating: json['content_rating'],
       isPremium: json['series_access'] == "Paid",
       upcoming: json['upcoming'] == "true",

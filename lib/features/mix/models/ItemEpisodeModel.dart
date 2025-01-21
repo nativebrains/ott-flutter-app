@@ -84,7 +84,7 @@ class ItemEpisodeModel {
       episodeShareLink: json[Constants.MOVIE_SHARE_LINK],
       episodeView: json[Constants.MOVIE_VIEW],
       isWatchList: json[Constants.USER_WATCHLIST_STATUS],
-      episodeRating: json[Constants.IMDB_RATING],
+      // episodeRating: json[Constants.IMDB_RATING],
     );
   }
 }
