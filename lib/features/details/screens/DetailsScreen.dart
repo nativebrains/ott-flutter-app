@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html/parser.dart';
 import 'package:islamforever/constants/app_colors.dart';
@@ -167,9 +168,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
   }
 
   Future<void> _initAudioPlayer() async {
-    _audioPlayer = AudioPlayer();
-    await _audioPlayer?.setAudioSource(AudioSource.uri(
-        Uri.parse(mediaItemDetails?.mediaPlayUrl.toString() ?? "")));
+    try {
+      _audioPlayer = AudioPlayer();
+      await _audioPlayer?.setAudioSource(AudioSource.uri(
+          Uri.parse(mediaItemDetails?.mediaPlayUrl.toString() ?? "")));
+    } catch (e) {
+      showCustomToast(context, "Audio not Supported..!");
+    }
   }
 
   @override
@@ -347,197 +352,108 @@ class _DetailsscreenState extends State<Detailsscreen> {
                             positionData?.duration.inMilliseconds.toDouble() ??
                                 0;
 
-                        return Column(
-                          children: [
-                            Slider(
-                              min: 0,
-                              max: maxValue,
-                              value: (positionData?.position.inMilliseconds
-                                          .toDouble() ??
-                                      0)
-                                  .clamp(0, maxValue),
-                              activeColor: Colors.greenAccent,
-                              inactiveColor: Colors.white,
-                              thumbColor: Colors.red,
-                              onChanged: (value) {
-                                _audioPlayer?.seek(
-                                    Duration(milliseconds: value.round()));
-                              },
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                    text: formatDuration(
-                                        positionData?.position ??
-                                            Duration.zero),
-                                    fontSize: 11,
-                                    color: Colors.white,
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      final position =
-                                          await _audioPlayer!.position;
-                                      final newPosition =
-                                          position - const Duration(seconds: 5);
-                                      if (newPosition.inSeconds < 0) {
-                                        await _audioPlayer!
-                                            .seek(const Duration(seconds: 0));
-                                      } else {
-                                        await _audioPlayer!.seek(newPosition);
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color:
-                                            Colors.greenAccent, // Button color
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.skip_previous,
-                                          size: 20, // Icon size
-                                          color: Colors.black, // Icon color
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  StreamBuilder<PlayerState>(
-                                    stream: _audioPlayer?.playerStateStream,
-                                    builder: (context, snapshot) {
-                                      final playerState = snapshot.data;
-                                      final processingState =
-                                          playerState?.processingState;
-                                      final playing = playerState?.playing;
-                                      if (processingState ==
-                                              ProcessingState.loading ||
-                                          processingState ==
-                                              ProcessingState.buffering) {
-                                        return Container(
-                                          margin: const EdgeInsets.all(8.0),
-                                          width: 20.0,
-                                          height: 20.0,
-                                          child:
-                                              const CircularProgressIndicator(
-                                            color: Colors.greenAccent,
-                                          ),
-                                        );
-                                      } else if (playing != true) {
-                                        return InkWell(
-                                          onTap: _audioPlayer?.play,
-                                          child: Container(
-                                            width: 30,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors
-                                                  .greenAccent, // Button color
-                                            ),
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.play_arrow, // Button icon
-                                                size: 20, // Icon size
-                                                color:
-                                                    Colors.black, // Icon color
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      } else if (processingState !=
-                                          ProcessingState.completed) {
-                                        return InkWell(
-                                          onTap: _audioPlayer?.pause,
-                                          child: Container(
-                                            width: 30,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors
-                                                  .greenAccent, // Button color
-                                            ),
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.pause, // Button icon
-                                                size: 20, // Icon size
-                                                color:
-                                                    Colors.black, // Icon color
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return InkWell(
-                                          onTap: () =>
-                                              _audioPlayer?.seek(Duration.zero),
-                                          child: Container(
-                                            width: 30,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors
-                                                  .greenAccent, // Button color
-                                            ),
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.replay, // Button icon
-                                                size: 20, // Icon size
-                                                color:
-                                                    Colors.black, // Icon color
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      final position =
-                                          await _audioPlayer!.position;
-                                      final duration =
-                                          await _audioPlayer!.duration;
-                                      final newPosition =
-                                          position + const Duration(seconds: 5);
-                                      if (newPosition.inSeconds >
-                                          duration!.inSeconds) {
-                                        await _audioPlayer?.seek(duration);
-                                      } else {
-                                        await _audioPlayer?.seek(newPosition);
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color:
-                                            Colors.greenAccent, // Button color
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.skip_next,
-                                          size: 20, // Icon size
-                                          color: Colors.black, // Icon color
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  CustomText(
-                                    text: formatDuration(
-                                        positionData?.duration ??
-                                            Duration.zero),
-                                    fontSize: 11,
-                                  ),
-                                ],
+                        return Slider(
+                          min: 0,
+                          max: maxValue,
+                          value: (positionData?.position.inMilliseconds
+                                      .toDouble() ??
+                                  0)
+                              .clamp(0, maxValue),
+                          activeColor: Colors.greenAccent,
+                          inactiveColor: Colors.white,
+                          thumbColor: Colors.red,
+                          onChanged: (value) {
+                            _audioPlayer
+                                ?.seek(Duration(milliseconds: value.round()));
+                          },
+                        );
+                      },
+                    ),
+                    StreamBuilder<PositionData>(
+                      stream: _positionDataStream,
+                      builder: (context, snapshot) {
+                        final positionData = snapshot.data;
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                text: formatDuration(
+                                    positionData?.position ?? Duration.zero),
+                                fontSize: 11,
+                                color: Colors.white,
                               ),
-                            ),
-                          ],
+                              CustomButton(
+                                icon: Icons.skip_previous,
+                                onPressed: () async {
+                                  final position = await _audioPlayer!.position;
+                                  final newPosition =
+                                      position - const Duration(seconds: 5);
+                                  if (newPosition.inSeconds < 0) {
+                                    await _audioPlayer!
+                                        .seek(const Duration(seconds: 0));
+                                  } else {
+                                    await _audioPlayer!.seek(newPosition);
+                                  }
+                                },
+                              ),
+                              StreamBuilder<PlayerState>(
+                                stream: _audioPlayer?.playerStateStream,
+                                builder: (context, snapshot) {
+                                  final playerState = snapshot.data;
+                                  final playing = playerState?.playing;
+                                  final processingState =
+                                      playerState?.processingState;
+
+                                  if (processingState ==
+                                      ProcessingState.completed) {
+                                    return CustomButton(
+                                      icon: Icons.replay,
+                                      onPressed: () async {
+                                        await _audioPlayer?.seek(Duration.zero);
+                                        await _audioPlayer?.play();
+                                      },
+                                    );
+                                  } else {
+                                    return CustomButton(
+                                      icon: playing ?? false
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                      onPressed: () async {
+                                        if (playing ?? false) {
+                                          await _audioPlayer?.pause();
+                                        } else {
+                                          await _audioPlayer?.play();
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
+                              CustomButton(
+                                icon: Icons.skip_next,
+                                onPressed: () async {
+                                  final position = await _audioPlayer!.position;
+                                  final duration = await _audioPlayer!.duration;
+                                  final newPosition =
+                                      position + const Duration(seconds: 5);
+                                  if (newPosition.inSeconds >
+                                      duration!.inSeconds) {
+                                    await _audioPlayer?.seek(duration);
+                                  } else {
+                                    await _audioPlayer?.seek(newPosition);
+                                  }
+                                },
+                              ),
+                              CustomText(
+                                text: formatDuration(
+                                    positionData?.duration ?? Duration.zero),
+                                fontSize: 11,
+                              ),
+                            ],
+                          ),
                         );
                       },
                     ),
@@ -550,12 +466,38 @@ class _DetailsscreenState extends State<Detailsscreen> {
     );
   }
 
+  Widget CustomButton(
+      {required IconData icon, required VoidCallback onPressed}) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        width: 34,
+        height: 34,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.greenAccent, // Button color
+        ),
+        child: Center(
+          child: Icon(
+            icon, // Button icon
+            size: 24, // Icon size
+            color: Colors.black, // Icon color
+          ),
+        ),
+      ),
+    );
+  }
+
   String formatDuration(Duration duration) {
     int hours = duration.inHours;
     int minutes = duration.inMinutes.remainder(60);
     int seconds = duration.inSeconds.remainder(60);
 
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    }
   }
 
   Widget getDescriptionSection() {

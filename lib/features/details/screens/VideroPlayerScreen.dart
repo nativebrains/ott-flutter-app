@@ -197,6 +197,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
           FullScreenButton(
             controller: _youtubeController,
           ),
+          PlaybackSpeedButton(),
           SizedBox(
             width: 12.sp,
           ),
