@@ -170,6 +170,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
         isLive: false, // Set to true for live videos
         forceHD: false, // Set to true to force HD quality
         disableDragSeek: false,
+        hideThumbnail: true,
       ),
     );
   }
