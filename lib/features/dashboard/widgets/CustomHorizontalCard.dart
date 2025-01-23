@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/widgets/extra/rounded_network_image.dart';
@@ -23,6 +24,7 @@ class Customhorizontalcard extends StatelessWidget {
   final bool shouldRedirect;
   final bool shoulPlay;
   final String? playUrl;
+  final bool showEpisodePlayIcon;
 
   const Customhorizontalcard({
     super.key,
@@ -38,6 +40,7 @@ class Customhorizontalcard extends StatelessWidget {
     this.shouldRedirect = true,
     this.shoulPlay = false,
     this.playUrl,
+    this.showEpisodePlayIcon = false,
   });
 
   @override
@@ -106,6 +109,36 @@ class Customhorizontalcard extends StatelessWidget {
                         )
                       : const SizedBox(),
                 ),
+                if (showEpisodePlayIcon)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    child: Center(
+                      child: AvatarGlow(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [
+                                ColorCode.greenStartColor,
+                                ColorCode.greenEndColor
+                              ],
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(6.sp),
+                            child: Icon(
+                              Icons.play_arrow,
+                              size: 24.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

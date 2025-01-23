@@ -281,57 +281,60 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ),
 
           if (!_isPlaying)
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              top: 0,
-              child: Center(
-                child: AvatarGlow(
-                  child: InkWell(
-                    onTap: () async {
-                      if (widget.detailsScreenArguments.mediaContentType ==
-                          MediaContentType.podcast) {
-                        setState(() {
-                          _isPlaying = !_isPlaying;
-                        });
-                        await _audioPlayer?.play();
-                      } else {
-                        String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
-                        PlayerUtil.navigateToVideoPlayerScreen(
-                          context,
-                          streamUrl,
-                          mediaItemDetails!.id,
-                          mediaItemDetails!.mediaContentType,
-                          mediaItemDetails?.image ??
-                              mediaItemDetails?.poster ??
-                              "",
-                        );
-                      }
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            ColorCode.greenStartColor,
-                            ColorCode.greenEndColor
-                          ],
+            if (widget.detailsScreenArguments.mediaContentType !=
+                MediaContentType.tvShows)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                top: 0,
+                child: Center(
+                  child: AvatarGlow(
+                    child: InkWell(
+                      onTap: () async {
+                        if (widget.detailsScreenArguments.mediaContentType ==
+                            MediaContentType.podcast) {
+                          setState(() {
+                            _isPlaying = !_isPlaying;
+                          });
+                          await _audioPlayer?.play();
+                        } else {
+                          String streamUrl =
+                              mediaItemDetails?.mediaPlayUrl ?? "";
+                          PlayerUtil.navigateToVideoPlayerScreen(
+                            context,
+                            streamUrl,
+                            mediaItemDetails!.id,
+                            mediaItemDetails!.mediaContentType,
+                            mediaItemDetails?.image ??
+                                mediaItemDetails?.poster ??
+                                "",
+                          );
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              ColorCode.greenStartColor,
+                              ColorCode.greenEndColor
+                            ],
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(6.sp),
-                        child: Icon(
-                          Icons.play_arrow,
-                          size: 45.sp,
-                          color: Colors.white,
+                        child: Padding(
+                          padding: EdgeInsets.all(6.sp),
+                          child: Icon(
+                            Icons.play_arrow,
+                            size: 45.sp,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
 
           if (_isPlaying)
             Positioned(
@@ -1265,6 +1268,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
                         shoulPlay: true,
                         shouldRedirect: false,
                         playUrl: itemEpisodeModel![index].episodeUrl ?? "",
+                        showEpisodePlayIcon:
+                            mediaItemDetails?.mediaContentType ==
+                                MediaContentType.tvShows,
                       )),
                 ),
             ],
