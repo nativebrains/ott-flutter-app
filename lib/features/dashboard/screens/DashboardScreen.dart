@@ -452,7 +452,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 onTap();
                 Navigator.of(context).pop();
               }),
-              getCustomTile("assets/images/ic_tv_show.png", "TV Shows", () {
+              getCustomTile("assets/images/ic_tv_show.png", "TV Programs", () {
                 dashboardProvider
                     .setSelectedMixScreenContentType(MediaContentType.tvShows);
                 onTap();

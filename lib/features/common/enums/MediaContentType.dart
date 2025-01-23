@@ -27,7 +27,7 @@ enum MediaContentType {
       case MediaContentType.movies:
         return 'Webseries';
       case MediaContentType.tvShows:
-        return 'TV Shows';
+        return 'TV Programs';
       case MediaContentType.sports:
         return 'Browse';
       case MediaContentType.liveTv:
