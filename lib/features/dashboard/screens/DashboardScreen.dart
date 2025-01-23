@@ -446,7 +446,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 ),
               ),
               SizedBox(height: 12.sp),
-              getCustomTile("assets/images/ic_movie.png", "Movies", () {
+              getCustomTile("assets/images/ic_movie.png", "Webseries", () {
                 dashboardProvider
                     .setSelectedMixScreenContentType(MediaContentType.movies);
                 onTap();

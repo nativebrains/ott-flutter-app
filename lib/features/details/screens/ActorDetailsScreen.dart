@@ -185,7 +185,7 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
         children: [
           SizedBox(height: 12.sp),
           Text(
-            "Movies",
+            "Webseries",
             style: GoogleFonts.poppins(
               color: ColorCode.whiteColor,
               fontWeight: FontWeight.w600,

@@ -18,14 +18,14 @@ enum MediaContentType {
       case MediaContentType.podcast:
         return 'podcast';
       default:
-        return 'Movies';
+        return 'movie';
     }
   }
 
   String get displayName {
     switch (this) {
       case MediaContentType.movies:
-        return 'Movies';
+        return 'Webseries';
       case MediaContentType.tvShows:
         return 'TV Shows';
       case MediaContentType.sports:
@@ -35,14 +35,14 @@ enum MediaContentType {
       case MediaContentType.podcast:
         return 'Podcast';
       default:
-        return 'Movies';
+        return 'Webseries';
     }
   }
 
   String get shortDisplayName {
     switch (this) {
       case MediaContentType.movies:
-        return 'Movies';
+        return 'Webseries';
       case MediaContentType.tvShows:
         return 'Shows'; // this is changed
       case MediaContentType.sports:
@@ -52,7 +52,7 @@ enum MediaContentType {
       case MediaContentType.podcast:
         return 'Podcast';
       default:
-        return 'Movies';
+        return 'Webseries';
     }
   }
 
