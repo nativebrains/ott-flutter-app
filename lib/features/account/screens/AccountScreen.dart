@@ -148,10 +148,10 @@ class _AccountscreenState extends State<Accountscreen> {
         SizedBox(
           height: 24.sp,
         ),
-        getMemberShipCard(),
-        SizedBox(
-          height: 30.sp,
-        ),
+        // getMemberShipCard(),
+        // SizedBox(
+        //   height: 30.sp,
+        // ),
         getAccountCard(),
         SizedBox(
           height: 30.sp,
