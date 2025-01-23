@@ -61,6 +61,7 @@ class _HomescreenState extends State<Homescreen> {
                       }) ??
                       [],
                   SizedBox(height: 20.sp),
+                  getNoDataWidget(provider),
                 ],
               ),
             ),
@@ -185,5 +186,33 @@ class _HomescreenState extends State<Homescreen> {
         ),
       ],
     );
+  }
+
+  getNoDataWidget(DashboardProvider provider) {
+    if (!provider.isHomeScreenLoading &&
+        provider.dashboardData != null &&
+        provider.dashboardData!.itemSlider.isEmpty &&
+        provider.dashboardData!.itemHome.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 250.sp),
+            SizedBox(height: 12),
+            Text(
+              "No Items Found!\nSwipe down to Refresh",
+              style: GoogleFonts.poppins(
+                color: ColorCode.whiteColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 18.sp,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }
