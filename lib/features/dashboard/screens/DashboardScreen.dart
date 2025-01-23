@@ -104,22 +104,27 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        DateTime now = DateTime.now();
-        if (lastBackPressed == null ||
-            now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
-          lastBackPressed = now;
-          Fluttertoast.showToast(
-            msg: 'Please click BACK again to exit',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2,
-            backgroundColor: ColorCode.greenStartColor,
-            textColor: Colors.white,
-            fontSize: 15.sp,
-          );
-          return false; // Do not exit the app
+        if (_selectedIndex != 0) {
+          _onItemTapped(0);
+          return false;
+        } else {
+          DateTime now = DateTime.now();
+          if (lastBackPressed == null ||
+              now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
+            lastBackPressed = now;
+            Fluttertoast.showToast(
+              msg: 'Please click BACK again to exit',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2,
+              backgroundColor: ColorCode.greenStartColor,
+              textColor: Colors.white,
+              fontSize: 15.sp,
+            );
+            return false; // Do not exit the app
+          }
+          exit(0); // Exit the app
         }
-        exit(0); // Exit the app
       },
       child: Scaffold(
         backgroundColor: ColorCode.scaffoldBackgroundColor,
@@ -296,9 +301,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
         children: [
           InkWell(
             onTap: () {
-              setState(() {
-                _selectedIndex = 0;
-              });
+              _onItemTapped(0);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -319,9 +322,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
           InkWell(
             onTap: () {
-              setState(() {
-                _selectedIndex = 1;
-              });
+              _onItemTapped(1);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -343,9 +344,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           InkWell(
             onTap: () {
               showMixMenuBottomSheet(context, () {
-                setState(() {
-                  _selectedIndex = 2;
-                });
+                _onItemTapped(2);
               });
             },
             child: Container(
@@ -368,9 +367,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
           InkWell(
             onTap: () {
-              setState(() {
-                _selectedIndex = 3;
-              });
+              _onItemTapped(3);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -390,9 +387,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           ),
           InkWell(
             onTap: () {
-              setState(() {
-                _selectedIndex = 4;
-              });
+              _onItemTapped(4);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
