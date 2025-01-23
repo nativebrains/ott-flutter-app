@@ -21,9 +21,9 @@ class _CustombannerState extends State<Custombanner> {
     return CarouselSlider(
       options: CarouselOptions(
         autoPlay: true,
-        aspectRatio: 2.1,
+        aspectRatio: 1.9,
         enlargeCenterPage: true,
-        viewportFraction: 0.8,
+        viewportFraction: 0.85,
       ),
       items: widget.itemSliderList
           .map(
@@ -38,14 +38,11 @@ class _CustombannerState extends State<Custombanner> {
                   ),
                 );
               },
-              child: Container(
-                margin: EdgeInsets.all(5.0),
-                child: RoundedNetworkImage(
-                  imageUrl: item.sliderImage ?? "",
-                  fit: BoxFit.cover,
-                  width: 1000,
-                  height: 1000,
-                ),
+              child: RoundedNetworkImage(
+                imageUrl: item.sliderImage ?? "",
+                fit: BoxFit.cover,
+                width: 1000,
+                height: 1000,
               ),
             ),
           )
