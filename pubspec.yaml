@@ -50,6 +50,8 @@ dependencies:
   chewie: ^1.9.2
   onesignal_flutter: ^5.2.7
   cached_network_image: ^3.4.1
+  just_audio: ^0.9.43
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

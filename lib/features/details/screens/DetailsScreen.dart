@@ -25,7 +25,9 @@ import 'package:islamforever/features/mix/models/ItemSportModel.dart';
 import 'package:islamforever/features/settings/screens/AboutScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 import 'package:islamforever/utils/extras.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -74,6 +76,20 @@ class _DetailsscreenState extends State<Detailsscreen> {
   List<ReviewModel> reviewsList = [];
   bool _isLoading = false;
   bool _normalLoading = false;
+
+  late AudioPlayer? _audioPlayer;
+  bool _isPlaying = false;
+
+  /// Collects the data useful for displaying in a seek bar, using a handy
+  /// feature of rx_dart to combine the 3 streams of interest into one.
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          _audioPlayer!.positionStream,
+          _audioPlayer!.bufferedPositionStream,
+          _audioPlayer!.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
+
   @override
   void initState() {
     super.initState();
@@ -135,6 +151,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             .fetchPodCastDetails(widget.detailsScreenArguments.id);
         mediaItemDetails =
             MediaItemDetails.getMediaItemDetails(genericDetailsResponseModel!);
+        await _initAudioPlayer();
         break;
     }
 
@@ -147,6 +164,18 @@ class _DetailsscreenState extends State<Detailsscreen> {
       _normalLoading = false;
       _isLoading = false;
     });
+  }
+
+  Future<void> _initAudioPlayer() async {
+    _audioPlayer = AudioPlayer();
+    await _audioPlayer?.setAudioSource(AudioSource.uri(
+        Uri.parse(mediaItemDetails?.mediaPlayUrl.toString() ?? "")));
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer?.dispose();
+    super.dispose();
   }
 
   @override
@@ -246,51 +275,287 @@ class _DetailsscreenState extends State<Detailsscreen> {
             ),
           ),
 
-          // Play button
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            top: 0,
-            child: Center(
-              child: AvatarGlow(
-                child: InkWell(
-                  onTap: () {
-                    String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
-                    PlayerUtil.navigateToVideoPlayerScreen(
-                      context,
-                      streamUrl,
-                      mediaItemDetails!.id,
-                      mediaItemDetails!.mediaContentType,
-                      mediaItemDetails?.image ?? mediaItemDetails?.poster ?? "",
-                    );
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          ColorCode.greenStartColor,
-                          ColorCode.greenEndColor
-                        ],
+          if (!_isPlaying)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Center(
+                child: AvatarGlow(
+                  child: InkWell(
+                    onTap: () async {
+                      if (widget.detailsScreenArguments.mediaContentType ==
+                          MediaContentType.podcast) {
+                        setState(() {
+                          _isPlaying = !_isPlaying;
+                        });
+                        await _audioPlayer?.play();
+                      } else {
+                        String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
+                        PlayerUtil.navigateToVideoPlayerScreen(
+                          context,
+                          streamUrl,
+                          mediaItemDetails!.id,
+                          mediaItemDetails!.mediaContentType,
+                          mediaItemDetails?.image ??
+                              mediaItemDetails?.poster ??
+                              "",
+                        );
+                      }
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            ColorCode.greenStartColor,
+                            ColorCode.greenEndColor
+                          ],
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(6.sp),
-                      child: Icon(
-                        Icons.play_arrow,
-                        size: 45.sp,
-                        color: Colors.white,
+                      child: Padding(
+                        padding: EdgeInsets.all(6.sp),
+                        child: Icon(
+                          Icons.play_arrow,
+                          size: 45.sp,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
+
+          if (_isPlaying)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(10.sp),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Seek bar
+                    StreamBuilder<PositionData>(
+                      stream: _positionDataStream,
+                      builder: (context, snapshot) {
+                        final positionData = snapshot.data;
+                        final maxValue =
+                            positionData?.duration.inMilliseconds.toDouble() ??
+                                0;
+
+                        return Column(
+                          children: [
+                            Slider(
+                              min: 0,
+                              max: maxValue,
+                              value: (positionData?.position.inMilliseconds
+                                          .toDouble() ??
+                                      0)
+                                  .clamp(0, maxValue),
+                              activeColor: Colors.greenAccent,
+                              inactiveColor: Colors.white,
+                              thumbColor: Colors.red,
+                              onChanged: (value) {
+                                _audioPlayer?.seek(
+                                    Duration(milliseconds: value.round()));
+                              },
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    text: formatDuration(
+                                        positionData?.position ??
+                                            Duration.zero),
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      final position =
+                                          await _audioPlayer!.position;
+                                      final newPosition =
+                                          position - const Duration(seconds: 5);
+                                      if (newPosition.inSeconds < 0) {
+                                        await _audioPlayer!
+                                            .seek(const Duration(seconds: 0));
+                                      } else {
+                                        await _audioPlayer!.seek(newPosition);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Colors.greenAccent, // Button color
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.skip_previous,
+                                          size: 20, // Icon size
+                                          color: Colors.black, // Icon color
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  StreamBuilder<PlayerState>(
+                                    stream: _audioPlayer?.playerStateStream,
+                                    builder: (context, snapshot) {
+                                      final playerState = snapshot.data;
+                                      final processingState =
+                                          playerState?.processingState;
+                                      final playing = playerState?.playing;
+                                      if (processingState ==
+                                              ProcessingState.loading ||
+                                          processingState ==
+                                              ProcessingState.buffering) {
+                                        return Container(
+                                          margin: const EdgeInsets.all(8.0),
+                                          width: 20.0,
+                                          height: 20.0,
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.greenAccent,
+                                          ),
+                                        );
+                                      } else if (playing != true) {
+                                        return InkWell(
+                                          onTap: _audioPlayer?.play,
+                                          child: Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors
+                                                  .greenAccent, // Button color
+                                            ),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.play_arrow, // Button icon
+                                                size: 20, // Icon size
+                                                color:
+                                                    Colors.black, // Icon color
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else if (processingState !=
+                                          ProcessingState.completed) {
+                                        return InkWell(
+                                          onTap: _audioPlayer?.pause,
+                                          child: Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors
+                                                  .greenAccent, // Button color
+                                            ),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.pause, // Button icon
+                                                size: 20, // Icon size
+                                                color:
+                                                    Colors.black, // Icon color
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return InkWell(
+                                          onTap: () =>
+                                              _audioPlayer?.seek(Duration.zero),
+                                          child: Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors
+                                                  .greenAccent, // Button color
+                                            ),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.replay, // Button icon
+                                                size: 20, // Icon size
+                                                color:
+                                                    Colors.black, // Icon color
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      final position =
+                                          await _audioPlayer!.position;
+                                      final duration =
+                                          await _audioPlayer!.duration;
+                                      final newPosition =
+                                          position + const Duration(seconds: 5);
+                                      if (newPosition.inSeconds >
+                                          duration!.inSeconds) {
+                                        await _audioPlayer?.seek(duration);
+                                      } else {
+                                        await _audioPlayer?.seek(newPosition);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Colors.greenAccent, // Button color
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.skip_next,
+                                          size: 20, // Icon size
+                                          color: Colors.black, // Icon color
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  CustomText(
+                                    text: formatDuration(
+                                        positionData?.duration ??
+                                            Duration.zero),
+                                    fontSize: 11,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
+  }
+
+  String formatDuration(Duration duration) {
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   Widget getDescriptionSection() {
