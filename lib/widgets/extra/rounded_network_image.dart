@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
@@ -5,6 +6,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/assets_images.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RoundedNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -12,21 +16,22 @@ class RoundedNetworkImage extends StatelessWidget {
   final BoxFit fit;
   final double? width;
   final double? height;
-  final Color? borderColor; // Optional border color
-  final double? borderWidth; // Optional border width
-  final Color? iconColor; // Optional icon color
-  bool showShimmerOnError = false;
+  final Color? borderColor;
+  final double? borderWidth;
+  final Color? iconColor;
+  final bool showShimmerOnError;
 
-  RoundedNetworkImage(
-      {required this.imageUrl,
-      this.borderRadius = 6.0,
-      this.fit = BoxFit.cover,
-      this.width,
-      this.height,
-      this.borderColor,
-      this.borderWidth = 0.0, // Default to no border
-      this.iconColor, // Default to null
-      this.showShimmerOnError = false});
+  RoundedNetworkImage({
+    required this.imageUrl,
+    this.borderRadius = 6.0,
+    this.fit = BoxFit.cover,
+    this.width,
+    this.height,
+    this.borderColor,
+    this.borderWidth = 0.0,
+    this.iconColor,
+    this.showShimmerOnError = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,81 +39,73 @@ class RoundedNetworkImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        // Apply the border only if borderColor is not null and borderWidth is greater than 0
-        border: (borderColor != null && borderWidth! > 0.0)
+        border: borderColor != null && borderWidth! > 0.0
             ? Border.all(color: borderColor!, width: borderWidth!)
             : null,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      clipBehavior:
-          Clip.hardEdge, // Ensures the image (child) respects the borderRadius
+      clipBehavior: Clip.hardEdge,
       child: Stack(
         alignment: Alignment.center,
         children: [
           if (iconColor == null)
-            Image.network(
-              imageUrl,
+            CachedNetworkImage(
+              imageUrl: imageUrl,
               fit: fit,
               width: width,
               height: height,
-              errorBuilder: (context, error, stackTrace) {
-                print('Failed to load image: $error | ImageUrl ');
-                return showShimmerOnError
-                    ? Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        period: Duration(
-                            milliseconds: 750), // Set the duration for one loop
-                        child: Container(
-                          width: width,
-                          height: height,
-                          color: Colors.grey[300],
-                        ),
-                      )
-                    : Opacity(
-                        opacity:
-                            0.5, // Adjust this value to change the transparency level (0.0 - 1.0)
-                        child: Image.asset(
-                          AssetImages.dawateIslamiLogo,
-                          width: width,
-                          height: height,
-                          fit: fit,
-                        ),
-                      );
-              },
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null)
-                  return child; // Return the image if it's loaded.
-
-                // Return shimmer effect during image loading
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  period: Duration(
-                      milliseconds: 750), // Set the duration for one loop
-                  child: Container(
-                    width: width,
-                    height: height,
-                    color: Colors.grey[300],
-                  ),
-                );
-              },
+              errorWidget: (context, url, error) => _getErrorWidget(context),
+              placeholder: (context, url) => _getPlaceholderWidget(context),
             ),
           if (iconColor != null)
             ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                iconColor!,
-                BlendMode.srcIn,
-              ),
-              child: Image.network(
-                imageUrl,
+              colorFilter: ColorFilter.mode(iconColor!, BlendMode.srcIn),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
                 fit: fit,
                 width: width,
                 height: height,
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _getErrorWidget(BuildContext context) {
+    print('Failed to load image: ');
+    return showShimmerOnError
+        ? Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            period: Duration(milliseconds: 750),
+            child: Container(
+              width: width,
+              height: height,
+              color: Colors.grey[300],
+            ),
+          )
+        : Opacity(
+            opacity:
+                0.5, // Adjust this value to change the transparency level (0.0 - 1.0)
+            child: Image.asset(
+              AssetImages.dawateIslamiLogo,
+              width: width,
+              height: height,
+              fit: fit,
+            ),
+          );
+  }
+
+  Widget _getPlaceholderWidget(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      period: Duration(milliseconds: 750),
+      child: Container(
+        width: width,
+        height: height,
+        color: Colors.grey[300],
       ),
     );
   }
