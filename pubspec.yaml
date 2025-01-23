@@ -68,11 +68,11 @@ flutter_native_splash:
   ios: true
   web: false
 
-  image: "assets/images/ic_islamforever_logo.png"
+  image: "assets/images/ic_islamforever_icon.png"
   color: "#2eb98e"
 
   android_12:
-    image: "assets/images/ic_islamforever_android12.png"
+    image: "assets/images/ic_islamforever_icon_android12.png"
     color: "#2eb98e"
 
 flutter:
