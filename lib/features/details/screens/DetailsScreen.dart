@@ -186,7 +186,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorCode.bgColor,
+      backgroundColor: ColorCode.blackColor,
       body: SafeArea(
         top: false, // Remove the top padding
         child: Stack(
@@ -235,7 +235,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getTopSection() {
     return SizedBox(
-      height: 300.sp,
+      height: 320.sp,
       child: Stack(
         children: [
           // Background image
@@ -243,7 +243,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             imageUrl: mediaItemDetails?.image ?? mediaItemDetails?.poster ?? "",
             fit: BoxFit.cover,
             width: double.infinity, // Set the width to infinity
-            height: 295.sp,
+            height: double.infinity,
           ),
 
           // Gradient overlay
@@ -251,7 +251,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: double.infinity,
-              height: 150.sp,
+              height: 220.sp,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
@@ -281,60 +281,69 @@ class _DetailsscreenState extends State<Detailsscreen> {
           ),
 
           if (!_isPlaying)
-            if (widget.detailsScreenArguments.mediaContentType !=
-                MediaContentType.tvShows)
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                top: 0,
-                child: Center(
-                  child: AvatarGlow(
-                    child: InkWell(
-                      onTap: () async {
-                        if (widget.detailsScreenArguments.mediaContentType ==
-                            MediaContentType.podcast) {
-                          setState(() {
-                            _isPlaying = !_isPlaying;
-                          });
-                          await _audioPlayer?.play();
-                        } else {
-                          String streamUrl =
-                              mediaItemDetails?.mediaPlayUrl ?? "";
-                          PlayerUtil.navigateToVideoPlayerScreen(
-                            context,
-                            streamUrl,
-                            mediaItemDetails!.id,
-                            mediaItemDetails!.mediaContentType,
-                            mediaItemDetails?.image ??
-                                mediaItemDetails?.poster ??
-                                "",
-                          );
-                        }
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            colors: [
-                              ColorCode.greenStartColor,
-                              ColorCode.greenEndColor
-                            ],
-                          ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Center(
+                child: AvatarGlow(
+                  child: InkWell(
+                    onTap: () async {
+                      if (widget.detailsScreenArguments.mediaContentType ==
+                              MediaContentType.tvShows &&
+                          itemEpisodeModel != null &&
+                          itemEpisodeModel!.isNotEmpty) {
+                        PlayerUtil.navigateToVideoPlayerScreen(
+                          context,
+                          itemEpisodeModel![0].episodeUrl ?? "",
+                          itemEpisodeModel![0].episodeId,
+                          MediaContentType.tvShows,
+                          itemEpisodeModel![0].episodeImage ?? "",
+                        );
+                      } else if (widget
+                              .detailsScreenArguments.mediaContentType ==
+                          MediaContentType.podcast) {
+                        setState(() {
+                          _isPlaying = !_isPlaying;
+                        });
+                        await _audioPlayer?.play();
+                      } else {
+                        String streamUrl = mediaItemDetails?.mediaPlayUrl ?? "";
+                        PlayerUtil.navigateToVideoPlayerScreen(
+                          context,
+                          streamUrl,
+                          mediaItemDetails!.id,
+                          mediaItemDetails!.mediaContentType,
+                          mediaItemDetails?.image ??
+                              mediaItemDetails?.poster ??
+                              "",
+                        );
+                      }
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            ColorCode.greenStartColor,
+                            ColorCode.greenEndColor
+                          ],
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(6.sp),
-                          child: Icon(
-                            Icons.play_arrow,
-                            size: 45.sp,
-                            color: Colors.white,
-                          ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(6.sp),
+                        child: Icon(
+                          Icons.play_arrow,
+                          size: 45.sp,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
+            ),
 
           if (_isPlaying)
             Positioned(
