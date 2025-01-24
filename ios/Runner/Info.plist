@@ -2,14 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Ottmedia</string>
+		<string>Islam For Ever</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
-		<string>com.dawateislami.islamforever</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
@@ -22,29 +24,33 @@
 		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
-		<key>LSRequiresIPhoneOS</key>
-		<true/>
-		<key>UILaunchStoryboardName</key>
-		<string>LaunchScreen</string>
-		<key>UIMainStoryboardFile</key>
-		<string>Main</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>sms</string>
 			<string>tel</string>
 		</array>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Photo Library Access Needed for Profile picture inside the App</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
 		<key>NSCameraUsageDescription</key>
 		<string>Camera Access Needed for profile pictures</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Photo Library Access Needed for Profile picture inside the App</string>
+		<key>NSUserNotificationAlertStyle</key>
+		<string>alert</string>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>
 			<string>processing</string>
 			<string>remote-notification</string>
 		</array>
-		<key>NSUserNotificationAlertStyle</key>
-		<string>alert</string>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UIStatusBarHidden</key>
+		<false/>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
@@ -58,11 +64,5 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-		<key>CADisableMinimumFrameDurationOnPhone</key>
-		<true/>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
-		<true/>
-		<key>UIStatusBarHidden</key>
-		<false/>
 	</dict>
 </plist>
