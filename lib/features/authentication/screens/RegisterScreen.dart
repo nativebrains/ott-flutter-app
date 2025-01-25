@@ -263,7 +263,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                                   Navigator.pushNamed(
                                       context, RouteConstantName.webviewScreen,
                                       arguments: const WebviewScreen(
-                                          webviewType: WebviewType.TERMS));
+                                          webviewType: WebviewType.PRIVACY));
                                 },
                               ),
                             ],

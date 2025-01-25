@@ -156,9 +156,11 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   ? []
                   : [
                       CustomText(
-                        text: parse(widget.webviewType == WebviewType.PRIVACY
-                                ? aboutAppModel?.appHtmlPrivacy.toString()
-                                : aboutAppModel?.appTerms.toString())
+                        text: parse((widget.webviewType == WebviewType.PRIVACY
+                                    ? aboutAppModel?.appHtmlPrivacy.toString()
+                                    : aboutAppModel?.appTerms.toString() ?? '')!
+                                .split('<div')
+                                .first)
                             .body!
                             .text,
                         fontSize: 14.sp,
@@ -167,7 +169,6 @@ class _WebviewScreenState extends State<WebviewScreen> {
                         maxLines: 100,
                         fontWeight: FontWeight.normal,
                       ),
-                      SizedBox(height: 50.sp),
                     ],
             ),
           ),

@@ -40,7 +40,7 @@ class _CustombannerState extends State<Custombanner> {
               },
               child: RoundedNetworkImage(
                 imageUrl: item.sliderImage ?? "",
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 width: 1000,
                 height: 1000,
               ),

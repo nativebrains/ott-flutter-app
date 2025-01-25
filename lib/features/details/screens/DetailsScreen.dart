@@ -197,7 +197,6 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     getTopSection(),
-                    SizedBox(height: 8.sp),
                     getDescriptionSection(),
                     if (DetailsProvider.isLoggedIn) getAddReviewSection(),
                     SizedBox(height: 8.sp),
@@ -235,13 +234,13 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getTopSection() {
     return SizedBox(
-      height: 320.sp,
+      height: 300.sp,
       child: Stack(
         children: [
           // Background image
           RoundedNetworkImage(
             imageUrl: mediaItemDetails?.image ?? mediaItemDetails?.poster ?? "",
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
             width: double.infinity, // Set the width to infinity
             height: double.infinity,
           ),
@@ -251,7 +250,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: double.infinity,
-              height: 220.sp,
+              height: 130.sp,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
@@ -267,16 +266,22 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
           // Back icon
           Positioned(
-            top: 35,
-            left: 10,
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
+            top: 45,
+            left: 25,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5), // Add a background color
+                borderRadius: BorderRadius.circular(50),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
 

@@ -161,8 +161,11 @@ class _AboutscreenState extends State<Aboutscreen> {
                                   ),
                                   SizedBox(height: 12.sp),
                                   CustomText(
-                                    text: parse(aboutAppModel?.appDescription
-                                            .toString())
+                                    text: parse(
+                                            (aboutAppModel?.appDescription ??
+                                                    '')
+                                                .split('<div')
+                                                .first)
                                         .body!
                                         .text,
                                     fontSize: 14.sp,
