@@ -202,7 +202,7 @@ Future<void> goToRelativeAppStore(BuildContext context) async {
         'https://play.google.com/store/apps/details?id=$packageName';
     final String playStoreAppUrl = 'market://details?id=$packageName';
     final String appStoreUrl =
-        'https://apps.apple.com/app/idYOUR_APP_ID'; // Replace `YOUR_APP_ID` with your App Store ID
+        'https://apps.apple.com/app/id6740846066'; // Replace `YOUR_APP_ID` with your App Store ID
 
     if (Platform.isAndroid) {
       // Android-specific logic

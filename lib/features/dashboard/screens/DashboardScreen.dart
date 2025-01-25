@@ -128,95 +128,99 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       },
       child: Scaffold(
         backgroundColor: ColorCode.scaffoldBackgroundColor,
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                automaticallyImplyLeading: _isSearching,
-                leading: _isSearching
-                    ? IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: _clearSearch,
-                      )
-                    : null,
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        ColorCode.greenStartColor,
-                        ColorCode.greenEndColor
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+        body: SafeArea(
+          top: false,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  automaticallyImplyLeading: _isSearching,
+                  leading: _isSearching
+                      ? IconButton(
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: _clearSearch,
+                        )
+                      : null,
+                  flexibleSpace: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          ColorCode.greenStartColor,
+                          ColorCode.greenEndColor
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                     ),
                   ),
-                ),
-                title: _isSearching
-                    ? TextField(
-                        controller: _searchController,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                          hintText: 'Search...',
-                          hintStyle: TextStyle(color: Colors.white70),
-                          border: InputBorder.none,
+                  title: _isSearching
+                      ? TextField(
+                          controller: _searchController,
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            hintText: 'Search...',
+                            hintStyle: TextStyle(color: Colors.white70),
+                            border: InputBorder.none,
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: _onSearchSubmitted,
+                        )
+                      : Text(
+                          getAppBarTitle(_selectedIndex),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                        style: const TextStyle(color: Colors.white),
-                        textInputAction: TextInputAction.done,
-                        onSubmitted: _onSearchSubmitted,
-                      )
-                    : Text(
-                        getAppBarTitle(_selectedIndex),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                centerTitle: false,
-                actions: _isSearching
-                    ? [
-                        IconButton(
-                          iconSize: 32.sp,
-                          icon: const Icon(Icons.close_rounded,
-                              color: Colors.white),
-                          onPressed: _clearSearch,
-                        ),
-                      ]
-                    : [
-                        if (_selectedIndex == 2)
+                  centerTitle: false,
+                  actions: _isSearching
+                      ? [
                           IconButton(
                             iconSize: 32.sp,
-                            icon: Image(
-                              image: const AssetImage(
-                                  'assets/images/ic_filter.png'),
-                              color: Colors.white,
-                              width: 32.sp,
-                              height: 32.sp,
+                            icon: const Icon(Icons.close_rounded,
+                                color: Colors.white),
+                            onPressed: _clearSearch,
+                          ),
+                        ]
+                      : [
+                          if (_selectedIndex == 2)
+                            IconButton(
+                              iconSize: 32.sp,
+                              icon: Image(
+                                image: const AssetImage(
+                                    'assets/images/ic_filter.png'),
+                                color: Colors.white,
+                                width: 32.sp,
+                                height: 32.sp,
+                              ),
+                              onPressed: () {
+                                showFilterBottomSheet(context, () {});
+                              },
                             ),
+                          IconButton(
+                            iconSize: 32.sp,
+                            icon: const Icon(Icons.search, color: Colors.white),
                             onPressed: () {
-                              showFilterBottomSheet(context, () {});
+                              setState(() {
+                                _isSearching = true;
+                              });
                             },
                           ),
-                        IconButton(
-                          iconSize: 32.sp,
-                          icon: const Icon(Icons.search, color: Colors.white),
-                          onPressed: () {
-                            setState(() {
-                              _isSearching = true;
-                            });
-                          },
-                        ),
-                      ],
-                floating: true,
-                snap: true,
-              ),
-            ];
-          },
-          body: RefreshIndicator(
-            color: ColorCode.whiteColor,
-            backgroundColor: Colors.greenAccent,
-            onRefresh: _refreshData,
-            child: _screens[_selectedIndex],
+                        ],
+                  floating: true,
+                  snap: true,
+                ),
+              ];
+            },
+            body: RefreshIndicator(
+              color: ColorCode.whiteColor,
+              backgroundColor: Colors.greenAccent,
+              onRefresh: _refreshData,
+              child: _screens[_selectedIndex],
+            ),
           ),
         ),
         bottomNavigationBar: getBottomMenu(_selectedIndex),
