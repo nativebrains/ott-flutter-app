@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,18 +46,30 @@ class NotificationPermissionHandler with ChangeNotifier {
   /// Update Switch Value
   Future<void> updateSwitchValue(bool newValue) async {
     if (newValue) {
-      // Enable Notification
-      final status = await Permission.notification.request();
+      // Check if permission is already granted
+      final status = await Permission.notification.status;
       if (status.isGranted) {
         _notificationPermissionAllowed = true;
         _switchValue = true;
-        Fluttertoast.showToast(msg: 'Notification permission granted.');
-      } else {
-        _notificationPermissionAllowed = false;
-        _switchValue = false;
         Fluttertoast.showToast(
-            msg: 'Notification permission denied. Please enable it manually.');
-        openAppSettings(); // Open settings for manual enabling
+            msg: 'Notification permission is already granted.');
+      } else {
+        // Request permission
+        final permissionStatus =
+            await OneSignal.Notifications.requestPermission(true);
+
+        if (permissionStatus) {
+          _notificationPermissionAllowed = true;
+          _switchValue = true;
+          Fluttertoast.showToast(msg: 'Notification permission granted.');
+        } else {
+          _notificationPermissionAllowed = false;
+          _switchValue = false;
+          Fluttertoast.showToast(
+              msg:
+                  'Notification permission denied. Please enable it manually.');
+          await openAppSettings(); // Open settings for manual enabling
+        }
       }
     } else {
       // Disable Notification Toggle in the App
@@ -64,7 +77,7 @@ class NotificationPermissionHandler with ChangeNotifier {
       Fluttertoast.showToast(
           msg:
               'You cannot disable notifications directly. Please disable them in app settings.');
-      openAppSettings(); // Guide the user to Settings
+      await openAppSettings(); // Guide the user to Settings
     }
 
     notifyListeners();
