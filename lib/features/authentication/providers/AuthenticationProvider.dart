@@ -25,9 +25,18 @@ class AuthenticationProvider extends ChangeNotifier {
     bool isSuccess = false;
     try {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      String brand = androidInfo.brand;
-      String model = androidInfo.model;
+      String brand = '';
+      String model = '';
+
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        brand = androidInfo.brand;
+        model = androidInfo.model;
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        brand = 'Apple';
+        model = iosInfo.model;
+      }
 
       final response = await apiService.post(
         ApiEndpoints.LOGIN_URL,
