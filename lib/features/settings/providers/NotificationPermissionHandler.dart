@@ -31,7 +31,8 @@ class NotificationPermissionHandler with ChangeNotifier {
 
   /// Check Initial Permission
   Future<void> checkInitialPermission() async {
-    final status = await Permission.notification.status;
+    final status = await Permission.notification.request(); // Request first
+
     if (status.isGranted) {
       _notificationPermissionAllowed = true;
       _switchValue = true;
