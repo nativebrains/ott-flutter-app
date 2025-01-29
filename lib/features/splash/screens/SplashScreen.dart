@@ -65,12 +65,12 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           // GIF background
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AssetImages.loginBg),
-                fit: BoxFit.cover,
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: AssetImage(AssetImages.loginBg),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
               child: Container(

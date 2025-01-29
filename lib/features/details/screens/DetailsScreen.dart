@@ -234,7 +234,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   Widget getTopSection() {
     return SizedBox(
-      height: 300.sp,
+      height: 320.sp,
       child: Stack(
         children: [
           // Background image
@@ -250,7 +250,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: double.infinity,
-              height: 130.sp,
+              height: 180.sp,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
@@ -269,6 +269,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
             top: 45,
             left: 25,
             child: Container(
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.5), // Add a background color
                 borderRadius: BorderRadius.circular(50),
@@ -276,6 +278,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
+                  size: 20.sp,
                   color: Colors.white,
                 ),
                 onPressed: () {

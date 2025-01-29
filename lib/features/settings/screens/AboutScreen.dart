@@ -102,7 +102,7 @@ class _AboutscreenState extends State<Aboutscreen> {
                                 children: [
                                   Image.network(
                                     aboutAppModel?.appLogo ?? "",
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.contain,
                                     width: 50.sp,
                                     height: 50.sp,
                                   ),

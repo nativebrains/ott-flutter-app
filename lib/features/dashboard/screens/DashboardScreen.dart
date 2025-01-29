@@ -295,7 +295,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   Widget getBottomMenu(int selectedIndex) {
     return Container(
-      height: 75,
+      height: 80.sp,
       decoration: const BoxDecoration(
         color: ColorCode.bottomNavBg,
       ),

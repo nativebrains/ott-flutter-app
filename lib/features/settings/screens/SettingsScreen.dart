@@ -28,11 +28,12 @@ class _SettingsscreenState extends State<Settingsscreen> {
   late NotificationPermissionHandler _permissionHandler;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _permissionHandler =
         Provider.of<NotificationPermissionHandler>(context, listen: false);
-    _permissionHandler.checkInitialPermission();
+    _permissionHandler
+        .checkInitialPermission(); // Check permission every time the screen is displayed
   }
 
   @override
