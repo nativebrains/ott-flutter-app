@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 import 'package:islamforever/constants/app_colors.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../utils/extras.dart';
@@ -155,20 +157,54 @@ class _WebviewScreenState extends State<WebviewScreen> {
               _isLoading
                   ? []
                   : [
-                      CustomText(
-                        text: parse((widget.webviewType == WebviewType.PRIVACY
-                                    ? aboutAppModel?.appHtmlPrivacy.toString()
-                                    : aboutAppModel?.appTerms.toString() ?? '')!
-                                .split('<div')
-                                .first)
-                            .body!
-                            .text,
-                        fontSize: 14.sp,
-                        textAlign: TextAlign.start,
-                        color: ColorCode.whiteColor,
-                        maxLines: 100,
-                        fontWeight: FontWeight.normal,
-                      ),
+                      HtmlWidget(
+                        (widget.webviewType == WebviewType.PRIVACY
+                                ? aboutAppModel?.appHtmlPrivacy.toString()
+                                : aboutAppModel?.appTerms.toString() ?? '')!
+                            .split('<div')
+                            .first,
+                        textStyle: TextStyle(
+                          fontSize: 14.sp,
+                          color: ColorCode.whiteColor,
+                        ),
+                        onTapUrl: (url) async {
+                          Uri uri = Uri.parse(url);
+
+                          if (uri.scheme.isEmpty) {
+                            uri = Uri.parse('https://$url');
+                          }
+
+                          if (uri.scheme == 'mailto') {
+                            final Uri mailUri = Uri(
+                              scheme: 'mailto',
+                              path: uri.path,
+                              queryParameters: {
+                                'subject': 'Support Inquiry'
+                              }, // Optional
+                            );
+
+                            if (await canLaunchUrl(mailUri)) {
+                              await launchUrl(mailUri);
+                            } else {
+                              print("Could not launch $mailUri");
+                            }
+                          } else if (uri.scheme == 'tel') {
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            } else {
+                              print("Could not launch $uri");
+                            }
+                          } else {
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              print("Could not launch $uri");
+                            }
+                          }
+                          return true;
+                        },
+                      )
                     ],
             ),
           ),

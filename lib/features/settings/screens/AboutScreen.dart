@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 import 'package:islamforever/constants/assets_images.dart';
 import 'package:islamforever/features/dashboard/screens/DashboardScreen.dart';
@@ -8,6 +9,7 @@ import 'package:islamforever/features/settings/providers/SettingsProvider.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../core/loader_widget/loader_widget.dart';
@@ -160,20 +162,50 @@ class _AboutscreenState extends State<Aboutscreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                   SizedBox(height: 12.sp),
-                                  CustomText(
-                                    text: parse(
-                                            (aboutAppModel?.appDescription ??
-                                                    '')
-                                                .split('<div')
-                                                .first)
-                                        .body!
-                                        .text,
-                                    fontSize: 14.sp,
-                                    textAlign: TextAlign.start,
-                                    color: ColorCode.whiteColor,
-                                    maxLines: 100,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                                  HtmlWidget(
+                                    aboutAppModel?.appDescription ?? '',
+                                    textStyle: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: ColorCode.whiteColor,
+                                    ),
+                                    onTapUrl: (url) async {
+                                      Uri uri = Uri.parse(url);
+                                      if (uri.scheme.isEmpty) {
+                                        uri = Uri.parse('https://$url');
+                                      }
+
+                                      if (uri.scheme == 'mailto') {
+                                        final Uri mailUri = Uri(
+                                          scheme: 'mailto',
+                                          path: uri.path,
+                                          queryParameters: {
+                                            'subject': 'Support Inquiry'
+                                          }, // Optional
+                                        );
+
+                                        if (await canLaunchUrl(mailUri)) {
+                                          await launchUrl(mailUri);
+                                        } else {
+                                          print("Could not launch $mailUri");
+                                        }
+                                      } else if (uri.scheme == 'tel') {
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri);
+                                        } else {
+                                          print("Could not launch $uri");
+                                        }
+                                      } else {
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri,
+                                              mode: LaunchMode
+                                                  .externalApplication);
+                                        } else {
+                                          print("Could not launch $uri");
+                                        }
+                                      }
+                                      return true;
+                                    },
+                                  )
                                 ],
                               ),
                             ),
