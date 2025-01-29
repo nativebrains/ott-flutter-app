@@ -50,6 +50,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorCode.scaffoldBackgroundColor,
       body: Stack(
         fit: StackFit.expand,
         children: [

@@ -47,6 +47,7 @@ class _RegisterscreenState extends State<Registerscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorCode.scaffoldBackgroundColor,
       body: Stack(
         fit: StackFit.expand,
         children: [
