@@ -70,6 +70,11 @@ class _SettingsscreenState extends State<Settingsscreen> {
                     arguments:
                         const WebviewScreen(webviewType: WebviewType.PRIVACY));
               }),
+              getItem("Terms and Conditions", onItemClickCallback: () {
+                Navigator.pushNamed(context, RouteConstantName.webviewScreen,
+                    arguments:
+                        const WebviewScreen(webviewType: WebviewType.TERMS));
+              }),
               getItem("Rate App", onItemClickCallback: () async {
                 await goToRelativeAppStore(context);
               }),
