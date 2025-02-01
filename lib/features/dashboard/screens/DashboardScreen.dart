@@ -281,7 +281,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       case 0:
         return 'Home';
       case 1:
-        return 'Search';
+        return 'Watchlist';
       case 2:
         return DashboardProvider.selectedMixScreenContentTypeName;
       case 3:
