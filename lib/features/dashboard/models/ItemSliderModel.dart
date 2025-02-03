@@ -25,7 +25,7 @@ class ItemSliderModel {
     return ItemSliderModel(
       sliderTitle: json['slider_title'] ?? '',
       sliderType: json['slider_type'] ?? '',
-      sliderPostId: json['slider_post_id'] ?? '',
+      sliderPostId: json['slider_post_id'] ?? -1,
       sliderImage: json['slider_image'] ?? '',
       videoAccess: json['video_access'] ?? '',
       langCatName: json['lang_cat_name'] ?? '',
