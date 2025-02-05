@@ -252,3 +252,26 @@ Future<bool> checkInternetConnection() async {
   }
   return true;
 }
+
+int compareAppVersions(String version1, String version2) {
+  try {
+    final List<int> version1Parts = version1.split('.').map(int.parse).toList();
+    final List<int> version2Parts = version2.split('.').map(int.parse).toList();
+
+    for (int i = 0; i < max(version1Parts.length, version2Parts.length); i++) {
+      final int version1Part = i < version1Parts.length ? version1Parts[i] : 0;
+      final int version2Part = i < version2Parts.length ? version2Parts[i] : 0;
+
+      if (version1Part > version2Part) {
+        return 1;
+      } else if (version1Part < version2Part) {
+        return -1;
+      }
+    }
+
+    return 0;
+  } catch (e) {
+    print('Error comparing versions: $e');
+    return 0; // Return 0 if there's an error, assuming versions are equal
+  }
+}

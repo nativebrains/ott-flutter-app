@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,6 +16,7 @@ import 'package:islamforever/features/settings/screens/SettingsScreen.dart';
 import 'package:islamforever/features/watchlist/screens/WatchListScreen.dart';
 import 'package:islamforever/utils/extensions_utils.dart';
 import 'package:islamforever/utils/extras.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,8 +72,18 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   void fetchAboutAppDetails({bool refresh = false}) async {
     aboutAppModel = await settingsProvider.fetchAboutData(refresh: refresh);
-    if (aboutAppModel?.appUpdateHideShow == true) {
-      _showUpdateDialog(context);
+
+    if (aboutAppModel != null) {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final String currentVersion = packageInfo.version;
+      print(currentVersion);
+
+      if (aboutAppModel?.appUpdateHideShow == true &&
+          aboutAppModel?.appVersion != null &&
+          compareAppVersions(aboutAppModel?.appVersion ?? "", currentVersion) >
+              0) {
+        _showUpdateDialog(context);
+      }
     }
   }
 
