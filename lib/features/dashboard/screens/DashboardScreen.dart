@@ -200,7 +200,10 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                             ),
                           ]
                         : [
-                            if (_selectedIndex == 2)
+                            if (_selectedIndex == 2 &&
+                                DashboardProvider
+                                        .selectedMixScreenContentType !=
+                                    MediaContentType.liveTv)
                               IconButton(
                                 iconSize: 32.sp,
                                 icon: Image(

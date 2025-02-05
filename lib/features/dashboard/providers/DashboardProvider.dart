@@ -22,6 +22,7 @@ class DashboardProvider extends ChangeNotifier {
   static ApiService apiService = ApiService();
   static String? _statusMessage;
   static MediaContentType? _selectedMixScreenContentType;
+  
   HomeDataModel? dashboardData;
   FilterDataModel? filterDataModel;
   List<ItemWatchListModel> itemsWatchListData = [];
