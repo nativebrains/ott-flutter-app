@@ -283,7 +283,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                         await checkAndValidateForRegister();
                       } else {
                         showCustomToast(
-                            context, "Please accept Terms and Privacry Policy");
+                            context, "Please accept Terms and Privacy Policy");
                       }
                     },
                     textColor: ColorCode.whiteColor,

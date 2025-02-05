@@ -311,7 +311,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           await checkAndValidateForLogin();
                         } else {
                           showCustomToast(context,
-                              "Please accept Terms and Privacry Policy");
+                              "Please accept Terms and Privacy Policy");
                         }
                       },
                       textColor: ColorCode.whiteColor,

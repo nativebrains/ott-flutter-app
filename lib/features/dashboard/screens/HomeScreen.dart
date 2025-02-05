@@ -197,7 +197,6 @@ class _HomescreenState extends State<Homescreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 250.sp),
             SizedBox(height: 12),
             Text(
               "No Items Found!\nSwipe down to Refresh",

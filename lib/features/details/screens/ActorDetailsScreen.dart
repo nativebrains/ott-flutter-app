@@ -268,72 +268,75 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
                 SizedBox(
                   height: 8.sp,
                 ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Place of Birth: ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                if (actorDetailsModel?.adBirthPlace.isNotEmpty ?? false)
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Place of Birth: ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: actorDetailsModel?.adBirthPlace ?? "",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 13,
+                        TextSpan(
+                          text: actorDetailsModel?.adBirthPlace ?? "",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Birthday: ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                if (actorDetailsModel?.adBirthDate.isNotEmpty ?? false)
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Birthday: ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: actorDetailsModel?.adBirthDate ?? "",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 13,
+                        TextSpan(
+                          text: actorDetailsModel?.adBirthDate ?? "",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Bio: ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                if (actorDetailsModel?.adBio.isNotEmpty ?? false)
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Bio: ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: actorDetailsModel?.adBio ?? "",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 13,
+                        TextSpan(
+                          text: actorDetailsModel?.adBio ?? "",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
