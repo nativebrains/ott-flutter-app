@@ -70,28 +70,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     dashboardProvider.fetchDashboardHomeData();
   }
 
-  void fetchAboutAppDetails({bool refresh = false}) async {
-    aboutAppModel = await settingsProvider.fetchAboutData(refresh: refresh);
-
-    if (aboutAppModel != null) {
-      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      final String currentVersion = packageInfo.version;
-
-      if (aboutAppModel?.appUpdateHideShow == true) {
-        if ((aboutAppModel?.appVersion != null &&
-            compareAppVersions(
-                    aboutAppModel?.appVersion ?? "", currentVersion) >
-                0)) {
-          _showUpdateDialog(context);
-        }
-      } else if ((aboutAppModel?.appVersion != null &&
-          compareAppVersions(aboutAppModel?.appVersion ?? "", currentVersion) >
-              0)) {
-        _showUpdateDialog(context);
-      }
-    }
-  }
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -262,7 +240,12 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               ),
             ),
           ),
-          bottomNavigationBar: getBottomMenu(_selectedIndex),
+          bottomNavigationBar: Container(
+            color: ColorCode.bottomNavBg,
+            padding:
+                Platform.isIOS ? EdgeInsets.all(8.sp) : EdgeInsets.all(0.sp),
+            child: getBottomMenu(_selectedIndex),
+          ),
           floatingActionButton: Container(
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
@@ -314,6 +297,28 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     }
     completer.complete();
     return completer.future;
+  }
+
+  void fetchAboutAppDetails({bool refresh = false}) async {
+    aboutAppModel = await settingsProvider.fetchAboutData(refresh: refresh);
+
+    if (aboutAppModel != null) {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final String currentVersion = packageInfo.version;
+
+      if (aboutAppModel?.appUpdateHideShow == true) {
+        if ((aboutAppModel?.appVersion != null &&
+            compareAppVersions(
+                    aboutAppModel?.appVersion ?? "", currentVersion) >
+                0)) {
+          _showUpdateDialog(context);
+        }
+      } else if ((aboutAppModel?.appVersion != null &&
+          compareAppVersions(aboutAppModel?.appVersion ?? "", currentVersion) >
+              0)) {
+        _showUpdateDialog(context);
+      }
+    }
   }
 
   String getAppBarTitle(int index) {

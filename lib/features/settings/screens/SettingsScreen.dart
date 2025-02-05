@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/utils/extras.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -36,8 +37,7 @@ class _SettingsscreenState extends State<Settingsscreen>
 
   @override
   void dispose() {
-    WidgetsBinding.instance
-        .removeObserver(this); // Remove observer when not needed
+    WidgetsBinding.instance.removeObserver(this); // Remove observer
     super.dispose();
   }
 
@@ -46,14 +46,13 @@ class _SettingsscreenState extends State<Settingsscreen>
     super.didChangeDependencies();
     _permissionHandler =
         Provider.of<NotificationPermissionHandler>(context, listen: false);
-    _permissionHandler
-        .checkInitialPermission(); // Check permission every time the screen is displayed
+    _permissionHandler.checkInitialPermission(); // Check permission initially
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // When app resumes from background, recheck permissions
+      // When app resumes, recheck permissions
       _permissionHandler.checkInitialPermission();
     }
   }
@@ -76,8 +75,14 @@ class _SettingsscreenState extends State<Settingsscreen>
                     "Enable Push Notification",
                     hasSwitch: true,
                     switchValue: permissionHandler.switchValue,
-                    switchCallback: (newValue) {
-                      permissionHandler.updateSwitchValue(newValue);
+                    switchCallback: (newValue) async {
+                      await permissionHandler.updateSwitchValue(newValue);
+                      if (newValue &&
+                          !permissionHandler.notificationPermissionAllowed) {
+                        // If permission is denied, guide the user to settings
+                        _showToast('Please enable notifications in settings.');
+                        await openAppSettings();
+                      }
                     },
                   );
                 },
@@ -116,6 +121,19 @@ class _SettingsscreenState extends State<Settingsscreen>
           ),
         ),
       ),
+    );
+  }
+
+  // Helper method to show toast messages
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 16.0,
     );
   }
 

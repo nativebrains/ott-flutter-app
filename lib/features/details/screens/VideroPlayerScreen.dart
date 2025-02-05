@@ -121,7 +121,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
               _getEmbededPlayer(),
             if (_isLoading) const LoaderWidget(),
             Positioned(
-                top: 15, // Adjust the position as needed
+                top: 45, // Adjust the position as needed
                 left: 25, // Adjust the position as needed
                 child: InkWell(
                   onTap: () {

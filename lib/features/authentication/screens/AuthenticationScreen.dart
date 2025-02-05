@@ -112,23 +112,23 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                             fontSize: 20.sp,
                           ),
                         ),
-                        // InkWell(
-                        //   onTap: () {
-                        //     Navigator.pushReplacementNamed(
-                        //       context,
-                        //       RouteConstantName.dashboardScreen,
-                        //     );
-                        //   },
-                        //   child: GradientText(
-                        //     'Skip',
-                        //     style: TextStyle(
-                        //         fontSize: 14.sp, fontWeight: FontWeight.w900),
-                        //     colors: const [
-                        //       ColorCode.greenStartColor,
-                        //       ColorCode.greenEndColor,
-                        //     ],
-                        //   ),
-                        // ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              RouteConstantName.dashboardScreen,
+                            );
+                          },
+                          child: GradientText(
+                            'Skip',
+                            style: TextStyle(
+                                fontSize: 14.sp, fontWeight: FontWeight.w900),
+                            colors: const [
+                              ColorCode.greenStartColor,
+                              ColorCode.greenEndColor,
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
