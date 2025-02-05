@@ -76,13 +76,17 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     if (aboutAppModel != null) {
       final PackageInfo packageInfo = await PackageInfo.fromPlatform();
       final String currentVersion = packageInfo.version;
-      print(currentVersion);
 
-      if (aboutAppModel?.appUpdateHideShow == true ||
-          (aboutAppModel?.appVersion != null &&
-              compareAppVersions(
-                      aboutAppModel?.appVersion ?? "", currentVersion) >
-                  0)) {
+      if (aboutAppModel?.appUpdateHideShow == true) {
+        if ((aboutAppModel?.appVersion != null &&
+            compareAppVersions(
+                    aboutAppModel?.appVersion ?? "", currentVersion) >
+                0)) {
+          _showUpdateDialog(context);
+        }
+      } else if ((aboutAppModel?.appVersion != null &&
+          compareAppVersions(aboutAppModel?.appVersion ?? "", currentVersion) >
+              0)) {
         _showUpdateDialog(context);
       }
     }
