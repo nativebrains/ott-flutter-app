@@ -64,7 +64,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
-    fetchAboutAppDetails();
+    fetchAboutAppDetails(refresh: true);
     dashboardProvider.fetchDashboardHomeData();
   }
 
@@ -79,6 +79,9 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     setState(() {
       _selectedIndex = index;
     });
+    if (_selectedIndex == 0) {
+      fetchAboutAppDetails(refresh: true);
+    }
   }
 
   // Handle search completion
@@ -281,6 +284,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     switch (_selectedIndex) {
       case 0:
         dashboardProvider.fetchDashboardHomeData(refresh: true);
+        fetchAboutAppDetails(refresh: true);
         break;
       case 1:
         dashboardProvider.fetchMyWatchListData(refresh: true);
