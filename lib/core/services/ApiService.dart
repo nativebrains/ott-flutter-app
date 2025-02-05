@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:islamforever/core/models/API.dart';
 
 import '../../constants/ApiEndpoints.dart';
@@ -46,8 +48,20 @@ class ApiService {
       ..add(ApiLoggerInterceptor());
   }
 
+  Future<bool> _checkInternetConnection() async {
+    final List<ConnectivityResult> connectivityResult =
+        await (Connectivity().checkConnectivity());
+    if (connectivityResult.contains(ConnectivityResult.none)) {
+      return false;
+    }
+    return true;
+  }
+
   Future<ApiResponseModel> get(String path,
       {Map<String, dynamic>? queryParameters}) async {
+    if (!await _checkInternetConnection()) {
+      throw Exception('No internet connection');
+    }
     try {
       final response = await _dio.get(
         path,
@@ -62,6 +76,9 @@ class ApiService {
 
   Future<ApiResponseModel> post(String path, dynamic data,
       {int? page, File? user_image, bool isImage = false}) async {
+    if (!await _checkInternetConnection()) {
+      throw Exception('No internet connection');
+    }
     try {
       Map<String, dynamic> jsonData;
       // Handle different types of data
@@ -101,6 +118,9 @@ class ApiService {
   }
 
   Future<ApiResponseModel> patch(String path, [dynamic data]) async {
+    if (!await _checkInternetConnection()) {
+      throw Exception('No internet connection');
+    }
     try {
       Map<String, dynamic> jsonData = data.toJson();
       jsonData['sign'] = _api.sign;
@@ -120,6 +140,9 @@ class ApiService {
   }
 
   Future<ApiResponseModel> put(String path, dynamic data) async {
+    if (!await _checkInternetConnection()) {
+      throw Exception('No internet connection');
+    }
     try {
       Map<String, dynamic> jsonData = data.toJson();
       jsonData['sign'] = _api.sign;
@@ -139,6 +162,9 @@ class ApiService {
   }
 
   Future<ApiResponseModel> delete(String path) async {
+    if (!await _checkInternetConnection()) {
+      throw Exception('No internet connection');
+    }
     try {
       final response = await _dio.delete(path);
       return ApiResponseModel.fromJson(

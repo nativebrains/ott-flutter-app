@@ -53,6 +53,7 @@ dependencies:
   just_audio: ^0.9.43
   rxdart: ^0.28.0
   flutter_widget_from_html: ^0.15.3
+  connectivity_plus: ^6.1.2
 
 dev_dependencies:
   flutter_test:

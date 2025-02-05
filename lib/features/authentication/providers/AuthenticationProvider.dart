@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:islamforever/constants/constants.dart';
 import 'package:islamforever/features/account/models/LoginUserModel.dart';
+import 'package:islamforever/utils/extras.dart';
 
 import '../../../constants/ApiEndpoints.dart';
 import '../../../core/services/ApiService.dart';
@@ -67,6 +68,7 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
+      _statusMessage = e.toString();
     }
 
     notifyListeners(); // Notify UI of the state change
@@ -96,6 +98,7 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
+      _statusMessage = e.toString();
     }
 
     notifyListeners(); // Notify UI of the state change
@@ -126,6 +129,7 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
+      _statusMessage = e.toString();
     }
 
     notifyListeners(); // Notify UI of the state change

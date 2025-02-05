@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:photo_view/photo_view.dart';
@@ -240,4 +242,13 @@ Future<void> goToRelativeAppStore(BuildContext context) async {
       SnackBar(content: Text('An error occurred: $e')),
     );
   }
+}
+
+Future<bool> checkInternetConnection() async {
+  final List<ConnectivityResult> connectivityResult =
+      await (Connectivity().checkConnectivity());
+  if (connectivityResult.contains(ConnectivityResult.none)) {
+    return false;
+  }
+  return true;
 }
