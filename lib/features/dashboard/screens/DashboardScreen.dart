@@ -66,7 +66,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
-    fetchAboutAppDetails(refresh: true);
+    fetchAboutAppDetails();
     dashboardProvider.fetchDashboardHomeData();
   }
 
@@ -78,10 +78,11 @@ class _DashboardscreenState extends State<Dashboardscreen> {
       final String currentVersion = packageInfo.version;
       print(currentVersion);
 
-      if (aboutAppModel?.appUpdateHideShow == true &&
-          aboutAppModel?.appVersion != null &&
-          compareAppVersions(aboutAppModel?.appVersion ?? "", currentVersion) >
-              0) {
+      if (aboutAppModel?.appUpdateHideShow == true ||
+          (aboutAppModel?.appVersion != null &&
+              compareAppVersions(
+                      aboutAppModel?.appVersion ?? "", currentVersion) >
+                  0)) {
         _showUpdateDialog(context);
       }
     }
@@ -296,7 +297,6 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     switch (_selectedIndex) {
       case 0:
         dashboardProvider.fetchDashboardHomeData(refresh: true);
-        fetchAboutAppDetails(refresh: true);
         break;
       case 1:
         dashboardProvider.fetchMyWatchListData(refresh: true);
