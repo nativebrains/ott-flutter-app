@@ -116,6 +116,7 @@ class MediaItemDetails {
         downloadEnable: sports.isDownload,
         isPremium: sports.isPremium,
         mediaContentType: MediaContentType.sports,
+        mediaPlayUrl: sports.videoUrl,
         poster: sports.sportImage,
         shareLink: sports.sportShareLink,
         isDownload: sports.isDownload,
