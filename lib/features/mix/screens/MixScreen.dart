@@ -55,9 +55,7 @@ class _MixscreenState extends State<Mixscreen> {
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(builder: (context, provider, child) {
       var isMovieCase = DashboardProvider.selectedMixScreenContentType ==
-              MediaContentType.movies ||
-          DashboardProvider.selectedMixScreenContentType ==
-              MediaContentType.podcast;
+          MediaContentType.podcast;
 
       List<dynamic> itemsList = _getItemsList(provider);
 
@@ -121,8 +119,9 @@ class _MixscreenState extends State<Mixscreen> {
     print(itemsList.length);
     return itemsList.map((item) {
       if (item is ItemMovieModel) {
-        return Customverticalcard(
+        return Customhorizontalcard(
           isPremium: item.isPremium ?? false,
+          showTitle: true,
           url: item.movieImage ?? "",
           id: item.movieId,
           title: item.movieName,

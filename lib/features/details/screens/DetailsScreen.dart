@@ -1073,8 +1073,9 @@ class _DetailsscreenState extends State<Detailsscreen> {
               items.length,
               (index) => Padding(
                 padding: const EdgeInsets.only(right: 12.0),
-                child: Customverticalcard(
+                child: Customhorizontalcard(
                   url: (items[index] as ItemMovieModel).moviePoster ?? "",
+                  showTitle: false,
                   isPremium:
                       (items[index] as ItemMovieModel).isPremium ?? false,
                   id: (items[index] as ItemMovieModel).movieId,
