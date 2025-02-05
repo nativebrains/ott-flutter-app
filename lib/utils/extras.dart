@@ -175,7 +175,7 @@ double calculateAverageRating(List<ReviewModel>? reviewsList) {
     totalRating += review.rating ?? 0; // Add 0 if review.rating is null
   }
 
-  return totalRating / reviewsList.length;
+  return double.parse((totalRating / reviewsList.length).toStringAsFixed(1));
 }
 
 String formatReviewCount(List<ReviewModel>? reviewsList) {
