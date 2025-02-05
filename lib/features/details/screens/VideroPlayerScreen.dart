@@ -120,6 +120,29 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
                 VideoPlayerType.Embed)
               _getEmbededPlayer(),
             if (_isLoading) const LoaderWidget(),
+            Positioned(
+                top: 15, // Adjust the position as needed
+                left: 25, // Adjust the position as needed
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.greenAccent, // Button color
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.arrow_back, // Button icon
+                        size: 24, // Icon size
+                        color: Colors.black, // Icon color
+                      ),
+                    ),
+                  ),
+                )),
           ],
         ),
       ),
