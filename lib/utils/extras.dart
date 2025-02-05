@@ -255,21 +255,27 @@ Future<bool> checkInternetConnection() async {
 
 int compareAppVersions(String version1, String version2) {
   try {
-    final List<int> version1Parts = version1.split('.').map(int.parse).toList();
-    final List<int> version2Parts = version2.split('.').map(int.parse).toList();
+    // Remove build metadata and pre-release tags (e.g., 1.0.0+1 or 1.0.0-beta)
+    version1 = version1.split('+').first.split('-').first.trim();
+    version2 = version2.split('+').first.split('-').first.trim();
+
+    final List<int> version1Parts =
+        version1.split('.').map((e) => int.tryParse(e) ?? 0).toList();
+    final List<int> version2Parts =
+        version2.split('.').map((e) => int.tryParse(e) ?? 0).toList();
 
     for (int i = 0; i < max(version1Parts.length, version2Parts.length); i++) {
       final int version1Part = i < version1Parts.length ? version1Parts[i] : 0;
       final int version2Part = i < version2Parts.length ? version2Parts[i] : 0;
 
       if (version1Part > version2Part) {
-        return 1;
+        return 1; // Update needed
       } else if (version1Part < version2Part) {
-        return -1;
+        return -1; // No update needed
       }
     }
 
-    return 0;
+    return 0; // Versions are equal
   } catch (e) {
     print('Error comparing versions: $e');
     return 0; // Return 0 if there's an error, assuming versions are equal
