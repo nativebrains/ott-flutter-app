@@ -15,6 +15,7 @@ import '../../../constants/constants.dart';
 import '../../../constants/routes_names.dart';
 import '../../../core/services/shared_preference.dart';
 import '../../../widgets/custom/custom_text.dart';
+import '../../account/providers/AccountProvider.dart';
 import '../../settings/providers/SettingsProvider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,9 +27,11 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late SettingsProvider settingsProvider;
+  late AccountProvider accountProvider;
   @override
   void initState() {
     settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
+    accountProvider = Provider.of<AccountProvider>(context, listen: false);
     _navigateToJourney();
     super.initState();
   }
@@ -48,6 +51,8 @@ class _SplashScreenState extends State<SplashScreen> {
           RouteConstantName.dashboardScreen,
         );
       } else {
+        
+        accountProvider.logout();
         // Move to login screen
         Navigator.pushReplacementNamed(
           context,

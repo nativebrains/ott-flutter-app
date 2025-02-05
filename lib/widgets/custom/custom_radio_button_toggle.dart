@@ -50,7 +50,7 @@ class CustomRadioButtonToggle extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              fontSize: 14, // Adjust based on your app's design
+              fontSize: 14.sp, // Adjust based on your app's design
               color: Colors.white,
             ),
           ),

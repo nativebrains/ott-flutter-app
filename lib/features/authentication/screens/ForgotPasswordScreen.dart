@@ -108,7 +108,7 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                     style: GoogleFonts.poppins(
                       color: ColorCode.whiteColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 28.sp,
+                      fontSize: 20.sp,
                     ),
                   ),
                   SizedBox(
@@ -122,7 +122,7 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                       textAlign: TextAlign.center,
                       color: ColorCode.greyColor,
                       fontWeight: FontWeight.normal,
-                      fontSize: 18.sp,
+                      fontSize: 14.sp,
                     ),
                   ),
                   SizedBox(
@@ -162,7 +162,7 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(14.sp),
                     elevation: 3.sp,
                   ),
                 ],

@@ -50,7 +50,7 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
                   children: [
                     CustomText(
                       text: widget.reviewRatingModel.user?.name ?? "Unknown",
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       textAlign: TextAlign.start,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
-                  itemSize: 16.sp,
+                  itemSize: 14.sp,
                   ignoreGestures: true,
                   ratingWidget: RatingWidget(
                     full:
@@ -93,7 +93,7 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
             alignment: Alignment.topLeft,
             child: CustomText(
               text: widget.reviewRatingModel.review ?? "",
-              fontSize: 13.sp,
+              fontSize: 12.sp,
               textAlign: TextAlign.start,
               color: ColorCode.greyLightTextColor,
             ),

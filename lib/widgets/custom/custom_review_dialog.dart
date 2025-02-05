@@ -52,7 +52,7 @@ class CustomReviewDialog extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.sp),
                   child: CustomText(
                     text: "Reviews",
-                    fontSize: 21.sp,
+                    fontSize: 18.sp,
                     textAlign: TextAlign.center,
                     color: ColorCode.blackColor,
                     fontWeight: FontWeight.bold,

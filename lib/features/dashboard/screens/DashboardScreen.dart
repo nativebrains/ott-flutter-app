@@ -135,6 +135,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
               return [
                 SliverAppBar(
                   automaticallyImplyLeading: _isSearching,
+                  pinned: true,
                   leading: _isSearching
                       ? IconButton(
                           icon:
@@ -200,15 +201,17 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                                 showFilterBottomSheet(context, () {});
                               },
                             ),
-                          IconButton(
-                            iconSize: 32.sp,
-                            icon: const Icon(Icons.search, color: Colors.white),
-                            onPressed: () {
-                              setState(() {
-                                _isSearching = true;
-                              });
-                            },
-                          ),
+                          if (_selectedIndex != 3 && _selectedIndex != 4)
+                            IconButton(
+                              iconSize: 32.sp,
+                              icon:
+                                  const Icon(Icons.search, color: Colors.white),
+                              onPressed: () {
+                                setState(() {
+                                  _isSearching = true;
+                                });
+                              },
+                            ),
                         ],
                   floating: true,
                   snap: true,
@@ -319,7 +322,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 CustomText(
                   text: 'Home',
                   color: _selectedIndex == 0 ? Colors.greenAccent : Colors.grey,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                 ),
               ],
             ),
@@ -340,7 +343,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 CustomText(
                   text: 'Watchlist',
                   color: _selectedIndex == 1 ? Colors.greenAccent : Colors.grey,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                 ),
               ],
             ),
@@ -384,7 +387,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 CustomText(
                   text: 'Account',
                   color: _selectedIndex == 3 ? Colors.greenAccent : Colors.grey,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                 ),
               ],
             ),
@@ -404,7 +407,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                 CustomText(
                   text: 'Settings',
                   color: _selectedIndex == 4 ? Colors.greenAccent : Colors.grey,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                 ),
               ],
             ),

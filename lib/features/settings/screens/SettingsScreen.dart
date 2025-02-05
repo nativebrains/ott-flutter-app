@@ -206,7 +206,7 @@ class _SettingsscreenState extends State<Settingsscreen>
               children: [
                 CustomText(
                   text: title,
-                  fontSize: 18.sp,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.w500,
                 ),
                 hasSwitch

@@ -99,7 +99,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 30.sp,
+                      height: 50.sp,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,7 +109,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           style: GoogleFonts.poppins(
                             color: ColorCode.whiteColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 28.sp,
+                            fontSize: 20.sp,
                           ),
                         ),
                         InkWell(
@@ -122,7 +122,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           child: GradientText(
                             'Skip',
                             style: TextStyle(
-                                fontSize: 16.sp, fontWeight: FontWeight.w900),
+                                fontSize: 14.sp, fontWeight: FontWeight.w900),
                             colors: const [
                               ColorCode.greenStartColor,
                               ColorCode.greenEndColor,
@@ -132,7 +132,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 50.sp,
+                      height: 30.sp,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
@@ -210,16 +210,18 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           },
                           child: CustomText(
                             text: "Forgot password?",
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             textAlign: TextAlign.start,
                             color: ColorCode.whiteColor,
                             fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 30.sp,
+                      height: 40.sp,
                     ),
                     Container(
                       width: context.screenWidth,
@@ -268,7 +270,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                                 CustomRichText(
                                   leadingText: "By signing in you accept to ",
                                   actionText: "Terms",
-                                  fontSize: 15.sp,
+                                  fontSize: 14.sp,
                                   leadingTextColor: ColorCode.whiteColor,
                                   actionTextColor: Colors.greenAccent,
                                   isActionUnderlined: true,
@@ -282,7 +284,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                                 CustomRichText(
                                   leadingText: "and ",
                                   actionText: "Privacy Policy",
-                                  fontSize: 15.sp,
+                                  fontSize: 14.sp,
                                   leadingTextColor: ColorCode.whiteColor,
                                   actionTextColor: Colors.greenAccent,
                                   isActionUnderlined: true,
@@ -315,7 +317,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                       textColor: ColorCode.whiteColor,
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      padding: EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(14.sp),
                       elevation: 3.sp,
                     ),
                     SizedBox(
@@ -382,7 +384,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           style: GoogleFonts.poppins(
                             color: ColorCode.whiteColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                           ),
                         ),
                         InkWell(
@@ -395,7 +397,7 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                           child: GradientText(
                             'Sign Up',
                             style: TextStyle(
-                                fontSize: 16.sp, fontWeight: FontWeight.bold),
+                                fontSize: 14.sp, fontWeight: FontWeight.bold),
                             colors: const [
                               ColorCode.greenStartColor,
                               ColorCode.greenEndColor

@@ -716,7 +716,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             child: CustomText(
               text: parse(mediaItemDetails?.description.toString()).body!.text,
               color: Colors.grey.shade700,
-              fontSize: 15.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.normal,
               maxLines: 500,
             ),
@@ -1342,7 +1342,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
             child: CustomText(
               text: mediaItemDetails?.title ?? "",
               color: Colors.white,
-              fontSize: 18.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -1354,13 +1354,15 @@ class _DetailsscreenState extends State<Detailsscreen> {
               onTap: () {
                 if (reviewsList.isNotEmpty)
                   _showReviewDialog(context, reviewsList);
+                else
+                  showCustomToast(context, "No reviews yet!");
               },
               child: RatingBar(
                 initialRating: calculateAverageRating(reviewsList),
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
-                itemSize: 28.sp,
+                itemSize: 22.sp,
                 ignoreGestures: true,
                 ratingWidget: RatingWidget(
                   full: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
@@ -1378,7 +1380,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 text:
                     "${calculateAverageRating(reviewsList)} Stars | ${formatReviewCount(reviewsList)}",
                 color: Colors.white,
-                fontSize: 11.sp,
+                fontSize: 9.sp,
+                textAlign: TextAlign.center,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -1409,13 +1412,14 @@ class _DetailsscreenState extends State<Detailsscreen> {
             _showRateExpereinceDialog(context);
           },
           textColor: ColorCode.whiteColor,
-          fontSize: 13.sp,
+          fontSize: 12.sp,
           fontWeight: FontWeight.bold,
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.sp),
           elevation: 3.sp,
           leadingIcon: Icon(
             Icons.chat,
             color: Colors.white,
+            size: 18.sp,
           ),
         ),
       ),

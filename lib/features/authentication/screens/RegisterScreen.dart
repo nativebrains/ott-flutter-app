@@ -74,16 +74,16 @@ class _RegisterscreenState extends State<Registerscreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 40.sp,
+                    height: 50.sp,
                   ),
                   CustomText(
                     text: "Sign Up",
                     color: ColorCode.whiteColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 28.sp,
+                    fontSize: 20.sp,
                   ),
                   SizedBox(
-                    height: 60.sp,
+                    height: 40.sp,
                   ),
                   Container(
                     padding:
@@ -242,7 +242,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                               CustomRichText(
                                 leadingText: "By signing in you accept to ",
                                 actionText: "Terms",
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 leadingTextColor: ColorCode.whiteColor,
                                 actionTextColor: Colors.greenAccent,
                                 isActionUnderlined: true,
@@ -256,7 +256,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                               CustomRichText(
                                 leadingText: "and ",
                                 actionText: "Privacy Policy",
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 leadingTextColor: ColorCode.whiteColor,
                                 actionTextColor: Colors.greenAccent,
                                 isActionUnderlined: true,
@@ -274,7 +274,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.sp,
+                    height: 50.sp,
                   ),
                   CustomElevatedButton(
                     label: 'REGISTER',
@@ -289,7 +289,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                     textColor: ColorCode.whiteColor,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(14.sp),
                     elevation: 3.sp,
                   ),
                   SizedBox(
@@ -303,7 +303,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                         style: GoogleFonts.poppins(
                           color: ColorCode.whiteColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16.sp,
+                          fontSize: 14.sp,
                         ),
                       ),
                       InkWell(
@@ -313,7 +313,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                         child: GradientText(
                           'Login',
                           style: TextStyle(
-                              fontSize: 16.sp, fontWeight: FontWeight.bold),
+                              fontSize: 14.sp, fontWeight: FontWeight.bold),
                           colors: const [
                             ColorCode.greenStartColor,
                             ColorCode.greenEndColor
