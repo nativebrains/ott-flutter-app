@@ -31,15 +31,16 @@ class NotificationPermissionHandler with ChangeNotifier {
 
   /// Check Initial Permission
   Future<void> checkInitialPermission() async {
-    final status = await Permission.notification.request(); // Request first
+    final status = await Permission.notification.status;
 
     if (status.isGranted) {
       _notificationPermissionAllowed = true;
       _switchValue = true;
-    } else {
+    } else if (status.isDenied || status.isPermanentlyDenied) {
       _notificationPermissionAllowed = false;
       _switchValue = false;
     }
+
     notifyListeners();
     _saveSwitchValue(_switchValue);
   }
@@ -47,19 +48,17 @@ class NotificationPermissionHandler with ChangeNotifier {
   /// Update Switch Value
   Future<void> updateSwitchValue(bool newValue) async {
     if (newValue) {
-      // Check if permission is already granted
       final status = await Permission.notification.status;
+
       if (status.isGranted) {
         _notificationPermissionAllowed = true;
         _switchValue = true;
         Fluttertoast.showToast(
             msg: 'Notification permission is already granted.');
       } else {
-        // Request permission
-        final permissionStatus =
-            await OneSignal.Notifications.requestPermission(true);
+        final permissionStatus = await Permission.notification.request();
 
-        if (permissionStatus) {
+        if (permissionStatus.isGranted) {
           _notificationPermissionAllowed = true;
           _switchValue = true;
           Fluttertoast.showToast(msg: 'Notification permission granted.');
@@ -67,18 +66,14 @@ class NotificationPermissionHandler with ChangeNotifier {
           _notificationPermissionAllowed = false;
           _switchValue = false;
           Fluttertoast.showToast(
-              msg:
-                  'Notification permission denied. Please enable it manually.');
-          await openAppSettings(); // Open settings for manual enabling
+              msg: 'Permission denied. Please enable it manually.');
         }
       }
     } else {
-      // Disable Notification Toggle in the App
       _switchValue = false;
       Fluttertoast.showToast(
           msg:
-              'You cannot disable notifications directly. Please disable them in app settings.');
-      await openAppSettings(); // Guide the user to Settings
+              'To disable notifications, please change the settings manually.');
     }
 
     notifyListeners();

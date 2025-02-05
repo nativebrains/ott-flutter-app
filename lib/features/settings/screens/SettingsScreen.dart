@@ -24,8 +24,22 @@ class Settingsscreen extends StatefulWidget {
   State<Settingsscreen> createState() => _SettingsscreenState();
 }
 
-class _SettingsscreenState extends State<Settingsscreen> {
+class _SettingsscreenState extends State<Settingsscreen>
+    with WidgetsBindingObserver {
   late NotificationPermissionHandler _permissionHandler;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this); // Add observer for app lifecycle
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance
+        .removeObserver(this); // Remove observer when not needed
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -34,6 +48,14 @@ class _SettingsscreenState extends State<Settingsscreen> {
         Provider.of<NotificationPermissionHandler>(context, listen: false);
     _permissionHandler
         .checkInitialPermission(); // Check permission every time the screen is displayed
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // When app resumes from background, recheck permissions
+      _permissionHandler.checkInitialPermission();
+    }
   }
 
   @override
