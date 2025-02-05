@@ -39,20 +39,21 @@ enum MediaContentType {
     }
   }
 
+  // Donot change as they used for backend storing watchlist
   String get shortDisplayName {
     switch (this) {
       case MediaContentType.movies:
-        return 'Webseries';
+        return 'Movies';
       case MediaContentType.tvShows:
         return 'Shows'; // this is changed
       case MediaContentType.sports:
-        return 'Browse';
+        return 'Sports';
       case MediaContentType.liveTv:
         return 'LiveTV';
       case MediaContentType.podcast:
         return 'Podcast';
       default:
-        return 'Webseries';
+        return 'Movies';
     }
   }
 

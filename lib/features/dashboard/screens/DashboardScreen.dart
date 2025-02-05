@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:islamforever/features/account/providers/AccountProvider.dart';
@@ -102,155 +103,168 @@ class _DashboardscreenState extends State<Dashboardscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (_selectedIndex != 0) {
-          _onItemTapped(0);
-          return false;
-        } else {
-          DateTime now = DateTime.now();
-          if (lastBackPressed == null ||
-              now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
-            lastBackPressed = now;
-            Fluttertoast.showToast(
-              msg: 'Please click BACK again to exit',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2,
-              backgroundColor: ColorCode.greenStartColor,
-              textColor: Colors.white,
-              fontSize: 15.sp,
-            );
-            return false; // Do not exit the app
-          }
-          exit(0); // Exit the app
+    return NotificationListener<UserScrollNotification>(
+      onNotification: (notification) {
+        if (notification.direction == ScrollDirection.reverse ||
+            notification.direction == ScrollDirection.forward) {
+          _clearSearch();
+          FocusScope.of(context).unfocus(); // Hide the keyboard
         }
+        return true;
       },
-      child: Scaffold(
-        backgroundColor: ColorCode.scaffoldBackgroundColor,
-        body: SafeArea(
-          top: false,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  automaticallyImplyLeading: _isSearching,
-                  pinned: true,
-                  leading: _isSearching
-                      ? IconButton(
-                          icon:
-                              const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: _clearSearch,
-                        )
-                      : null,
-                  flexibleSpace: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          ColorCode.greenStartColor,
-                          ColorCode.greenEndColor
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                  ),
-                  title: _isSearching
-                      ? TextField(
-                          controller: _searchController,
-                          autofocus: true,
-                          decoration: const InputDecoration(
-                            hintText: 'Search...',
-                            hintStyle: TextStyle(color: Colors.white70),
-                            border: InputBorder.none,
-                          ),
-                          style: const TextStyle(color: Colors.white),
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: _onSearchSubmitted,
-                        )
-                      : Text(
-                          getAppBarTitle(_selectedIndex),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                  centerTitle: false,
-                  actions: _isSearching
-                      ? [
-                          IconButton(
+      child: WillPopScope(
+        onWillPop: () async {
+          if (_selectedIndex != 0) {
+            _onItemTapped(0);
+            return false;
+          } else {
+            DateTime now = DateTime.now();
+            if (lastBackPressed == null ||
+                now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
+              lastBackPressed = now;
+              Fluttertoast.showToast(
+                msg: 'Please click BACK again to exit',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 2,
+                backgroundColor: ColorCode.greenStartColor,
+                textColor: Colors.white,
+                fontSize: 15.sp,
+              );
+              return false; // Do not exit the app
+            }
+            exit(0); // Exit the app
+          }
+        },
+        child: Scaffold(
+          backgroundColor: ColorCode.scaffoldBackgroundColor,
+          body: SafeArea(
+            top: false,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverAppBar(
+                    automaticallyImplyLeading: _isSearching,
+                    pinned: true,
+                    leading: _isSearching
+                        ? IconButton(
                             iconSize: 32.sp,
                             icon: const Icon(Icons.close_rounded,
                                 color: Colors.white),
                             onPressed: _clearSearch,
-                          ),
-                        ]
-                      : [
-                          if (_selectedIndex == 2)
-                            IconButton(
-                              iconSize: 32.sp,
-                              icon: Image(
-                                image: const AssetImage(
-                                    'assets/images/ic_filter.png'),
-                                color: Colors.white,
-                                width: 32.sp,
-                                height: 32.sp,
-                              ),
-                              onPressed: () {
-                                showFilterBottomSheet(context, () {});
-                              },
+                          )
+                        : null,
+                    flexibleSpace: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            ColorCode.greenStartColor,
+                            ColorCode.greenEndColor
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                    ),
+                    title: _isSearching
+                        ? TextField(
+                            controller: _searchController,
+                            autofocus: true,
+                            decoration: const InputDecoration(
+                              hintText: 'Search...',
+                              hintStyle: TextStyle(color: Colors.white70),
+                              border: InputBorder.none,
                             ),
-                          if (_selectedIndex != 3 && _selectedIndex != 4)
+                            style: const TextStyle(color: Colors.white),
+                            textInputAction: TextInputAction.search,
+                            onSubmitted: _onSearchSubmitted,
+                          )
+                        : Text(
+                            getAppBarTitle(_selectedIndex),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                    centerTitle: false,
+                    actions: _isSearching
+                        ? [
                             IconButton(
                               iconSize: 32.sp,
                               icon:
                                   const Icon(Icons.search, color: Colors.white),
                               onPressed: () {
-                                setState(() {
-                                  _isSearching = true;
-                                });
+                                _onSearchSubmitted(_searchController.text);
                               },
                             ),
-                        ],
-                  floating: true,
-                  snap: true,
-                ),
-              ];
-            },
-            body: RefreshIndicator(
-              color: ColorCode.whiteColor,
-              backgroundColor: Colors.greenAccent,
-              onRefresh: _refreshData,
-              child: _screens[_selectedIndex],
+                          ]
+                        : [
+                            if (_selectedIndex == 2)
+                              IconButton(
+                                iconSize: 32.sp,
+                                icon: Image(
+                                  image: const AssetImage(
+                                      'assets/images/ic_filter.png'),
+                                  color: Colors.white,
+                                  width: 32.sp,
+                                  height: 32.sp,
+                                ),
+                                onPressed: () {
+                                  showFilterBottomSheet(context, () {});
+                                },
+                              ),
+                            if (_selectedIndex != 3 && _selectedIndex != 4)
+                              IconButton(
+                                iconSize: 32.sp,
+                                icon: const Icon(Icons.search,
+                                    color: Colors.white),
+                                onPressed: () {
+                                  setState(() {
+                                    _isSearching = true;
+                                  });
+                                },
+                              ),
+                          ],
+                    floating: true,
+                    snap: true,
+                  ),
+                ];
+              },
+              body: RefreshIndicator(
+                color: ColorCode.whiteColor,
+                backgroundColor: Colors.greenAccent,
+                onRefresh: _refreshData,
+                child: _screens[_selectedIndex],
+              ),
             ),
           ),
-        ),
-        bottomNavigationBar: getBottomMenu(_selectedIndex),
-        floatingActionButton: Container(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
-              begin: Alignment.topLeft,
-              end: Alignment.topRight,
+          bottomNavigationBar: getBottomMenu(_selectedIndex),
+          floatingActionButton: Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
+                begin: Alignment.topLeft,
+                end: Alignment.topRight,
+              ),
             ),
-          ),
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, RouteConstantName.webviewScreen,
-                  arguments: const WebviewScreen(
-                      webviewType: WebviewType.CHAT_SUPPORT));
-            },
-            tooltip: 'Chat',
-            backgroundColor:
-                Colors.transparent, // Set the background color to transparent
-            elevation: 0,
-            child: Padding(
-              padding:
-                  const EdgeInsets.all(8.0), // Add a margin around the icon
-              child: Icon(Icons.chat,
-                  color: Colors.white), // Set the icon and its color
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RouteConstantName.webviewScreen,
+                    arguments: const WebviewScreen(
+                        webviewType: WebviewType.CHAT_SUPPORT));
+              },
+              tooltip: 'Chat',
+              backgroundColor:
+                  Colors.transparent, // Set the background color to transparent
+              elevation: 0,
+              child: Padding(
+                padding:
+                    const EdgeInsets.all(8.0), // Add a margin around the icon
+                child: Icon(Icons.chat,
+                    color: Colors.white), // Set the icon and its color
+              ),
             ),
           ),
         ),
