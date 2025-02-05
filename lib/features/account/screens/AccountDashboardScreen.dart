@@ -114,14 +114,14 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
         // SizedBox(
         //   height: 20.sp,
         // ),
-        getLastInvoiceCard(),
-        SizedBox(
-          height: 20.sp,
-        ),
-        getUserTransactionCards(),
-        SizedBox(
-          height: 20.sp,
-        ),
+        // getLastInvoiceCard(),
+        // SizedBox(
+        //   height: 20.sp,
+        // ),
+        // getUserTransactionCards(),
+        // SizedBox(
+        //   height: 20.sp,
+        // ),
       ],
     );
   }
@@ -584,7 +584,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                 text: "User Profile",
                 color: ColorCode.whiteColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 18.sp,
+                fontSize: 15.sp,
               ),
             ),
           ),
@@ -637,14 +637,15 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                                   "",
                               color: ColorCode.whiteColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18.sp,
+                              fontSize: 14.sp,
                             ),
                             TextScroll(
                               accountProvider.itemDashBoardModel?.userEmail ??
                                   "",
                               velocity:
                                   Velocity(pixelsPerSecond: Offset(30, 0)),
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12.sp),
                             )
                           ],
                         ),
@@ -660,7 +661,7 @@ class _AccountDashboardScreenState extends State<AccountDashboardScreen> {
                         );
                       },
                       textColor: ColorCode.whiteColor,
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       padding: EdgeInsets.all(8.0),
                       elevation: 3.sp,

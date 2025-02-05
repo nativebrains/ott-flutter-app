@@ -210,7 +210,7 @@ class _ProfilescreenState extends State<Profilescreen> {
             text: "Name :-",
             color: ColorCode.greyColor,
             fontWeight: FontWeight.normal,
-            fontSize: 18.sp,
+            fontSize: 15.sp,
           ),
         ),
         CustomTextField(
@@ -240,7 +240,7 @@ class _ProfilescreenState extends State<Profilescreen> {
             text: "Email :-",
             color: ColorCode.greyColor,
             fontWeight: FontWeight.normal,
-            fontSize: 18.sp,
+            fontSize: 15.sp,
           ),
         ),
         CustomTextField(
@@ -270,7 +270,7 @@ class _ProfilescreenState extends State<Profilescreen> {
             text: "Password :-",
             color: ColorCode.greyColor,
             fontWeight: FontWeight.normal,
-            fontSize: 18.sp,
+            fontSize: 15.sp,
           ),
         ),
         CustomTextField(
@@ -303,7 +303,7 @@ class _ProfilescreenState extends State<Profilescreen> {
             text: "Phone :-",
             color: ColorCode.greyColor,
             fontWeight: FontWeight.normal,
-            fontSize: 18.sp,
+            fontSize: 15.sp,
           ),
         ),
         CustomTextField(
@@ -337,9 +337,9 @@ class _ProfilescreenState extends State<Profilescreen> {
               });
             },
             textColor: ColorCode.whiteColor,
-            fontSize: 20.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(14.sp),
             elevation: 3.sp,
           ),
         ),

@@ -60,6 +60,7 @@ class _SearchscreenState extends State<Searchscreen> {
           return [
             SliverAppBar(
               automaticallyImplyLeading: true,
+              pinned: true,
               leading: IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
