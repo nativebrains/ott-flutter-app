@@ -33,6 +33,9 @@ class _SettingsscreenState extends State<Settingsscreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Add observer for app lifecycle
+    _permissionHandler =
+        Provider.of<NotificationPermissionHandler>(context, listen: false);
+    Future.microtask(() => _permissionHandler.checkInitialPermission());
   }
 
   @override
@@ -42,18 +45,9 @@ class _SettingsscreenState extends State<Settingsscreen>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _permissionHandler =
-        Provider.of<NotificationPermissionHandler>(context, listen: false);
-    _permissionHandler.checkInitialPermission(); // Check permission initially
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // When app resumes, recheck permissions
-      _permissionHandler.checkInitialPermission();
+      Future.microtask(() => _permissionHandler.checkInitialPermission());
     }
   }
 

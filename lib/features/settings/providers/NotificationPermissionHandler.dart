@@ -50,8 +50,8 @@ class NotificationPermissionHandler with ChangeNotifier {
       _switchValue = false;
     }
 
-    notifyListeners();
     await _saveSwitchValue(_switchValue);
+    notifyListeners();
   }
 
   /// Update Switch Value
@@ -63,7 +63,7 @@ class NotificationPermissionHandler with ChangeNotifier {
         if (status.isGranted) {
           _notificationPermissionAllowed = true;
           _switchValue = true;
-          _showToast('Notification permission is already granted.');
+          _showToast('Notification permission granted.');
         } else {
           if (Platform.isIOS && status.isPermanentlyDenied) {
             _notificationPermissionAllowed = false;
@@ -80,7 +80,8 @@ class NotificationPermissionHandler with ChangeNotifier {
             } else {
               _notificationPermissionAllowed = false;
               _switchValue = false;
-              _showToast('Permission denied. Please enable it manually.');
+              _showToast(
+                  'Permission denied. Please enable it notifications manually in settings.');
             }
           }
         }
