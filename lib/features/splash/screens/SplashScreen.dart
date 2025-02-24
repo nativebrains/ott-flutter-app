@@ -115,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
               CustomText(
-                text: "Islam For Ever",
+                text: "Islam Forever",
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w600,
                 color: ColorCode.greenStartColor,
