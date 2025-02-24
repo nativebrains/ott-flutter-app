@@ -75,7 +75,10 @@ class _SettingsscreenState extends State<Settingsscreen>
                           !permissionHandler.notificationPermissionAllowed) {
                         // If permission is denied, guide the user to settings
                         _showToast('Please enable notifications in settings.');
-                        await openAppSettings();
+                        // Delay ensures the UI updates before opening settings
+                        await Future.delayed(Duration(milliseconds: 500));
+                        bool opened = await openAppSettings();
+                        if (!opened) _showToast('Failed to open settings.');
                       }
                     },
                   );

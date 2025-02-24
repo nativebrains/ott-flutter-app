@@ -54,7 +54,6 @@ class NotificationPermissionHandler with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Update Switch Value
   Future<void> updateSwitchValue(bool newValue) async {
     try {
       if (newValue) {
@@ -69,7 +68,10 @@ class NotificationPermissionHandler with ChangeNotifier {
             _notificationPermissionAllowed = false;
             _switchValue = false;
             _showToast('Please enable notifications manually in settings.');
-            await openAppSettings(); // Open app settings for iOS
+            // Delay ensures UI updates before opening settings
+            await Future.delayed(Duration(milliseconds: 500));
+            bool opened = await openAppSettings();
+            if (!opened) _showToast('Failed to open settings.');
           } else {
             final permissionStatus = await Permission.notification.request();
 
@@ -80,15 +82,17 @@ class NotificationPermissionHandler with ChangeNotifier {
             } else {
               _notificationPermissionAllowed = false;
               _switchValue = false;
-              _showToast(
-                  'Permission denied. Please enable it notifications manually in settings.');
+              _showToast('Permission denied. Enable it manually in settings.');
             }
           }
         }
       } else {
         _switchValue = false;
-        _showToast(
-            'To disable notifications, please change the settings manually.');
+        _showToast('To disable notifications, change the settings manually.');
+        // Delay ensures the UI updates before opening settings
+        await Future.delayed(Duration(milliseconds: 500));
+        bool opened = await openAppSettings();
+        if (!opened) _showToast('Failed to open settings.');
       }
 
       notifyListeners();
