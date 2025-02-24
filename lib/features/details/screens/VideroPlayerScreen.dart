@@ -2,6 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
+import 'package:islamforever/features/details/utils/CustomControls.dart';
 import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -240,11 +241,17 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     _videoPlayerController = VideoPlayerController.networkUrl(
         Uri.parse(widget.videoPlayerScreenArguments.streamUrl.toString()));
     await _videoPlayerController!.initialize();
+    var _isLive = _videoPlayerController!.value.duration == Duration.zero ||
+        _videoPlayerController!.value.duration.inMinutes <= 1;
+    print("Duration " + _videoPlayerController!.value.duration.toString());
     chewieController = ChewieController(
       videoPlayerController: _videoPlayerController!,
       aspectRatio: 3 / 2,
       autoPlay: true,
       looping: true,
+      isLive: _isLive,
+      showControls: true,
+      customControls: const CustomControls(), // Use custom controls
     );
   }
 

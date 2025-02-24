@@ -121,6 +121,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
         // SliverAppBar with snapping and floating behavior
         SliverAppBar(
           automaticallyImplyLeading: true,
+          pinned: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
