@@ -393,8 +393,11 @@ class _RegisterscreenState extends State<Registerscreen> {
     bool success =
         await authenticationProvider.register(name!, email!, password!);
 
-    showCustomToast(context, AuthenticationProvider.getStatusMessage.toString(),
-        backgroudnColor: success ? Colors.green : Colors.red);
+    if (AuthenticationProvider.getStatusMessage != null) {
+      showCustomToast(
+          context, AuthenticationProvider.getStatusMessage.toString(),
+          backgroudnColor: success ? Colors.green : Colors.red);
+    }
 
     setState(() {
       _isLoading = false;

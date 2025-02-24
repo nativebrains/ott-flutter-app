@@ -68,7 +68,7 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
-      _statusMessage = e.toString();
+      _statusMessage = null;
     }
 
     notifyListeners(); // Notify UI of the state change
@@ -98,7 +98,7 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
-      _statusMessage = e.toString();
+      _statusMessage = null;
     }
 
     notifyListeners(); // Notify UI of the state change
@@ -129,7 +129,7 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error: $e");
-      _statusMessage = e.toString();
+      _statusMessage = null;
     }
 
     notifyListeners(); // Notify UI of the state change

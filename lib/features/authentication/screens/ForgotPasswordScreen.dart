@@ -194,10 +194,13 @@ class _ForgotpasswordscreenState extends State<Forgotpasswordscreen> {
     bool success =
         await authenticationProvider.forgotPassword(_emailController.text);
 
-    showCustomToast(
-      context,
-      AuthenticationProvider.getStatusMessage.toString(),
-    );
+    if (AuthenticationProvider.getStatusMessage != null) {
+      showCustomToast(
+        context,
+        AuthenticationProvider.getStatusMessage.toString(),
+        backgroudnColor: success ? Colors.green : Colors.red,
+      );
+    }
 
     setState(() {
       _isLoading = false;
