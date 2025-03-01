@@ -264,6 +264,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
       aspectRatio: 3 / 2,
       autoPlay: true,
       looping: true,
+      allowedScreenSleep: false,
       isLive: _isLive,
       showControls: true,
       customControls: const CustomControls(), // Use custom controls

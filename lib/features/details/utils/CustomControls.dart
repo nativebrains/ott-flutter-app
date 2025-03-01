@@ -13,9 +13,7 @@ class CustomControls extends StatelessWidget {
     return Stack(
       children: [
         // Use the default material controls
-        MaterialControls(
-          showPlayButton: !chewieController.isLive,
-        ),
+        MaterialControls(),
 
         // Add custom "LIVE" text
         if (chewieController.isLive)
