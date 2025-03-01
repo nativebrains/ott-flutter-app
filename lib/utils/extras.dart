@@ -165,6 +165,10 @@ bool isIOS() {
   return Platform.isIOS;
 }
 
+double roundToNearestHalf(double value) {
+  return (value * 2).round() / 2;
+}
+
 double calculateAverageRating(List<ReviewModel>? reviewsList) {
   if (reviewsList == null || reviewsList.isEmpty) {
     return 0.0;

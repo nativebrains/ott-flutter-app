@@ -1359,7 +1359,8 @@ class _DetailsscreenState extends State<Detailsscreen> {
                   showCustomToast(context, "No reviews yet!");
               },
               child: RatingBar(
-                initialRating: calculateAverageRating(reviewsList),
+                initialRating:
+                    roundToNearestHalf(calculateAverageRating(reviewsList)),
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
@@ -1367,8 +1368,10 @@ class _DetailsscreenState extends State<Detailsscreen> {
                 ignoreGestures: true,
                 ratingWidget: RatingWidget(
                   full: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
-                  half: Icon(Icons.star_rounded, color: Colors.yellow.shade600),
-                  empty: Icon(Icons.star_rounded, color: Colors.grey.shade400),
+                  half: Icon(Icons.star_half_rounded,
+                      color: Colors.yellow.shade600),
+                  empty: Icon(Icons.star_outline_rounded,
+                      color: Colors.grey.shade400),
                 ),
                 onRatingUpdate: (rating) {
                   print(rating);

@@ -64,8 +64,8 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
               Padding(
                 padding: EdgeInsets.only(bottom: 12.0),
                 child: RatingBar(
-                  initialRating:
-                      widget.reviewRatingModel.rating?.toDouble() ?? 0.0,
+                  initialRating: roundToNearestHalf(
+                      widget.reviewRatingModel.rating?.toDouble() ?? 0.0),
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
@@ -74,10 +74,10 @@ class _CustomReviewItemState extends State<CustomReviewItem> {
                   ratingWidget: RatingWidget(
                     full:
                         Icon(Icons.star_rounded, color: Colors.yellow.shade600),
-                    half:
-                        Icon(Icons.star_rounded, color: Colors.yellow.shade600),
-                    empty:
-                        Icon(Icons.star_rounded, color: Colors.grey.shade400),
+                    half: Icon(Icons.star_half_rounded,
+                        color: Colors.yellow.shade600),
+                    empty: Icon(Icons.star_outline_rounded,
+                        color: Colors.grey.shade400),
                   ),
                   onRatingUpdate: (rating) {
                     print(rating);
