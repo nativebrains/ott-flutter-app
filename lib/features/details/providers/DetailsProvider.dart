@@ -256,10 +256,12 @@ class DetailsProvider extends ChangeNotifier {
         final jsonData = response.message;
         _statusMessage = jsonData;
         isSuccess = true;
+      } else {
+        _statusMessage = null;
       }
     } catch (e) {
       print("Error: $e");
-      _statusMessage = "Server Error in fetchDashboardData";
+      _statusMessage = null;
     }
 
     notifyListeners();

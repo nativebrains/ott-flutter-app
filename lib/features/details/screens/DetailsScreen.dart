@@ -1451,12 +1451,14 @@ class _DetailsscreenState extends State<Detailsscreen> {
     final isSuccess = await detailsProvider.submitReviewRating(rating, review,
         mediaItemDetails?.id, mediaItemDetails?.mediaContentType.actualValue);
 
-    showCustomToast(
-      context,
-      DetailsProvider.getStatusMessage.toString(),
-      backgroudnColor: isSuccess ? Colors.green : Colors.red,
-      duration: Duration(seconds: 3),
-      textColor: Colors.white,
-    );
+    if (DetailsProvider.getStatusMessage != null) {
+      showCustomToast(
+        context,
+        DetailsProvider.getStatusMessage.toString(),
+        backgroudnColor: isSuccess ? Colors.green : Colors.red,
+        duration: Duration(seconds: 3),
+        textColor: Colors.white,
+      );
+    }
   }
 }

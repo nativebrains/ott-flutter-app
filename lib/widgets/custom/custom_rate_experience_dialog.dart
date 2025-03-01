@@ -123,7 +123,7 @@ class _CustomRateExperienceDialogState
                             color: Colors.grey.shade400),
                       ),
                       onRatingUpdate: (newRating) {
-                        rating = newRating.toInt();
+                        rating = newRating.floor().toInt();
                       },
                     ),
                     SizedBox(
@@ -158,7 +158,23 @@ class _CustomRateExperienceDialogState
                       child: CustomElevatedButton(
                         label: widget.buttonText,
                         onPressed: () {
-                          widget.onButtonPressed(rating, review);
+                          if (rating <= 0.0) {
+                            showCustomToast(
+                              context,
+                              "Star Rating is Missing",
+                            );
+                            return;
+                          } else if (review.isEmpty ||
+                              review == " " ||
+                              review.trim() == "") {
+                            showCustomToast(
+                              context,
+                              "Review is Missing",
+                            );
+                            return;
+                          } else {
+                            widget.onButtonPressed(rating, review);
+                          }
                         },
                         textColor: Colors.white,
                         backgroundColor: ColorCode.mainColor,
