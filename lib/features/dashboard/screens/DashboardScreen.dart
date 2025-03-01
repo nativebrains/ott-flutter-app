@@ -77,6 +77,9 @@ class _DashboardscreenState extends State<Dashboardscreen> {
     if (_selectedIndex == 0) {
       fetchAboutAppDetails(refresh: true);
     }
+    if (_selectedIndex == 1 || _selectedIndex == 3 || _selectedIndex == 4) {
+      _refreshData();
+    }
   }
 
   // Handle search completion
@@ -138,106 +141,101 @@ class _DashboardscreenState extends State<Dashboardscreen> {
           backgroundColor: ColorCode.scaffoldBackgroundColor,
           body: SafeArea(
             top: false,
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    automaticallyImplyLeading: _isSearching,
-                    pinned: true,
-                    leading: _isSearching
-                        ? IconButton(
-                            iconSize: 32.sp,
-                            icon: const Icon(Icons.close_rounded,
-                                color: Colors.white),
-                            onPressed: _clearSearch,
-                          )
-                        : null,
-                    flexibleSpace: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            ColorCode.greenStartColor,
-                            ColorCode.greenEndColor
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+            child: Column(
+              children: [
+                AppBar(
+                  automaticallyImplyLeading: _isSearching,
+                  leading: _isSearching
+                      ? IconButton(
+                          iconSize: 32.sp,
+                          icon: const Icon(Icons.close_rounded,
+                              color: Colors.white),
+                          onPressed: _clearSearch,
+                        )
+                      : null,
+                  flexibleSpace: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          ColorCode.greenStartColor,
+                          ColorCode.greenEndColor
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
                     ),
-                    title: _isSearching
-                        ? TextField(
-                            controller: _searchController,
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                              hintText: 'Search...',
-                              hintStyle: TextStyle(color: Colors.white70),
-                              border: InputBorder.none,
-                            ),
-                            style: const TextStyle(color: Colors.white),
-                            textInputAction: TextInputAction.search,
-                            onSubmitted: _onSearchSubmitted,
-                          )
-                        : Text(
-                            getAppBarTitle(_selectedIndex),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
+                  ),
+                  title: _isSearching
+                      ? TextField(
+                          controller: _searchController,
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            hintText: 'Search...',
+                            hintStyle: TextStyle(color: Colors.white70),
+                            border: InputBorder.none,
                           ),
-                    centerTitle: false,
-                    actions: _isSearching
-                        ? [
+                          style: const TextStyle(color: Colors.white),
+                          textInputAction: TextInputAction.search,
+                          onSubmitted: _onSearchSubmitted,
+                        )
+                      : Text(
+                          getAppBarTitle(_selectedIndex),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                  centerTitle: false,
+                  actions: _isSearching
+                      ? [
+                          IconButton(
+                            iconSize: 32.sp,
+                            icon: const Icon(Icons.search, color: Colors.white),
+                            onPressed: () {
+                              _onSearchSubmitted(_searchController.text);
+                            },
+                          ),
+                        ]
+                      : [
+                          if (_selectedIndex == 2 &&
+                              DashboardProvider.selectedMixScreenContentType !=
+                                  MediaContentType.liveTv)
+                            IconButton(
+                              iconSize: 32.sp,
+                              icon: Image(
+                                image: const AssetImage(
+                                    'assets/images/ic_filter.png'),
+                                color: Colors.white,
+                                width: 32.sp,
+                                height: 32.sp,
+                              ),
+                              onPressed: () {
+                                showFilterBottomSheet(context, () {});
+                              },
+                            ),
+                          if (_selectedIndex != 3 && _selectedIndex != 4)
                             IconButton(
                               iconSize: 32.sp,
                               icon:
                                   const Icon(Icons.search, color: Colors.white),
                               onPressed: () {
-                                _onSearchSubmitted(_searchController.text);
+                                setState(() {
+                                  _isSearching = true;
+                                });
                               },
                             ),
-                          ]
-                        : [
-                            if (_selectedIndex == 2 &&
-                                DashboardProvider
-                                        .selectedMixScreenContentType !=
-                                    MediaContentType.liveTv)
-                              IconButton(
-                                iconSize: 32.sp,
-                                icon: Image(
-                                  image: const AssetImage(
-                                      'assets/images/ic_filter.png'),
-                                  color: Colors.white,
-                                  width: 32.sp,
-                                  height: 32.sp,
-                                ),
-                                onPressed: () {
-                                  showFilterBottomSheet(context, () {});
-                                },
-                              ),
-                            if (_selectedIndex != 3 && _selectedIndex != 4)
-                              IconButton(
-                                iconSize: 32.sp,
-                                icon: const Icon(Icons.search,
-                                    color: Colors.white),
-                                onPressed: () {
-                                  setState(() {
-                                    _isSearching = true;
-                                  });
-                                },
-                              ),
-                          ],
-                    floating: true,
-                    snap: true,
+                        ],
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    color: ColorCode.whiteColor,
+                    backgroundColor: Colors.greenAccent,
+                    onRefresh: _refreshData,
+                    child: _screens[_selectedIndex],
                   ),
-                ];
-              },
-              body: RefreshIndicator(
-                color: ColorCode.whiteColor,
-                backgroundColor: Colors.greenAccent,
-                onRefresh: _refreshData,
-                child: _screens[_selectedIndex],
-              ),
+                ),
+              ],
             ),
           ),
           bottomNavigationBar: Container(
