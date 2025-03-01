@@ -43,6 +43,7 @@ import '../../../widgets/custom/custom_rate_experience_dialog.dart';
 import '../../../widgets/custom/custom_review_dialog.dart';
 import '../../../widgets/custom/custom_text.dart';
 import '../../../widgets/extra/rounded_network_image.dart';
+import '../../dashboard/providers/DashboardProvider.dart';
 import '../models/ReviewModel.dart';
 import '../utils/PlayerUtils.dart';
 
@@ -73,6 +74,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   late DetailsProvider detailsProvider;
+  late DashboardProvider dashboardProvider;
   int _selectedSeasonIndex = 0;
   ItemSeasonModel? selectedSeasonModel;
   List<ItemEpisodeModel>? itemEpisodeModel;
@@ -100,6 +102,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
   void initState() {
     super.initState();
     detailsProvider = Provider.of<DetailsProvider>(context, listen: false);
+    dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     print("Details Items ID = " + widget.detailsScreenArguments.id);
     print("Details Items Type = " +
         widget.detailsScreenArguments.mediaContentType.displayName);
@@ -842,6 +845,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
         setState(() {
           _normalLoading = false;
         });
+        dashboardProvider.fetchMyWatchListData(refresh: true);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
