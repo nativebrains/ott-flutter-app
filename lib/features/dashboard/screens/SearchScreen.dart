@@ -55,61 +55,51 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorCode.bgColor,
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              automaticallyImplyLeading: true,
-              pinned: true,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      ColorCode.greenStartColor,
-                      ColorCode.greenEndColor
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-              ),
-              title: Text(
-                "Search",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              centerTitle: false,
-              floating: true,
-              snap: true,
-              expandedHeight: 55.0, // Set height for expanded AppBar
-            ),
-          ];
-        }, // SliverList for your content
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (searchResults.isEmpty && !_isLoading)
-                    getNoItemsFound()
-                  else
-                    getItemsList(),
-                ],
-              ),
-            ),
-            if (_isLoading) const LoaderWidget(),
-          ],
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [ColorCode.greenStartColor, ColorCode.greenEndColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        title: Text(
+          "Search",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        centerTitle: false,
+      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (searchResults.isEmpty && !_isLoading)
+                  getNoItemsFound()
+                else
+                  getItemsList(),
+                SizedBox(
+                  height: 12.sp,
+                )
+              ],
+            ),
+          ),
+          if (_isLoading) const LoaderWidget(),
+        ],
       ),
     );
   }
@@ -140,7 +130,7 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget getShowsList(List<Widget> showsList) {
     if (showsList.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -169,7 +159,7 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget getMoviesList(List<Widget> moviesList) {
     if (moviesList.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -198,7 +188,7 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget getSportsList(List<Widget> sportsList) {
     if (sportsList.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -227,7 +217,7 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget getLiveTvList(List<Widget> liveTvList) {
     if (liveTvList.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -256,7 +246,7 @@ class _SearchscreenState extends State<Searchscreen> {
   Widget getPodcastList(List<Widget> podcastList) {
     if (podcastList.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
