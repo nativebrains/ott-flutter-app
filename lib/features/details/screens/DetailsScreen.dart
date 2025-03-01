@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,6 +70,8 @@ class Detailsscreen extends StatefulWidget {
 }
 
 class _DetailsscreenState extends State<Detailsscreen> {
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+
   late DetailsProvider detailsProvider;
   int _selectedSeasonIndex = 0;
   ItemSeasonModel? selectedSeasonModel;
@@ -100,6 +105,15 @@ class _DetailsscreenState extends State<Detailsscreen> {
         widget.detailsScreenArguments.mediaContentType.displayName);
 
     fetchDetailsData();
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      if (results.first != ConnectivityResult.none) {
+        setState(() {
+          fetchDetailsData();
+        });
+      }
+    });
   }
 
   void fetchDetailsData({bool showNormalLoading = false}) async {
@@ -179,6 +193,7 @@ class _DetailsscreenState extends State<Detailsscreen> {
 
   @override
   void dispose() {
+    _connectivitySubscription?.cancel();
     _audioPlayer?.dispose();
     super.dispose();
   }

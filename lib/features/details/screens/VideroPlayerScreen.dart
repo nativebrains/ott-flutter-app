@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:chewie/chewie.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamforever/constants/app_colors.dart';
@@ -49,6 +52,8 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideroplayerscreenState extends State<VideoPlayerScreen> {
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+
   late DetailsProvider detailsProvider;
   bool _isLoading = false;
 
@@ -67,6 +72,15 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
     print(widget.videoPlayerScreenArguments.streamUrl);
     print("======");
     startPlayer();
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      if (results.first != ConnectivityResult.none) {
+        setState(() {
+          startPlayer();
+        });
+      }
+    });
   }
 
   void startPlayer() async {
@@ -152,6 +166,7 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
 
   @override
   void dispose() {
+    _connectivitySubscription?.cancel();
     _youtubeController?.dispose();
     webViewController?.dispose();
     chewieController?.dispose();
