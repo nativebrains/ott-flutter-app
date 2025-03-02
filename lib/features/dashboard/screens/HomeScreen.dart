@@ -34,40 +34,57 @@ class _HomescreenState extends State<Homescreen> {
         backgroundColor: ColorCode.bgColor,
         body: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 16.sp),
-                  Custombanner(
-                      itemSliderList: provider.dashboardData?.itemSlider ?? []),
-                  SizedBox(height: 16.sp),
-                  ...provider.dashboardData?.itemHome.map((item) {
-                        if (item.homeType == 'Movie') {
-                          return Column(
-                            children: [
-                              getVerticalList(item),
-                              SizedBox(height: 16.sp),
-                            ],
-                          );
-                        } else {
-                          return Column(
-                            children: [
-                              getHorizontalList(item),
-                              SizedBox(height: 16.sp),
-                            ],
-                          );
-                        }
-                      }) ??
-                      [],
-                  SizedBox(height: 20.sp),
-                  getNoDataWidget(provider),
-                ],
-              ),
+            CustomScrollView(
+              slivers: [
+                // Slider (Custombanner)
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 16.sp),
+                      Custombanner(
+                        itemSliderList:
+                            provider.dashboardData?.itemSlider ?? [],
+                      ),
+                      SizedBox(height: 16.sp),
+                    ],
+                  ),
+                ),
+
+                // Lazy-rendered list of items
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final item = provider.dashboardData!.itemHome[index];
+                      if (item.homeType == 'Movie') {
+                        return Column(
+                          children: [
+                            getVerticalList(item),
+                            SizedBox(height: 16.sp),
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            getHorizontalList(item),
+                            SizedBox(height: 16.sp),
+                          ],
+                        );
+                      }
+                    },
+                    childCount: provider.dashboardData?.itemHome.length ?? 0,
+                  ),
+                ),
+
+                // No Data Widget (if applicable)
+                SliverToBoxAdapter(
+                  child: getNoDataWidget(provider),
+                ),
+              ],
             ),
-            if (provider
-                .isHomeScreenLoading) // Show LoaderWidget if _isLoading is true
-              const LoaderWidget(),
+
+            // Show LoaderWidget if _isLoading is true
+            if (provider.isHomeScreenLoading) const LoaderWidget(),
           ],
         ),
       );
