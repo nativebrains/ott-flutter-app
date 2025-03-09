@@ -11,6 +11,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../core/loader_widget/loader_widget.dart';
 import '../../../widgets/extra/rounded_network_image.dart';
@@ -66,6 +67,9 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
+    // Enable wakelock so the screen stays on while playing
+    WakelockPlus.enable();
+    printWakeLockInfo();
     print("======");
     print(widget.videoPlayerScreenArguments.videoPlayerType);
     print(widget.videoPlayerScreenArguments.videoId);
@@ -81,6 +85,11 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
         });
       }
     });
+  }
+
+  printWakeLockInfo() async {
+    bool isEnabled = await WakelockPlus.enabled;
+    print("Wakelock is enabled: $isEnabled");
   }
 
   void startPlayer() async {
@@ -166,6 +175,9 @@ class _VideroplayerscreenState extends State<VideoPlayerScreen> {
 
   @override
   void dispose() {
+    // Disable wakelock when leaving the screen
+    WakelockPlus.disable();
+    printWakeLockInfo();
     _connectivitySubscription?.cancel();
     _youtubeController?.dispose();
     webViewController?.dispose();

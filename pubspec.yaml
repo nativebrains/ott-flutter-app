@@ -54,6 +54,8 @@ dependencies:
   rxdart: ^0.28.0
   flutter_widget_from_html: ^0.15.3
   connectivity_plus: ^6.1.2
+  wakelock_plus: ^1.2.10
+
 
 dev_dependencies:
   flutter_test:

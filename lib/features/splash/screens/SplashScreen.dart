@@ -51,7 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
           RouteConstantName.dashboardScreen,
         );
       } else {
-        
         accountProvider.logout();
         // Move to login screen
         Navigator.pushReplacementNamed(
@@ -103,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               SizedBox(height: 24.sp),
               GradientText(
-                'Dawat-e-Islami',
+                'Islam Forever',
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -113,12 +112,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   ColorCode.greenStartColor,
                   ColorCode.greenStartColor,
                 ],
-              ),
-              CustomText(
-                text: "Islam Forever",
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w600,
-                color: ColorCode.greenStartColor,
               ),
               SizedBox(height: 70),
             ],
