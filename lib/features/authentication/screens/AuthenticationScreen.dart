@@ -35,7 +35,7 @@ class Authenticationscreen extends StatefulWidget {
 
 class _AuthenticationscreenState extends State<Authenticationscreen> {
   late AuthenticationProvider authenticationProvider;
-  bool _selectedRemeberMe = false;
+  bool _selectedRemeberMe = true;
   bool _selectedPrivacyAndTerms = false;
 
   String? email;
@@ -192,15 +192,15 @@ class _AuthenticationscreenState extends State<Authenticationscreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomRadioButtonToggle(
-                          value: _selectedRemeberMe,
-                          onChanged: (newValue) {
-                            setState(() {
-                              _selectedRemeberMe = newValue; // Update state
-                            });
-                          },
-                          text: 'Remember me',
-                        ),
+                        // CustomRadioButtonToggle(
+                        //   value: _selectedRemeberMe,
+                        //   onChanged: (newValue) {
+                        //     setState(() {
+                        //       _selectedRemeberMe = newValue; // Update state
+                        //     });
+                        //   },
+                        //   text: 'Remember me',
+                        // ),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(
