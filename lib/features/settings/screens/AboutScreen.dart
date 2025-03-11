@@ -84,8 +84,7 @@ class _AboutscreenState extends State<Aboutscreen> {
                   ),
                 ),
                 centerTitle: false,
-                floating: true,
-                snap: true,
+                pinned: true,
                 expandedHeight: 55.0, // Set height for expanded AppBar
               ),
               // SliverList for your content
