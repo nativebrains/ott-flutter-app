@@ -41,11 +41,16 @@ class NotificationPermissionHandler with ChangeNotifier {
   /// Check Initial Permission
   Future<void> checkInitialPermission() async {
     final status = await Permission.notification.status;
+    final oneSignalStatus = OneSignal.User.pushSubscription.optedIn ?? false;
+    print('OneSignal Status: $oneSignalStatus');
+    print('Permission Status: $status');
 
-    if (status.isGranted) {
+    if (status.isGranted && oneSignalStatus) {
       _notificationPermissionAllowed = true;
       _switchValue = true;
-    } else if (status.isDenied || status.isPermanentlyDenied) {
+    } else if (status.isDenied ||
+        status.isPermanentlyDenied ||
+        oneSignalStatus == false) {
       _notificationPermissionAllowed = false;
       _switchValue = false;
     }
@@ -58,7 +63,7 @@ class NotificationPermissionHandler with ChangeNotifier {
     try {
       if (newValue) {
         final status = await Permission.notification.status;
-
+        OneSignal.User.pushSubscription.optIn();
         if (status.isGranted) {
           _notificationPermissionAllowed = true;
           _switchValue = true;
@@ -69,7 +74,7 @@ class NotificationPermissionHandler with ChangeNotifier {
             _switchValue = false;
             _showToast('Please enable notifications manually in settings.');
             // Delay ensures UI updates before opening settings
-            await Future.delayed(Duration(milliseconds: 500));
+            await Future.delayed(const Duration(milliseconds: 500));
             bool opened = await openAppSettings();
             if (!opened) _showToast('Failed to open settings.');
           } else {
@@ -83,16 +88,21 @@ class NotificationPermissionHandler with ChangeNotifier {
               _notificationPermissionAllowed = false;
               _switchValue = false;
               _showToast('Permission denied. Enable it manually in settings.');
+              await Future.delayed(const Duration(milliseconds: 500));
+              bool opened = await openAppSettings();
+              if (!opened) _showToast('Failed to open settings.');
             }
           }
         }
       } else {
         _switchValue = false;
-        _showToast('To disable notifications, change the settings manually.');
-        // Delay ensures the UI updates before opening settings
-        await Future.delayed(Duration(milliseconds: 500));
-        bool opened = await openAppSettings();
-        if (!opened) _showToast('Failed to open settings.');
+        // _showToast('To disable notifications, change the settings manually.');
+        // // Delay ensures the UI updates before opening settings
+        // await Future.delayed(Duration(milliseconds: 500));
+        // bool opened = await openAppSettings();
+        // if (!opened) _showToast('Failed to open settings.');
+        await OneSignal.User.pushSubscription.optOut();
+        _showToast('Notification permission disabled.');
       }
 
       notifyListeners();
