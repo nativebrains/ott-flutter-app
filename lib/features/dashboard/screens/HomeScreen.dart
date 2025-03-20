@@ -34,27 +34,18 @@ class _HomescreenState extends State<Homescreen> {
         backgroundColor: ColorCode.bgColor,
         body: Stack(
           children: [
-            CustomScrollView(
-              slivers: [
-                // Slider (Custombanner)
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 16.sp),
-                      Custombanner(
-                        itemSliderList:
-                            provider.dashboardData?.itemSlider ?? [],
-                      ),
-                      SizedBox(height: 16.sp),
-                    ],
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.sp),
+                  Custombanner(
+                    itemSliderList: provider.dashboardData?.itemSlider ?? [],
                   ),
-                ),
-
-                // Lazy-rendered list of items
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
+                  SizedBox(height: 16.sp),
+                  ...List.generate(
+                    provider.dashboardData?.itemHome.length ?? 0,
+                    (index) {
                       final item = provider.dashboardData!.itemHome[index];
                       if (item.homeType == 'Movie') {
                         return Column(
@@ -72,15 +63,10 @@ class _HomescreenState extends State<Homescreen> {
                         );
                       }
                     },
-                    childCount: provider.dashboardData?.itemHome.length ?? 0,
                   ),
-                ),
-
-                // No Data Widget (if applicable)
-                SliverToBoxAdapter(
-                  child: getNoDataWidget(provider),
-                ),
-              ],
+                  getNoDataWidget(provider),
+                ],
+              ),
             ),
 
             // Show LoaderWidget if _isLoading is true

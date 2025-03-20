@@ -99,13 +99,13 @@ class RoundedNetworkImage extends StatelessWidget {
 
   Widget _getPlaceholderWidget(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: Colors.grey[800]!,
+      highlightColor: Colors.grey[600]!,
       period: Duration(milliseconds: 750),
       child: Container(
         width: width,
         height: height,
-        color: Colors.grey[300],
+        color: Colors.grey[800],
       ),
     );
   }
